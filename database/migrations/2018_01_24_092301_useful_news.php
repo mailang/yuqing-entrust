@@ -43,6 +43,7 @@ class UsefulNews extends Migration
             $table->string('ispush')->nullable;//是否推送到大屏
             $table->string('yuqinginfo')->nullable;//舆情信息
             $table->string('screen')->nullable;
+            $table->string('oldsubject')->nullable;//文章抓取所属专题
             $table->string('subject_id')->nullable;//专题id
             $table->string('reportform_id')->nullable;//早报id
             $table->string('casetype_id')->nullable;//早报id
