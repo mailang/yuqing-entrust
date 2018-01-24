@@ -15,7 +15,7 @@ class UsefulNews extends Migration
     {
         Schema::create('useful_news', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('admin_id')->unsigned;
+            $table->integer('admin_id')->unsigned();
             $table->string('title');
             $table->string('content');
             $table->string('author')->nullable();
@@ -32,11 +32,11 @@ class UsefulNews extends Migration
               1：审核通过并提交到早报
               2：审核通过判为重复
               3：退回，新闻不合格*/
-            $table->string('tag')->nullable();
+            $table->integer('tag')->nullable();
             $table->string('court')->nullable();//涉及法院
-            $table->string('address_id')->unsigned;
+            $table->string('address_id');
             $table->string('abstract')->nullable();//摘要
-            $table->dateTime('starttime')->nullable();//发起时间
+            $table->dateTime('starttime');//发起时间
             $table->string('visitnum')->nullable;
             $table->string('replynum')->nullable;
             $table->string('orientation')->nullable;//倾向性
@@ -44,15 +44,13 @@ class UsefulNews extends Migration
             $table->string('yuqinginfo')->nullable;//舆情信息
             $table->string('screen')->nullable;
             $table->string('oldsubject')->nullable;//文章抓取所属专题
-            $table->string('subject_id')->nullable;//专题id
-            $table->string('reportform_id')->nullable;//早报id
-            $table->string('casetype_id')->nullable;//早报id
+            $table->string('areacode');//专题id
+            $table->integer('reportform_id')->unsigned();//早报id
+            $table->integer('casetype_id')->unsigned();//早报id
 
             $table->foreign('admin_id')->references('id')->on('admins')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('address_id')->references('id')->on('address')
-                ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('subject_id')->references('id')->on('subject')
+            $table->foreign('areacode')->references('areacode')->on('address')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('reportform_id')->references('id')->on('reportform')
                 ->onUpdate('cascade')->onDelete('cascade');

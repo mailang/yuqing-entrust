@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class useful_news extends Model
+class Useful_news extends Model
 {
     protected  $table="useful_news";
     protected  $fillable=[
@@ -12,7 +12,6 @@ class useful_news extends Model
         'title',
         'content',
         'author',
-        'attribute',
         'firstwebsit',
         'sitetype',
         'link',
@@ -21,7 +20,7 @@ class useful_news extends Model
         'transmit',
         'tag',
         'court',
-        'address_id',
+        'areacode',
         'abstract',
         'starttime',
         'visitnum',
@@ -30,6 +29,7 @@ class useful_news extends Model
         'ispush',
         'yuqinginfo',
         'screen',
+        'oldsubject',
         'subject_id',
         'reportform_id',
         'casetype_id',
