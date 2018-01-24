@@ -27,6 +27,7 @@ class News extends Migration
             $table->string('keywords')->nullable();
             $table->string('subject')->nullable();//涉及专题
             $table->integer('transmit')->default(0);//转发数
+            $table->integer('starttime')->default(0);//文章发布时间
             $table->rememberToken();
             $table->timestamps();
         });
