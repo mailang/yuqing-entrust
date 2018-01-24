@@ -21,7 +21,6 @@
     Route::post('permissionadd', ['uses'=>'PermissionsController@store','as'=>'permission.store']);
     Route::post('permissionupdate/{id}', ['uses'=>'PermissionsController@update','as'=>'permission.update']);
     Route::post('permissiondelete/{id}', ['uses'=>'PermissionsController@destroy','as'=>'permission.delete']);
-
     Route::get('permschild/{pid}', ['uses'=>'PermissionsController@permschild','as'=>'permschild.add']);
 
 

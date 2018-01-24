@@ -49,7 +49,6 @@ class admins extends Seeder
                 ]
             );
              DB::table('permissions')->insert([
-
               'name'=>'角色管理',
                 'display_name'=>'角色管理',
                 'link'=>'role.lists',
