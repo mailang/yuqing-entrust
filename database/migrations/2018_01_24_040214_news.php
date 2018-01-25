@@ -19,7 +19,7 @@ class News extends Migration
             $table->string('content');
             $table->string('author')->nullable();
             $table->string('orientation')->nullable();
-            $table->string('firstwebsit')->nullable();
+            $table->string('firstwebsite')->nullable();
             $table->string('sitetype')->nullable();
             $table->string('link')->nullable();//原文链接
             /*uuid是一个MD5加密的字符串，用来判断文章的唯一性*/
@@ -28,7 +28,6 @@ class News extends Migration
             $table->string('subject')->nullable();//涉及专题
             $table->integer('transmit')->default(0);//转发数
             $table->dateTime('starttime');//文章发布时间
-            $table->rememberToken();
             $table->timestamps();
         });
     }

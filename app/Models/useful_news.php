@@ -29,6 +29,7 @@ class Useful_news extends Model
         'ispush',
         'yuqinginfo',
         'screen',
+        'md5',
         'oldsubject',
         'subject_id',
         'reportform_id',

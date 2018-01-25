@@ -105,8 +105,9 @@ class PermissionsController extends Controller
     {
         if ($id){
         $req=$request->all();
-        $permission=Permissions::find($id)->first();
+        $permission=Permissions::find($id);
         $new=$req['new'];
+        $permission['link']=$new['link'];
         $permission['icon']=$new['icon'];
         $permission['description']=$new['description'];
         $permission->save();

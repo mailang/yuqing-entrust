@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{asset('plugins/Ionicons/css/ionicons.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('dist/css/AdminLTE.min.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{asset('dist/css/skins/_all-skins.min.css')}}">
@@ -129,6 +130,43 @@
 <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('dist/js/demo.js')}}"></script>
+<script src="{{asset('plugins/datatables.net/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('plugins/datatables.net-bs/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
 @yield('js')
+<script>
+    $(function () {
+        $('.table').DataTable({
+            'paging'      : true,
+            'lengthChange': false,
+            'searching'   : false,
+            'ordering'    : true,
+            'info'        : true,
+            'autoWidth'   : false,
+            "oLanguage": {
+                "sProcessing":   "处理中...",
+                "sLengthMenu":   "_MENU_ 记录/页",
+                "sZeroRecords":  "没有匹配的记录",
+                "sInfo":         "显示第 _START_ 至 _END_ 项记录，共 _TOTAL_ 项",
+                "sInfoEmpty":    "显示第 0 至 0 项记录，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项记录过滤)",
+                "sInfoPostFix":  "",
+                "sSearch":       "过滤:",
+                "sUrl":          "",
+                "oPaginate": {
+                    "sFirst":    "首页",
+                    "sPrevious": "上页",
+                    "sNext":     "下页",
+                    "sLast":     "末页"
+                }
+            }
+        });
+        var modeltext = "{{ session('modeltext')}}";
+        if(modeltext != '')
+        {
+            $(".modal-body").text(modeltext);
+            $("#myModal").modal('show');
+        }
+    })
+</script>
 </body>
 </html>

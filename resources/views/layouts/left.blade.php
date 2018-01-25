@@ -5,7 +5,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p>Alexander Pierce</p>
@@ -14,25 +14,35 @@
         </div>
 
         <!-- sidebar menu: : style can be found in sidebar.less -->
-        <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">控制面板</li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-users"></i> <span>管理列表</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{route('admin.lists')}}"><i class="fa fa-circle-o"></i> 用户管理</a></li>
-                    <li><a href="{{route('role.lists')}}"><i class="fa fa-circle-o"></i>角色管理</a></li>
-                    <li><a href="{{route('permission.lists')}}"><i class="fa fa-circle-o"></i>栏目管理</a></li>
-                </ul>
-            </li>
-            <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
+        <ul class="sidebar-menu" data-widget="tree"><li class="header">控制面板</li>
+            <?php
+           $root=$menu->where('pid','-1');
+            foreach ($root as $v)
+            {
+            $childs=$menu->where('pid',$v['id']);
+            if (!$childs->isEmpty())
+            {
+                 echo  " <li class=\"treeview\"><a href=\"#\"><i class=\"fa fa-users\"></i> <span>".$v["name"]."</span>";
+                  echo "<span class=\"pull-right-container\"><i class=\"fa fa-angle-left pull-right\"></i></span></a>"
+                 . "  <ul class=\"treeview-menu\">";
+                    foreach ($childs as  $child){
+                        if ($child["link"]==null||$child["link"]=="") echo "<li><a href=\"#\"><i class=\"fa fa-circle-o\"></i>".$child["name"]."</a></li>";
+                    else
+                     echo "<li><a href=\"".route($child->link)."\"><i class=\"fa fa-circle-o\"></i>".$child["name"]."</a></li>";
+                    }
+                    echo "</ul></li>";
+            } else
+                {
+                    if ($v["link"]==null||$v["link"]=="")  echo "<li><a href=\"#\"><i class=\"fa fa-circle-o text-red\"></i> <span>".$v["name"]."</span></a></li>";
+                    else echo "<li><a href=\"".route($v["link"])."\"><i class=\"fa fa-circle-o text-red\"></i> <span>".$v["name"]."</span></a></li>";
+                }
+            }
+            ?>
+          <!--<li><a href="#"><i class="fa fa-circle-o text-red"></i> <span> important</span></a></li>
             <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>-->
         </ul>
     </section>
     <!-- /.sidebar -->
 </aside>
+

@@ -16,8 +16,7 @@ class Subject extends Migration
         Schema::create('subject', function (Blueprint $table) {
             $table->increments('id');
             $table->string('subject');
-            $table->string('description');
-            $table->rememberToken();
+            $table->string('description')->nullable;
             $table->timestamps();
         });
     }

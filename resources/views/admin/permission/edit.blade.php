@@ -12,7 +12,6 @@
 @section('content')
     <div class="main animsition">
         <div class="container-fluid">
-
             <div class="row">
                 <div class="">
                     <div class="panel panel-default">
@@ -49,9 +48,9 @@
                                     <script type="text/javascript" src="/plugins/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.js"></script>
                                 @endsection
                                 <div class="form-group">
-                                    <label for="tag" class="col-md-3 control-label">权限概述</label>
+                                    <label for="tag" class="col-md-3 control-label">描述</label>
                                     <div class="col-md-6">
-                                        <textarea value="$permission->description" name="new[description]" class="form-control" rows="3"></textarea>
+                                        <textarea name="new[description]" class="form-control" rows="3" >{{$permission->description}}</textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">

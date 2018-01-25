@@ -15,11 +15,13 @@ class Reportform extends Migration
     {
         Schema::create('reportform', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('admin_id')->unsigned();
             $table->string('title');
             $table->string('description')->nullable();
             /*0:早报1:中报2:晚报*/
             $table->string('type');
-            $table->rememberToken();
+            $table->foreign('admin_id')->references('id')->on('admins')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

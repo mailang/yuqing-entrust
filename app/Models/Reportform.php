@@ -8,6 +8,7 @@ class Reportform extends Model
 {
     protected  $table="reportform";
     protected  $fillable=[
+        'admin_id',
         'title',
         'description',
         'type'

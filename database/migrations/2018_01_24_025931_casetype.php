@@ -17,7 +17,6 @@ class Casetype extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('pid');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

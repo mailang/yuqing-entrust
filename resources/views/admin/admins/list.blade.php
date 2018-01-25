@@ -30,11 +30,11 @@
     <div class="col-xs-12">
         <div class="box">
             <div class="box-body">
-                <table id="tags-table" class="table table-bordered table-hover">
+                <table id="tags-table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th data-sortable="false" class="hidden-sm"></th>
-                        <th class="hidden-sm">用户名</th>
+                        <th data-sortable="false">&nbsp;</th>
+                        <th>用户名</th>
                         <th class="hidden-sm">真实姓名</th>
                         <th class="hidden-md">创建时间</th>
                         <th data-sortable="false">操作</th>
