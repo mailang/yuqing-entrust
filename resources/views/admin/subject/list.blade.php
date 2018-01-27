@@ -19,12 +19,6 @@
         </a>
     </div>
 </div>
-<div class="row page-title-row" style="margin:5px;">
-    <div class="col-md-6">
-    </div>
-    <div class="col-md-6 text-right">
-    </div>
-</div>
 
 <div class="row">
     <div class="col-xs-12">

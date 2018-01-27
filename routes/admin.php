@@ -24,13 +24,17 @@
     Route::get('permschild/{pid}', ['uses'=>'PermissionsController@permschild','as'=>'permschild.add']);
     /*新闻管理*/
      Route::get('newslist', ['uses'=>'NewsController@index','as'=>'news.lists']);
-     Route::get('report/add/{id?}', ['uses'=>'NewsController@create','as'=>'news.add']);
-     Route::post('report/add', ['uses'=>'NewsController@store','as'=>'news.store']);
+     Route::get('person/news', ['uses'=>'NewsController@person','as'=>'person.lists']);
+
+     Route::get('useful_news/add/{id?}', ['uses'=>'NewsController@create','as'=>'useful_news.person.add']);/*编辑人员自行添加新闻*/
+     Route::post('useful_news/store/{id}', ['uses'=>'NewsController@useful_news','as'=>'useful_news.add']);/*添加已有的新闻*/
+
+     Route::get('useful_news/add', ['uses'=>'NewsController@store','as'=>'news.store']);
      Route::post('report/update/{id}', ['uses'=>'NewsController@update','as'=>'news.update']);
      Route::post('report/delete/{id}', ['uses'=>'NewsController@destroy','as'=>'news.delete']);
      /*早报管理*/
-      Route::get('report/person', ['uses'=>'ReportformController@index','as'=>'report.lists']);
-      /*专题管理*/
+     Route::get('report/person', ['uses'=>'ReportformController@index','as'=>'report.lists']);
+     /*专题管理*/
      Route::get('subject/list', ['uses'=>'SubjectController@index','as'=>'subject.lists']);
      Route::get('subject/add/{id?}', ['uses'=>'SubjectController@create','as'=>'subject.add']);
      Route::post('subject/add', ['uses'=>'SubjectController@store','as'=>'subject.store']);
