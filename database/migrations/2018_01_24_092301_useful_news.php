@@ -18,7 +18,7 @@ class UsefulNews extends Migration
             $table->unsignedInteger('news_id')->nullable();
             $table->unsignedInteger('admin_id')->nullable();
             $table->string('title');
-            $table->string('content');
+            $table->text('content');
             $table->string('author')->nullable();
             $table->string('firstwebsite')->nullable();
             $table->string('sitetype')->nullable();
@@ -35,7 +35,7 @@ class UsefulNews extends Migration
               3：退回，新闻不合格*/
             $table->integer('tag')->default(0);
             $table->string('court')->nullable();//涉及法院
-            $table->string('abstract')->nullable();//摘要
+            $table->text('abstract')->nullable();//摘要
             $table->dateTime('starttime')->nullable();//发起时间
             $table->integer('visitnum')->default(0);
             $table->integer('replynum')->default(0);
