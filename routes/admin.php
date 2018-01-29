@@ -24,7 +24,7 @@
     Route::get('permschild/{pid}', ['uses'=>'PermissionsController@permschild','as'=>'permschild.add']);
     /*新闻管理*/
      Route::get('newslist', ['uses'=>'NewsController@index','as'=>'news.lists']);
-     Route::get('person/news', ['uses'=>'NewsController@person','as'=>'person.lists']);
+     Route::get('person/news/{id?}', ['uses'=>'NewsController@person','as'=>'person.lists']);
 
      Route::get('useful_news/add/{id?}', ['uses'=>'NewsController@create','as'=>'useful_news.person.add']);/*编辑人员自行添加新闻*/
      Route::post('useful_news/store/{id}', ['uses'=>'NewsController@useful_news','as'=>'useful_news.add']);/*添加已有的新闻*/

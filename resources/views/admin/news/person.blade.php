@@ -2,16 +2,18 @@
 @section('title')
     <h1>
         首页
-        <small>栏目管理</small>
+        <small>新闻管理</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i>栏目管理</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i>新闻管理</a></li>
         <li class="active">列表展示</li>
     </ol>
 @endsection
 @section('content')
+
     <div class="row page-title-row" style="margin:5px;">
         <div class="col-md-6">
+
         </div>
         <div class="col-md-6 text-right">
             <a href="{{route('useful_news.person.add')}}" class="btn btn-success btn-md">
@@ -23,6 +25,13 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-body">
+                    <div>
+                        <ul class="nav navbar-nav">
+                             @foreach($subjects as $subject)
+                            <li class="active"><a href="{{route('person.lists',$subject->id)}}">{{$subject->subject}}</a></li>
+                             @endforeach
+                        </ul>
+                    </div>
                     <table id="tags-table" class="table table-bordered table-striped">
         <thead>
         <tr>
@@ -41,7 +50,7 @@
             <td>{{$news->author}}</td>
             <td>{{$news->orientation}}</td>
             <td>{{$news->created_at}}</td>
-            <td><a href="{{route('useful_news.add',array('id'=>$news->id))}}">加入早报</a>
+            <td><a href="{{route('useful_news.add',array('id'=>$news->id))}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 编辑</a>
             </td>
         </tr>@endforeach
         </tbody>

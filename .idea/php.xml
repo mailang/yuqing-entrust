@@ -80,12 +80,19 @@
       <path value="$PROJECT_DIR$/vendor/hamcrest/hamcrest-php" />
       <path value="$PROJECT_DIR$/vendor/maximebf/debugbar" />
       <path value="$PROJECT_DIR$/vendor/fideloper/proxy" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/vendor/jaeger/g-http" />
+      <path value="$PROJECT_DIR$/vendor/jaeger/phpquery-single" />
+      <path value="$PROJECT_DIR$/vendor/jaeger/querylist" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7" />
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings load_method="CUSTOM_LOADER" custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" />
+      <PhpUnitSettings load_method="CUSTOM_LOADER" custom_loader_path="E:/laravel/yuqing-entrust/vendor/autoload.php" />
     </phpunit_settings>
   </component>
 </project>

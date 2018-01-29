@@ -124,13 +124,18 @@ class PermissionsController extends Controller
      */
     public function destroy($id)
     {
-        //dd($id);
-        if($id)
-        {
-            $permission= Permissions::find((int)$id);
-            $permission->delete([$id]);
-            flash('删除成功');
-            return redirect()->back();
+
+        $child = Permissions::where('pid', $id)->first();
+        if ($child) {
+            return redirect()->back()
+                ->withErrors("请先将子菜单删除后再做删除操作!");
         }
+        else
+        {
+            $permission= Permissions::find($id);
+            $permission->delete([$id]);
+            return redirect()->back()->withSuccess('删除成功');
+        }
+
     }
 }

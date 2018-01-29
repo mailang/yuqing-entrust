@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Subject;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,22 +19,32 @@ class NewsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function  person()
+    public function  person($id=null)
     {
         $filed=['id','title','author','orientation','created_at','keywords'];
+        $admin_id=Auth::guard('admin')->id();
         //用户查看个人添加的新闻
-        $admin=Auth::guard('admin')->user();
-        $newslist=DB::table('useful_news')->where('admin_id',$admin->id)
-            ->orderByDesc('created_at')
-            ->get($filed);
-        return view('admin.news.person',compact('newslist'));
+        if ($id)
+        {
+            $newslist=DB::table('useful_news')->where('admin_id',$admin_id)
+                ->where('subject_id',$id)
+                ->orderByDesc('created_at')
+                ->get($filed);
+        }else{
+            $newslist=DB::table('useful_news')->where('admin_id',$admin_id)
+                ->orderByDesc('created_at')
+                ->get($filed);
+        }
+        $subjects=Subject::all();
+        return view('admin.news.person',compact('newslist','subjects'));
 
     }
+    /*查看新闻列表*/
     public function index()
     {
             $filed=['id','title','author','orientation','firstwebsite','keywords'];
-            $time1=date("Y-m-d",strtotime('-2 day'));
-            $time2=date("Y-m-d");
+            $time1=date("Y-m-d H:i:s",strtotime('-2 day'));
+            $time2=date("Y-m-d H:i:s");
             $newslist=DB::table('news')->whereBetween('starttime',[$time1,$time2])->get( $filed);
         return view('admin.news.lists',compact('newslist'));
     }
@@ -42,7 +53,7 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create($id=null)
     {
         if ($id)
         {

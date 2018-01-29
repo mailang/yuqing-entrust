@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,6 +27,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->call(function (){
+            //DB::table('test')->increment('testid');
+            \Artisan::call("spider:yuqing");
+        })->everyMinute();
     }
 
     /**

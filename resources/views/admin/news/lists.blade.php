@@ -2,10 +2,10 @@
 @section('title')
     <h1>
         首页
-        <small>栏目管理</small>
+        <small>新闻管理</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i>栏目管理</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i>新闻管理</a></li>
         <li class="active">列表展示</li>
     </ol>
 @endsection
