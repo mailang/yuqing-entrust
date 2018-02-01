@@ -9,6 +9,7 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\RequestException;
 
 use QL\QueryList;
+use Illuminate\Support\Facades\Log;
 
 class spider extends Command
 {
@@ -90,19 +91,28 @@ class spider extends Command
 
         while (true)
         {
-            $res1 = $client->request('GET',"Browse/indexajax?cities=&province=&infoSourceLevel=&wechatInfoType=&abstractIsHideOrShow=1&kvHot=&hotname=&p={$p}&sourceattr=-1&kk_id=&noneUrl=&degree=-1&range=&id=&sid=&orientation=4&customFilter=&state=xx&tid=01&sourcetype=&repeat=1&isread=&time=&type=text&message=&pagesize=10&site=&btime={$btime}&kkname=&isyj=&classid=&jobid=&etime={$etime}&mate=&region=&position=&distance=&filter=&ignore_a=&ignore_loc=&ignore_topic=&channel=&column=" , [
+            $url = $this->yuqing_url."Browse/indexajax?cities=&province=&infoSourceLevel=&wechatInfoType=&abstractIsHideOrShow=1&kvHot=&hotname=&p={$p}&sourceattr=-1&kk_id=&noneUrl=&degree=-1&range=&id=&sid=&orientation=4&customFilter=&state=xx&tid=01&sourcetype=&repeat=1&isread=&time=&type=text&message=&pagesize=10&site=&btime={$btime}&kkname=&isyj=&classid=&jobid=&etime={$etime}&mate=&region=&position=&distance=&filter=&ignore_a=&ignore_loc=&ignore_topic=&channel=&column=" ;
+
+            //Log::info($url);
+
+            $res1 = $client->request('GET',$url, [
 
             ]);
 
             \phpQuery::newDocumentHTML($res1->getBody());
             $lilist = pq('.message_list > ul > li');
 
+            if ($lilist->length == 0)
+            {
+                break;
+            }
+
             foreach ($lilist as $li){
                 $href = pq($li)->find('.title a')->attr('href');
                 $uuid = $this->getUrlKeyValue($href)['uuid'];
                 $new = News::where('uuid',$uuid)->first();
                 if ($new)
-                    return;
+                    continue;
                 $reseach =  $client->request('GET',$href);
                 $this->handleonehtml($reseach,$uuid);
             }
@@ -119,7 +129,7 @@ class spider extends Command
 
         $link = pq('.url a')->text();
 
-        $content = pq('.content_wrap')->text();
+        $content = pq('.content_wrap')->html();
 
         $keywordslist = pq('.keyword a');
         $klist = array();
@@ -152,7 +162,7 @@ class spider extends Command
         $new = new News();
         $new->title = $title;
         $new->link = $link;
-        $new->content = $content;
+        $new->content = htmlspecialchars($content);
         $new->keywords = $keywords;
         $new->subject = $subject;
         $new->starttime = $starttime;
@@ -162,7 +172,26 @@ class spider extends Command
         $new->transmit = $transmit;
         $new->author = $author;
         $new->firstwebsite = $firstwebsite;
-        $new->save();
+        try{
+            $new->save();
+        }
+        catch (\Exception $e)
+        {
+            Log::error($e);
+            Log::info($title);
+            Log::info($link);
+            Log::info($content);
+            Log::info($keywords);
+            Log::info($subject);
+            Log::info($starttime);
+            Log::info($uuid);
+            Log::info($sitetype);
+            Log::info($orientation);
+            Log::info($transmit);
+            Log::info($author);
+            Log::info($firstwebsite);
+        }
+
 
 //        echo $title;
 //        echo $link;
