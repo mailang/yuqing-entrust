@@ -48,5 +48,6 @@
     "Ionicons": "ionicons#^2.0.1",
     "jquery-ui": "1.11.4",
 	"iCheck":"1.0.2"
+	 "jqueryui-timepicker-addon": "^1.6.3",
   }
 }

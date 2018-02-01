@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Address;
+use App\Models\casetype;
 use App\Models\Subject;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
@@ -10,20 +12,21 @@ use App\Models\Useful_news;
 use App\Models\News;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Ramsey\Uuid\Uuid;
 
 class NewsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     *用户查看个人添加的新闻
      * @return \Illuminate\Http\Response
      */
 
     public function  person($id=null)
     {
+        $subjects=Subject::all();
         $filed=['id','title','author','orientation','created_at','keywords'];
         $admin_id=Auth::guard('admin')->id();
-        //用户查看个人添加的新闻
         if ($id)
         {
             $newslist=DB::table('useful_news')->where('admin_id',$admin_id)
@@ -32,21 +35,21 @@ class NewsController extends Controller
                 ->get($filed);
         }else{
             $newslist=DB::table('useful_news')->where('admin_id',$admin_id)
+                ->where('subject_id',$subjects->first()->id)
                 ->orderByDesc('created_at')
                 ->get($filed);
         }
-        $subjects=Subject::all();
-        return view('admin.news.person',compact('newslist','subjects'));
-
+        return view('admin.news.person',compact('newslist','subjects','id'));
     }
-    /*查看新闻列表*/
+    /*查看搜索新闻列表*/
     public function index()
     {
             $filed=['id','title','author','orientation','firstwebsite','keywords'];
             $time1=date("Y-m-d H:i:s",strtotime('-2 day'));
             $time2=date("Y-m-d H:i:s");
             $newslist=DB::table('news')->whereBetween('starttime',[$time1,$time2])->get( $filed);
-        return view('admin.news.lists',compact('newslist'));
+            $subjects=Subject::all();
+        return view('admin.news.lists',compact('newslist','subjects'));
     }
     /**
      * Show the form for creating a new resource.
@@ -55,11 +58,66 @@ class NewsController extends Controller
      */
     public function create($id=null)
     {
+        $subjects=Subject::all();
+        $casetypes=casetype::all();
+        $areacode=Address::all()->toJson();
         if ($id)
         {
-            $news=News::find($id);
-            return view('admin.news.edit',compact('news'));
-        }else return view('admin.news.add');
+            $news=Useful_news::find($id);
+            return view('admin.news.edit',compact('news','subjects','casetypes','areacode'));
+        }else return view('admin.news.add',compact('subjects','casetypes','areacode'));
+    }
+
+    /*
+     * 获取审核通过的新闻列表
+     *
+     */
+    public  function passed($id=null)
+    {
+        $subjects=Subject::all();
+        $filed=['id','title','author','orientation','created_at','keywords'];
+        if ($id){
+            $newslist=DB::table('useful_news')
+                ->where('subject_id',$id)
+                ->where('tag','1')
+                ->orWhere('tag',2)
+                ->orderByDesc('created_at')
+                ->get($filed);
+            return view('admin.news.passed',compact('newslist','subjects'));
+        }
+        else
+        {
+            $newslist=DB::table('useful_news')
+                ->where('tag','1')
+                ->orWhere('tag',2)
+                ->orderByDesc('created_at')
+                ->get($filed);
+            return view('admin.news.passed',compact('newslist','subjects'));
+        }
+
+    }
+
+    /*
+     * 获取需要审核的新闻列表
+     */
+    public function verify($id=null)
+    {
+        $subjects=Subject::all();
+        $filed=['id','title','author','orientation','created_at','keywords'];
+        if ($id)
+        {
+            $newslist=DB::table('useful_news')
+                ->where('subject_id',$id)
+                ->where('tag','-1')
+                ->orderByDesc('created_at')
+                ->get($filed);
+            return view('admin.news.verify',compact('newslist','subjects',$id));
+        }else{$newslist=DB::table('useful_news')
+            ->where('tag','-1')
+            ->orderByDesc('created_at')
+            ->get($filed);
+            return view('admin.news.verify',compact('newslist','subjects'));}
+
     }
 
     /*
@@ -101,20 +159,36 @@ class NewsController extends Controller
        //
     public function store(Request $request)
     {
-        //
+        $req=$request->all();
+        $news=$req["news"];
+        $news['admin_id']=Auth::guard('admin')->id();
+        $news['areacode']=$news['areacode2'];
+        $use=Useful_news::create($news);
+       if ($use)
+       {
+           flash('操作成功');return redirect()->back();
+       }else return redirect()->back()->withErrors('操作失败');
     }
 
     /**
      * Display the specified resource.
-     *
+     *批量提交到审核
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+     function submitverify(Request $request)
+     {
+         $req=$request->all();
+         //dd('['.$req["newsid"].']');
 
+         try{
+             $num=Useful_news::whereIn('id',explode(',',$req["newsid"]))->update(['tag'=>'-1']);
+             flash('操作成功');return redirect()->back();
+         }
+         catch(Exception $e) { return redirect()->back()->withErrors('操作失败'); }
+
+
+     }
     /**
      * Show the form for editing the specified resource.
      *
@@ -135,17 +209,45 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $useful=Useful_news::find($id);
+        $req=$request->all();
+        $news=$req['news'];
+        //dd($news);
+        if ($useful) {
+            $useful['title']=$news['title'];
+            $useful['content']=$news['content'];
+            $useful['link']=$news['link'];
+            $useful['author']=$news['author'];
+            $useful['firstwebsite']=$news['firstwebsite'];
+            $useful['sitetype']=$news['sitetype'];
+            $useful['keywords']=$news['keywords'];
+            $useful['court']=$news['court'];
+            $useful['transmit']=$news['transmit'];
+            $useful['visitnum']=$news['visitnum'];
+            $useful['replynum']=$news['replynum'];
+            $useful['starttime']=$news['starttime'];
+            $useful['orientation']=$news['orientation'];
+            $useful['yuqinginfo']=$news['yuqinginfo'];
+             $useful['subject_id']=$news['subject_id'];
+             $useful['casetype_id']=$news['casetype_id'];
+             $useful['abstract']=$news['abstract'];
+            $useful['areacode']=$news['areacode2'];
+            $useful->save();
+            flash('操作成功');
+            return redirect()->back();
+        }
+        else return redirect()->back()->withErrors('操作失败');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
+     *已经提交到审核的新闻不给删除
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
+        //
         //
     }
 }

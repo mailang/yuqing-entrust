@@ -140,10 +140,14 @@ class spider extends Command
         $orientation = explode("：",$othermessage->find('i:eq(2)')->text())[1];
         $transmit = explode("：",$othermessage->find('i:eq(3)')->text())[1];
         $author = explode("：",$othermessage->find('i:eq(4)')->text())[1];
-        $firstwebsitall = $othermessage->find('i:eq(5)')->text();
+        $firstwebsiteall = $othermessage->find('i:eq(5)')->text();
 
-        $mr = preg_match('/【([\d\D]+?)】/', $firstwebsitall, $matchs);
-        $firstwebsit = $matchs[1];
+        $mr = preg_match('/【([\d\D]+?)】/', $firstwebsiteall, $matchs);
+		if($mr==0)
+		{
+			$firstwebsite=$firstwebsiteall;
+		}else
+			$firstwebsite = $matchs[1];
 
         $new = new News();
         $new->title = $title;
@@ -157,7 +161,7 @@ class spider extends Command
         $new->orientation = $orientation;
         $new->transmit = $transmit;
         $new->author = $author;
-        $new->firstwebsit = $firstwebsit;
+        $new->firstwebsite = $firstwebsite;
         $new->save();
 
 //        echo $title;

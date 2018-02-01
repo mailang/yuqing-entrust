@@ -70,8 +70,13 @@
                     <div class="form-group">
                         <label for="tag" class="col-md-3 control-label">选择专题</label>
                         <div class="col-md-5">
-                       <select id="subject" class="form-control" name="subject">
-                           <option value="2">司法执行</option>
+                            @if($subjects->isEmpty())
+                                请先添加专题
+                            @else
+                            <select id="subject" class="form-control" name="subject">
+                           @foreach($subjects as $subject)
+                               <option value="{{$subject->id}}">{{$subject->subject}}</option>
+                           @endforeach @endif
                        </select>
                         </div>
                     </div>

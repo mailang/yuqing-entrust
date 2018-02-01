@@ -9,6 +9,7 @@ class casetype extends Model
     protected  $table="casetype";
     protected  $fillable=[
         'name',
-        'pid'
+        'pid',
+        'description'
     ];
 }
