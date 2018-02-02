@@ -41,7 +41,8 @@
                             </div>
                 <div class="col-xs-3"><label class="input-group">&nbsp;</label> <button class="btn btn-success btn-md">
                 <i class="fa fa-search-plus"></i>搜索
-                    </button></div></form>
+                    </button></div>
+            </form>
         </div>        </div>
     </div>
     <div class="row">
