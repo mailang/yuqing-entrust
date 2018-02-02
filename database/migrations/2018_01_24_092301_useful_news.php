@@ -28,12 +28,15 @@ class UsefulNews extends Migration
             $table->string('keywords')->nullable();
             //文章转发数
             $table->integer('transmit')->default(0);//转发数
-              /* -1：未审核
+              /*
+              -2：退回，新闻不合格
+              -1：未审核
               0: 保存不提交到审核(仅编辑人员个人查看修改)
               1：审核通过并提交到早报
               2：审核通过判为重复
-              3：退回，新闻不合格*/
+              */
             $table->integer('tag')->default(0);
+            $table->string('verify_option',500)->nullable();//审核意见
             $table->string('court')->nullable();//涉及法院
             $table->text('abstract')->nullable();//摘要
             $table->dateTime('starttime')->nullable();//发起时间

@@ -11,19 +11,15 @@
 @endsection
 @section('content')
     <style type="text/css">.active{color: #444;background: #f7f7f7; }a{color:#0a0a0a;}</style>
-    <script type="text/javascript">$(function () {
-            $('.nav').click(function () {
-                $(this).addClass('active').siblings().removeClass('active');
-            });
-        })</script>
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-body">
                     <div>
                         <ul class="nav navbar-nav">
+                            <li class="active"><a href="{{route('verify.lists')}}">未分类</a></li>
                             @foreach($subjects as $key=>$subject)
-                                @if((isset($id)&&$id==$subject->id)||(!isset($id)&&$key==0))
+                                @if((isset($id)&&$id==$subject->id))<!--||(!isset($id)&&$key==0)-->
                                     <li class="active"><a href="{{route('verify.lists',$subject->id)}}">{{$subject->subject}}</a></li>
                                 @else
                                     <li><a href="{{route('verify.lists',$subject->id)}}">{{$subject->subject}}</a></li>
@@ -49,7 +45,7 @@
                             <td>{{$news->author}}</td>
                             <td>{{$news->orientation}}</td>
                             <td>{{$news->created_at}}</td>
-                            <td><a href="{{route('useful_news.person.add',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 编辑</a>
+                            <td><a href="{{route('useful_news.option',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 审核</a>
                             </td>
                         </tr>@endforeach
                         </tbody>

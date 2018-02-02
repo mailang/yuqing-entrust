@@ -19,6 +19,7 @@ class Useful_news extends Model
         'keywords',
         'transmit',
         'tag',
+        'verify_option',
         'court',
         'areacode',
         'abstract',

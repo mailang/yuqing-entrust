@@ -126,6 +126,7 @@
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="subject" class="col-md-3 control-label">专题</label> </span>
                                             <select id="subject" name="news[subject_id]" class="form-control">
+                                                <option value="" selected>--无--</option>
                                                 @foreach($subjects as $subject)
                                                     @if($subject->id==$news->subject_id)
                                                     <option value="{{$subject->id}}" selected>{{$subject->subject}}</option>

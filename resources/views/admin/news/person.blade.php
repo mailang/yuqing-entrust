@@ -11,11 +11,6 @@
 @endsection
 @section('content')
 <style type="text/css">.active{color: #444;background: #f7f7f7; }a{color:#0a0a0a;}</style>
-<script type="text/javascript">$(function () {
-        $('.nav').click(function () {
-            $(this).addClass('active').siblings().removeClass('active');
-        });
-    })</script>
     <div class="row page-title-row" style="margin:5px;">
         <div class="col-md-6">
         </div>
@@ -31,8 +26,9 @@
                 <div class="box-body">
                     <div>
                         <ul class="nav navbar-nav">
+                            <li class="active"><a href="{{route('person.lists')}}">未分类</a></li>
                              @foreach($subjects as $key=>$subject)
-                                 @if((isset($id)&&$id==$subject->id)||(!isset($id)&&$key==0))
+                                 @if((isset($id)&&$id==$subject->id))<!--||(!isset($id)&&$key==0)-->
                             <li class="active"><a href="{{route('person.lists',$subject->id)}}">{{$subject->subject}}</a></li>
                                  @else
                                     <li><a href="{{route('person.lists',$subject->id)}}">{{$subject->subject}}</a></li>
@@ -59,15 +55,21 @@
             <td>{{$news->author}}</td>
             <td>{{$news->orientation}}</td>
             <td>{{$news->created_at}}</td>
-             <td>状态</td>
+             <td>@switch($news->tag)
+                 @case(-1)  <span style="color:blue">未审核 </span>@break
+                 @case(0)未提交@break
+                     @case(1)<span style="color:#00a65a">合格</span>@break
+                     @case(2)<span style="color:#00a65a">重复</span>@break
+                     @case(3)<span style="color:red">不合格 </span>@break
+                 @endswitch
+             </td>
             <td>
-                <a href="{{route('useful_news.person.add',$news->id)}}" class="X-Small btn-xs text-success ">提交到审核</a>
                 <a href="{{route('useful_news.person.add',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 编辑</a>
-                <a style="margin:3px;" onclick="javascript:deletebtn(this);" href="#" attr="{{$subject->id}}" class="delBtn X-Small btn-xs text-danger "><i class="fa fa-times-circle-o"></i> 删除</a>
+                <a style="margin:3px;" onclick="javascript:deletebtn(this);" href="#" attr="{{$news->id}}" class="delBtn X-Small btn-xs text-danger "><i class="fa fa-times-circle-o"></i> 删除</a>
             </td>
         </tr>@endforeach
         <tr><td colspan="6">
-                <a href="#" onclick="verifybtn()" class="btn btn-success btn-md">批量提交到审核</a>
+                <a href="#" onclick="verifybtn()" class="btn btn-success btn-md">提交到审核</a>
             </td></tr>
         </tbody>
     </table>
