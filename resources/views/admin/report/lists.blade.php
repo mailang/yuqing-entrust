@@ -26,16 +26,16 @@
                         </thead>
                         <tbody>
                         @foreach($reports as $report)
-                            <tr> <td></td>
+                            <tr> <td></td><td>{{ $report->title }}</td>
                                 <td>
                                     @switch($report->type)
-                                     @case(0) 早报 break;
-                                        @case(1)中报 break;
-                                        @case(2) 晚报 break;
+                                     @case(0) 早报
+                                        @case(1)中报
+                                        @case(2) 晚报
 
                                 @endswitch
                                 </td>
-                                <td>{{ $report->title }}</td>
+
                                 <td>{{$report->created_at}}</td>
                                 <td>
                                    编辑
