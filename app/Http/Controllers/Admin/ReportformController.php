@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Useful_news;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Reportform;
+use Illuminate\Support\Facades\DB;
 
 class ReportformController extends Controller
 {
@@ -14,7 +17,8 @@ class ReportformController extends Controller
      */
     public function index()
     {
-        //
+        $reports=Reportform::all();
+        return view('admin.report.lists',compact('reports'));
     }
 
     /**
@@ -35,7 +39,18 @@ class ReportformController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $req=$request->all();
+          $newsid=$req["newsid"];
+
+          $report["title"]=date('YmdHis');
+          $report["type"]=$req['type'];
+          $report["admin_id"]=\Auth::guard('admin')->id();
+          $rpt= Reportform::create($report);
+          if (!$rpt->isEmpty)
+          {
+              $num=Useful_news::whereIn('id',explode(',',$req["newsid"]))->update(['reportform_id'=>$rpt->id]);
+              flash('操作成功');return redirect()->back();
+          }
     }
 
     /**

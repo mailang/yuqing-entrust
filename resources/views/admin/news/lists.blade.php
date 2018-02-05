@@ -33,22 +33,45 @@
 @section('content')
     <div class="row page-title-row" style="margin:5px;">
         <div class="row text-center">
-            <form id="search" action="{{route('news.search')}}" method="post">  <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <div class="col-xs-3"> <label for="time1" class="input-group">起始时间：</label>
-            <input placeholder="开始时间" type="text" class="form-control" name="time1" required="required" id="time1" autocomplete="off" value="{{date("Y-m-d H:i:s")}}" autofocus>
-                  </div><div class="col-xs-3"><label for="time1" class="input-group">结束时间：</label>
-                          <input placeholder="结束时间" type="text" class="form-control" name="time2" required="required" id="time2" autocomplete="off" value="{{date("Y-m-d H:i:s")}}" autofocus>
-                            </div>
-                <div class="col-xs-3"><label class="input-group">&nbsp;</label> <button class="btn btn-success btn-md">
-                <i class="fa fa-search-plus"></i>搜索
-                    </button></div>
-            </form>
+
         </div>        </div>
     </div>
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-body">
+                    <form class="form-inline" role="form" action="{{route('news.search')}}" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><label for="title" class="col-md-3 control-label">文章标题</label> </span>
+                                <input type="text" class="form-control" name="title" placeholder="文章标题"  id="title" autocomplete="off" value="" autofocus>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon"><label for="orientation" class="col-md-3 control-label">倾向性</label> </span>
+                                <select id="orientation" name="orientation" class="form-control">
+                                    <option value="">--请选择--</option>
+                                    <option value="正面">正面</option>
+                                    <option value="中性">中性</option>
+                                    <option value="负面">负面</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon"><label for="firstwebsite" class="col-md-3 control-label">首发网站</label> </span>
+                                <input type="text" class="form-control" name="firstwebsite" placeholder="文章标题"  id="firstwebsite" autocomplete="off" value="" autofocus>
+                            </div>
+                        <br> <br>
+                        <div class="input-group">
+                            <span class="input-group-addon"><label for="title" class="col-md-3 control-label">起始时间</label> </span>
+                            <input placeholder="开始时间" type="text" class="form-control" name="time1" id="time1" autocomplete="off" value="" autofocus>                    </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><label for="title" class="col-md-3 control-label">结束时间</label> </span>
+                            <input placeholder="结束时间" type="text" class="form-control" name="time2" id="time2" autocomplete="off" value="" autofocus>
+                        </div>
+                        <button class="btn btn-success btn-md">
+                            <i class="fa fa-search-plus"></i>搜索
+                        </button>
+                    </form>
                     <table id="tags-table" class="table table-bordered table-striped">
         <thead>
         <tr>

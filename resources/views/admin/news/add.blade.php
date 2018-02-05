@@ -203,7 +203,7 @@
                                 <div class="col-md-7 col-md-offset-3">
                                     <button type="submit" class="btn btn-primary btn-md">
                                         <i class="fa fa-plus-circle"></i>
-                                        提交
+                                        添加
                                     </button>
                                 </div>
                             </div>

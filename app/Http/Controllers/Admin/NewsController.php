@@ -80,8 +80,14 @@ class NewsController extends Controller
      */
     public  function passed($id=null)
     {
-        $subjects=Subject::all();
-        $filed=['id','title','author','orientation','created_at','keywords'];
+        if ($id)
+        {
+            $news=News::find($id);
+            return view('admin.news.passed_see',compact('news'));
+        }
+        else{
+       $subjects=Subject::all();
+        $filed=['id','title','author','orientation','created_at','keywords','reportform_id'];
          $newslist=DB::table('useful_news')
                 ->where('tag','>','0')
                 ->limit(10000)
@@ -89,33 +95,20 @@ class NewsController extends Controller
                 ->get($filed);
             return view('admin.news.passed',compact('newslist','subjects'));
 
+         }
     }
     /*
      * 获取需要审核的新闻列表
      */
-    public function verify($id=null)
+    public function verify()
     {
-        $subjects=Subject::all();
-        $filed=['id','title','author','orientation','created_at','keywords'];
-        if ($id)
-        {
+            $subjects=Subject::all();
+            $filed=['id','title','tag','author','orientation','created_at','keywords'];
             $newslist=DB::table('useful_news')
-                ->where('subject_id',$id)
-                ->where('tag','-1')
-                ->orWhere('tag','3')
+                ->where('tag','<','0')
                 ->orderByDesc('created_at')
                 ->get($filed);
             return view('admin.news.verify',compact('newslist','subjects','id'));
-        }else{
-            $newslist=DB::table('useful_news')
-                ->orWhereNull('subject_id')
-                ->where('tag','-1')
-                ->orWhere('tag','3')
-            ->orderByDesc('created_at')
-            ->get($filed);
-            return view('admin.news.verify',compact('newslist','subjects'));
-        }
-
     }
     /*审核新闻*/
     public function verify_option( Request $request,$id)
@@ -135,7 +128,9 @@ class NewsController extends Controller
      {
          if ($id) {
              $news = Useful_news::find($id);
+             //dd($news);
              return view('admin.news.examine', compact('news'));
+             // return view('admin.news.examine','news');
          }
      }
     /*
@@ -248,7 +243,9 @@ class NewsController extends Controller
              $useful['subject_id']=$news['subject_id'];
              $useful['casetype_id']=$news['casetype_id'];
              $useful['abstract']=$news['abstract'];
+             if ($news['areacode2']!=null)
             $useful['areacode']=$news['areacode2'];
+
             $useful->save();
             flash('操作成功');
             return redirect()->back();
@@ -279,22 +276,104 @@ class NewsController extends Controller
 
        }
     }
+    /*审核新闻搜索*/
+    public function verify_search(Request $request){
+        $req=$request->all();
+        $time1=$req['time1'];
+        $time2=$req['time2'];
+        $title=$req['title'];
+        $court=$req['court'];
+        $orientation=$req['orientation'];
+        $subject_id=$req["subject"];
+        $tag=$req["tag"];
+
+        $sql="select `id`, `title`, `tag`,`author`, `orientation`, `created_at`, `keywords` from `useful_news` WHERE ";
+        if ($title!=null&&$title!='')
+            $sql=$sql."title like '%".$title."%' and ";
+        if ($court!=null&&$court!='')
+            $sql=$sql."court like '%".$court."%' and ";
+        if ($orientation!=null&&$orientation!='')
+            $sql=$sql."orientation='".$orientation."' and ";
+        if ($subject_id==null) $sql=$sql."subject_id is null and ";
+        if ($subject_id!=null&&$subject_id!="all")
+            $sql=$sql."subject_id='".$subject_id."' and ";
+        if ($time1!=null&&$time2!=null)
+            $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
+         if ($tag!="all")
+        $sql=$sql."`tag` ='".$tag."' order by `created_at` desc limit 10000";
+         else $sql=$sql."`tag` !='0' order by `created_at` desc limit 10000";
+        $newslist=DB::select($sql);
+        $subjects=Subject::all();
+        return view('admin.news.verify',compact('newslist','subjects'));
+
+    }
+    /*我的新闻搜索*/
+    public function person_search(Request $request)
+    {
+        $req=$request->all();
+        $time1=$req['time1'];
+        $time2=$req['time2'];
+        $title=$req['title'];
+        $court=$req['court'];
+        $orientation=$req['orientation'];
+        $subject_id=$req["subject"];
+
+        $sql="select `id`, `title`, `author`, `orientation`, `created_at`, `keywords` from `useful_news` WHERE ";
+        if ($title!=null&&$title!='')
+            $sql=$sql."title like '%".$title."%' and ";
+        if ($court!=null&&$court!='')
+            $sql=$sql."court like '%".$court."%' and ";
+        if ($orientation!=null&&$orientation!='')
+            $sql=$sql."orientation='".$orientation."' and ";
+        if ($subject_id==null) $sql=$sql."subject_id is null and ";
+        if ($subject_id!=null&&$subject_id!="all")
+            $sql=$sql."subject_id='".$subject_id."' and ";
+        if ($time1!=null&&$time2!=null)
+            $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
+        $id=Auth::guard('admin')->id();
+        $sql=$sql."`admin_id` = '".$id."' order by `created_at` desc limit 10000";
+        $newslist=DB::select($sql);
+        $subjects=Subject::all();
+        return view('admin.news.person',compact('newslist','subjects'));
+
+    }
     /*
     *news搜索新闻
     */
     public  function search(Request $request)
     {
         $req=$request->all();
-        $time1=$req['time1'];
-        $time2=$req['time2'];
+        $time1=$req['time1']==null?"":$req['time1'];
+        $time2=$req['time2']==null?"":$req['time2'];
+        $title=$req['title']==null?"":$req['title'];
+        $orientation=$req['orientation']==null?"":$req['orientation'];
+        $firstwebsite=$req['firstwebsite']==null?"":$req['firstwebsite'];
+        if ($time1==""&&$time2==""&&$title==""&&$orientation==""&&$firstwebsite=="")
+        return redirect()->back();
+        $sql="select `id`, `title`, `author`, `orientation`, `created_at`, `keywords` from `news` WHERE ";
+        $str='';
+        if ($orientation!='')
+            $str=$str."orientation='".$orientation."'";
+        if ($title!='')
+        {
+            if ($str!='') $str=$str.' and ';
+                $str=$str."title like '%".$title."%'";
+        }
+        if ($firstwebsite!=''){
+            if ($str!='') $str=$str.' and ';
+            $str=$str."firstwebsite='".$firstwebsite."'";
+        }
         if ($time1!=''&&$time2!='')
         {
-            $filed=['id','title','author','orientation','firstwebsite','keywords'];
-            $newslist=DB::table('news')->whereBetween('starttime',[$time1,$time2])->get( $filed);
-            $subjects=Subject::all();
-            return view('admin.news.lists',compact('newslist','subjects'));
+            if (!strtotime($time1)||strtotime($time2))return redirect()->back()->withErrors('时间输入不正确');
+            if ($str!='') $str=$str.' and ';
+            $str=$str."`starttime` between '".$time1."' and '".$time2."'";
         }
-        else return redirect()->back()->withErrors('时间输入不正确');
+        $sql=$sql.$str;
+        $sql=$sql."order by `created_at` desc limit 10000";
+        $newslist=DB::select($sql);
+        $subjects=Subject::all();
+        return view('admin.news.lists',compact('newslist','subjects'));
 
     }
     /*通过审核的新闻进行搜索*/
@@ -321,9 +400,9 @@ class NewsController extends Controller
         if ($time1!=null&&$time2!=null)
             $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
           $sql=$sql."`tag` > '0' order by `created_at` desc limit 10000";
-          DB::select($sql);
-          flash('操作成功');return redirect()->back();
-
+          $newslist=DB::select($sql);
+          $subjects=Subject::all();
+        return view('admin.news.passed',compact('newslist','subjects'));
 
 
     }

@@ -100,7 +100,7 @@
                                         </div></div>
                                 </div>      </div>
                             <div class="form-group">
-                                <div class="col-md-5"><strong> 文章内容:</strong><script id="editor" name="news[content]" type="text/plain" style="width:1024px;height:500px;">{{$news->content}}</script></div>        </div>
+                                <div class="col-md-5"><strong> 文章内容:</strong><script id="editor" name="news[content]" type="text/plain" style="width:1024px;height:500px;">{!!html_entity_decode($news->content)!!}</script></div>        </div>
 
                         </form>
                     </div></div></div></div></div>

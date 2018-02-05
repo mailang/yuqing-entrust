@@ -26,8 +26,6 @@ class admins extends Seeder
         ];
         $role=\App\Models\Roles::create($roles);
         $admins->attachRole($role);
-
-
         DB::table('permissions')->insert(
             [
                 'name'=>'管理列表',
@@ -37,7 +35,6 @@ class admins extends Seeder
                 'pid'=>'-1'
             ]
         );
-
          $perms=DB::table("permissions")->where('name',"管理列表")->first();
             DB::table('permissions')->insert(
                 [
@@ -62,7 +59,64 @@ class admins extends Seeder
         'icon'=>'fa-sliders',
         'pid'=>$perms->id
         ]);
-              $permlist=\App\Models\Permissions::all();
+
+        DB::table('permissions')->insert(
+            [
+                'name'=>'新闻管理',
+                'display_name'=>'新闻管理',
+                'link'=>'',
+                'icon'=>'fa-users',
+                'pid'=>'-1'
+            ]
+        );
+        $perms1=DB::table("permissions")->where('name',"新闻管理")->first();
+        DB::table('permissions')->insert([
+            'name'=>'新闻列表',
+            'display_name'=>'新闻列表',
+            'link'=>'news.lists',
+            'icon'=>'fa-sliders',
+            'pid'=>$perms1->id
+        ]);
+        DB::table('permissions')->insert([
+            'name'=>'我的新闻',
+            'display_name'=>'我的新闻',
+            'link'=>'person.lists',
+            'icon'=>'fa-sliders',
+            'pid'=>$perms1->id
+        ]);
+        DB::table('permissions')->insert([
+            'name'=>'审核通过的新闻',
+            'display_name'=>'审核通过的新闻',
+            'link'=>'passed.lists',
+            'icon'=>'fa-sliders',
+            'pid'=>$perms1->id
+        ]);
+        DB::table('permissions')->insert([
+            'name'=>'审核新闻',
+            'display_name'=>'审核新闻',
+            'link'=>'verify.lists',
+            'icon'=>'fa-sliders',
+            'pid'=>$perms1->id
+        ]);
+
+        DB::table('permissions')->insert(
+            [
+                'name'=>'报表管理',
+                'display_name'=>'报表管理',
+                'link'=>'',
+                'icon'=>'fa-users',
+                'pid'=>'-1'
+            ]
+        );
+        $perms2=DB::table("permissions")->where('name',"报表管理")->first();
+        DB::table('permissions')->insert([
+            'name'=>'日报表',
+            'display_name'=>'日报表',
+            'link'=>'report.day',
+            'icon'=>'fa-sliders',
+            'pid'=>$perms2->id
+        ]);
+        $permlist=\App\Models\Permissions::all();
               $role->attachPermissions($permlist);
     }
 }

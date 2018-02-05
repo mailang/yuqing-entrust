@@ -129,7 +129,7 @@
                                                 <option value="" selected>--无--</option>
                                                 @foreach($subjects as $subject)
                                                     @if($subject->id==$news->subject_id)
-                                                    <option value="{{$subject->id}}" selected>{{$subject->subject}}</option>
+                                                        <option value="{{$subject->id}}" selected>{{$subject->subject}}</option>
                                                     @else <option value="{{$subject->id}}">{{$subject->subject}}</option>
                                                     @endif
                                                 @endforeach
@@ -143,10 +143,10 @@
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="casetype" class="col-md-3 control-label">案件类型</label> </span>
                                             <select id="casetype" class="form-control" name="news[casetype_id]">
-                                            @foreach($casetypes as $casetype)
-                                            <option value="{{$casetype->id}}">{{$casetype->name}}</option>
-                                            @endforeach
-                                        </select>
+                                                @foreach($casetypes as $casetype)
+                                                    <option value="{{$casetype->id}}">{{$casetype->name}}</option>
+                                                @endforeach
+                                            </select>
                                         </div></div><label class="col-md-1 control-label">选择地区:</label>
                                     <div class="col-sm-7">
                                         <div class="row">
@@ -220,14 +220,6 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-md-5"><strong> 文章内容:</strong><script id="editor" name="news[content]" type="text/plain" style="width:1024px;height:500px;">{!!html_entity_decode($news->content)!!}</script></div>        </div>
-                            <div class="form-group">
-                                <div class="col-md-7 col-md-offset-3">
-                                    <button type="submit" class="btn btn-primary btn-md">
-                                        <i class="fa fa-plus-circle"></i>
-                                        确定
-                                    </button>
-                                </div>
-                            </div>
                         </form>
                     </div></div></div></div></div>
 @endsection

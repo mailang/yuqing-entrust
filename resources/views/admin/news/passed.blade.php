@@ -77,21 +77,10 @@
                         <i class="fa fa-search-plus"></i>搜索
                     </button>
                 </form>
-              <!--  <ul class="nav navbar-nav">
-                        <li class="active"><a href="{{route('passed.lists')}}">全部</a></li>
-                           <li><a href="{{route('passed.lists')}}">未分类</a></li>
-                            @foreach($subjects as $key=>$subject)
-                                @if(isset($id)&&$id==$subject->id)
-                                    <li><a href="{{route('passed.lists',$subject->id)}}">{{$subject->subject}}</a></li>
-                                @else
-                                    <li><a href="{{route('passed.lists',$subject->id)}}">{{$subject->subject}}</a></li>
-                                @endif
-                            @endforeach
-                    </ul>-->
                 <table id="tags-table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th  data-sortable="false">&nbsp;</th>
+                        <th  data-sortable="false"><input id="all" type="checkbox" value="" onclick="javascript:allclick(this);"><label for="all">全选</label></th>
                         <th>文章标题</th>
                         <th>作者</th>
                         <th>倾向性</th>
@@ -101,16 +90,72 @@
                     </thead>
                     <tbody>
                     @foreach($newslist as $news)<tr>
-                        <td></td>
+                        <td> @if($news->reportform_id==null) <input type="checkbox" value="{{$news->id}}" name="news[]">@endif</td>
                         <td>{{$news->title}}</td>
                         <td>{{$news->author}}</td>
                         <td>{{$news->orientation}}</td>
                         <td>{{$news->created_at}}</td>
-                        <td><a href="{{route('useful_news.person.add',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 编辑</a>
+                        <td>
+                            <a href="{{route('passed.lists',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 查看</a>
                         </td>
                     </tr>@endforeach
+                    <tr><td colspan="6">
+                            <a href="#" onclick="javascript:reportbtn();" class="btn btn-success btn-md">生成报表</a>
+                        </td></tr>
                     </tbody>
                 </table>
             </div></div></div></div>
-
+    <div class="modal fade" id="modal-delete" tabIndex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        ×
+                    </button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <form id="deleteForm" class="deleteForm" method="POST" action="">
+                    <div class="modal-body">
+                        <p class="lead">
+                            <i class="fa fa-question-circle fa-lg"></i>确定将所选项生成报表吗?
+                        </p>
+                            <div>
+                            <input type="radio" value="0" name="type" id="type0" ><label for="type0">早报</label>
+                            <input type="radio" value="1" name="type" id="type1" ><label for="type1">中报</label>
+                            <input type="radio" value="2" name="type" id="type2" checked="checked"><label for="type2">晚报</label>
+                             </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" id="newsid" name="newsid" value="">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa fa-times-circle"></i>确认
+                        </button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function  allclick(obj) {
+            if($(obj).is(":checked"))$("input[name='news[]']").attr('checked','checked');
+            else $("input[name='news[]']").removeAttr('checked');
+        }
+    function reportbtn() {
+    var array=$("input[name='news[]']");
+    var s='';
+    $("input[name='news[]']").each(
+    function(){
+    s+=$(this).val()+',';
+    }
+    )
+    s+="0";
+    $("#newsid").val(s);
+    $('.deleteForm').attr('action', '/admin/report/store');
+    $("#modal-delete").modal();
+    }
+    $(function () {
+    allclick("#all");
+    })
+    </script>
 @endsection
