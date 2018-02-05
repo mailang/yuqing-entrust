@@ -120,9 +120,9 @@
                             <i class="fa fa-question-circle fa-lg"></i>确定将所选项生成报表吗?
                         </p>
                             <div>
-                            <input type="radio" value="0" name="type" id="type0" ><label for="type0">早报</label>
+                            <input type="radio" value="0" name="type" id="type0" checked><label for="type0">早报</label>
                             <input type="radio" value="1" name="type" id="type1" ><label for="type1">中报</label>
-                            <input type="radio" value="2" name="type" id="type2" checked="checked"><label for="type2">晚报</label>
+                            <input type="radio" value="2" name="type" id="type2"><label for="type2">晚报</label>
                              </div>
                     </div>
                     <div class="modal-footer">
@@ -149,6 +149,13 @@
     s+=$(this).val()+',';
     }
     )
+        if(s=''){
+
+        }
+            else
+        {
+
+        }
     s+="0";
     $("#newsid").val(s);
     $('.deleteForm').attr('action', '/admin/report/store');
