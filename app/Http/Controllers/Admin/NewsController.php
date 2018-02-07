@@ -27,18 +27,9 @@ class NewsController extends Controller
         $subjects=Subject::all();
         $filed=['id','title','author','orientation','created_at','tag'];
         $admin_id=Auth::guard('admin')->id();
-        if ($id)
-        {
-            $newslist=DB::table('useful_news')->where('admin_id',$admin_id)
-                ->where('subject_id',$id)
-                ->orderByDesc('created_at')
-                ->get($filed);
-        }else{
-            $newslist=DB::table('useful_news')->where('admin_id',$admin_id)
-                ->whereNull('subject_id')
-                ->orderByDesc('created_at')
-                ->get($filed);
-        }
+        $newslist=DB::table('useful_news')->where('admin_id',$admin_id)
+            ->orderByDesc('created_at')
+            ->get($filed);
         return view('admin.news.person',compact('newslist','subjects','id'));
     }
     /*查看搜索新闻列表*/
@@ -50,10 +41,12 @@ class NewsController extends Controller
             return view('admin.news.see',compact('news'));
         }else
         {
-            $filed=['id','title','author','orientation','firstwebsite','keywords'];
+            $filed=['id','title','author','orientation','starttime','keywords'];
             $time1=date("Y-m-d H:i:s",strtotime('-2 day'));
             $time2=date("Y-m-d H:i:s");
-            $newslist=DB::table('news')->whereBetween('starttime',[$time1,$time2])->get( $filed);
+            $newslist=DB::table('news')->whereBetween('starttime',[$time1,$time2])
+                ->orderByDesc('starttime')
+                ->get( $filed);
             $subjects=Subject::all();
             return view('admin.news.lists',compact('newslist','subjects'));
         }
@@ -67,14 +60,37 @@ class NewsController extends Controller
     public function create($id=null)
     {
         $subjects=Subject::all();
-        $casetypes=casetype::all();
+        //$casetypes=casetype::all();
+         $root=casetype::where('pid','-1')->get();
+        if (!$root->isEmpty()){
+            $casetypes=json_encode($this->getdata($root,array()));
+        }
+
         $areacode=Address::all()->toJson();
         if ($id)
         {
             $news=Useful_news::find($id);
+            if ($news["casetype_id"]!=null&&$news["casetype_id"]!="")
+                $news["casetype"]=casetype::where('id',$news["casetype_id"])->get(["name"])->first()->name;
             return view('admin.news.edit',compact('news','subjects','casetypes','areacode'));
         }else return view('admin.news.add',compact('subjects','casetypes','areacode'));
     }
+   protected  function getdata($nodes,$data)
+   {
+    foreach($nodes as $node)
+    {
+        $p["text"]=$node["name"];
+        $p["id"]=$node["id"];
+        $p["nodeId"]=$node["id"];
+        $pid=$node["pid"];
+        $child=casetype::where('pid',$p["id"])->get();
+       if ($child->first()!=null) {
+           if ($p["id"]==6)dd($child->first());
+           $p["nodes"]= $this->getdata($child, array());
+           array_push($data,$p);
+       }else{$p["nodes"]=null;array_push($data,$p);return $data;}
+    }
+   }
     /*
      * 获取审核通过的新闻列表
      */
@@ -224,7 +240,6 @@ class NewsController extends Controller
         $useful=Useful_news::find($id);
         $req=$request->all();
         $news=$req['news'];
-        //dd($news);
         if ($useful) {
             $useful['title']=$news['title'];
             $useful['content']=$news['content'];
@@ -243,9 +258,9 @@ class NewsController extends Controller
              $useful['subject_id']=$news['subject_id'];
              $useful['casetype_id']=$news['casetype_id'];
              $useful['abstract']=$news['abstract'];
-             if ($news['areacode2']!=null)
+             if (isset($news['areacode2'])&&$news['areacode2']!=null)
             $useful['areacode']=$news['areacode2'];
-
+             if ($news['areacode2']==null&&$news['areacode1']!=null)  $useful['areacode']=$news['areacode1'];
             $useful->save();
             flash('操作成功');
             return redirect()->back();
@@ -350,7 +365,7 @@ class NewsController extends Controller
         $firstwebsite=$req['firstwebsite']==null?"":$req['firstwebsite'];
         if ($time1==""&&$time2==""&&$title==""&&$orientation==""&&$firstwebsite=="")
         return redirect()->back();
-        $sql="select `id`, `title`, `author`, `orientation`, `created_at`, `keywords` from `news` WHERE ";
+        $sql="select `id`, `title`, `author`, `orientation`, `created_at`, `keywords`,`starttime` from `news` WHERE ";
         $str='';
         if ($orientation!='')
             $str=$str."orientation='".$orientation."'";
@@ -365,7 +380,7 @@ class NewsController extends Controller
         }
         if ($time1!=''&&$time2!='')
         {
-            if (!strtotime($time1)||strtotime($time2))return redirect()->back()->withErrors('时间输入不正确');
+            if (!strtotime($time1)||!strtotime($time2))return redirect()->back()->withErrors('时间输入不正确');
             if ($str!='') $str=$str.' and ';
             $str=$str."`starttime` between '".$time1."' and '".$time2."'";
         }

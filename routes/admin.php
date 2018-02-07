@@ -42,7 +42,6 @@
      /*早报管理*/
      Route::get('report/day', ['uses'=>'ReportformController@index','as'=>'report.day']);//日报
      Route::post('report/store', ['uses'=>'ReportformController@store','as'=>'report.store']);//日报添加
-
      /*专题管理*/
      Route::get('subject/list', ['uses'=>'SubjectController@index','as'=>'subject.lists']);
      Route::get('subject/add/{id?}', ['uses'=>'SubjectController@create','as'=>'subject.add']);
@@ -56,3 +55,8 @@
      Route::post('casetype/add', ['uses'=>'CasetypeController@store','as'=>'casetype.store']);
      Route::post('casetype/update/{id}', ['uses'=>'CasetypeController@update','as'=>'casetype.update']);
      Route::post('casetype/delete/{id}', ['uses'=>'CasetypeController@destroy','as'=>'casetype.delete']);
+     /*统计*/
+     Route::get('tongji/list', ['uses'=>'StatisController@index','as'=>'tongji.lists']);
+     Route::get('tongji/info/{id?}', ['uses'=>'StatisController@person','as'=>'tongji.person']);
+     Route::post('tongji/search', ['uses'=>'StatisController@search','as'=>'tongji.search']);
+     Route::post('tongji/person/search/{id?}', ['uses'=>'StatisController@person_search','as'=>'tongji.search.person']);

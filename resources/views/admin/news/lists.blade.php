@@ -70,15 +70,16 @@
                         </div>
                         <button class="btn btn-success btn-md">
                             <i class="fa fa-search-plus"></i>搜索
-                        </button>
+                        </button></div>
                     </form>
                     <table id="tags-table" class="table table-bordered table-striped">
         <thead>
         <tr>
             <th  data-sortable="false"></th>
-            <th>文章标题</th>
+            <th  data-sortable="false">文章标题</th>
             <th>作者</th>
             <th>倾向性</th>
+            <th>发布时间</th>
             <th>关键词</th>
             <th  data-sortable="false">操作</th>
         </tr>
@@ -89,6 +90,7 @@
             <td>{{$news->title}}</td>
             <td>{{$news->author}}</td>
             <td>{{$news->orientation}}</td>
+             <td>{{$news->starttime}}</td>
             <td>{{$news->keywords}}</td>
             <td>
                 <a href="#" attr="{{$news->id}}" onclick="javascript:addnews(this);">

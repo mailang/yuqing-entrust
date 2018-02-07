@@ -1,25 +1,4 @@
 @extends('layouts.master')
-@section('css')
-    <script src="{{asset('js/jquery.linq.min.js')}}"></script>
-    <script src="{{asset('js/jquery.json.min.js')}}"></script>
-    <script src="{{asset('js/jquery.linq.min.js')}}"></script>
-    <script src="{{asset('js/jquery.json.min.js')}}"></script>
-    <link type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
-    <link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
-    <script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-    <script src="{{asset('js/jquery-ui-timepicker-addon.js')}}"></script>
-    <script src="{{asset('js/jquery.ui.datepicker-zh-CN.js.js')}}" charset="gb2312"></script>
-    <script src="{{asset('js/jquery-ui-timepicker-zh-CN.js')}}"></script>
-    <script type="text/javascript">
-        $(function () {
-            // 时间设置
-            $('#starttime').datetimepicker({
-                timeFormat: "HH:mm:ss",
-                dateFormat: "yy-mm-dd"
-            });
-        });
-    </script>
-@endsection
 @section('title')
     <h1>
         首页
