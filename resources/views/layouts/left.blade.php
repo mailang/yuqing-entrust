@@ -15,19 +15,30 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree"><li class="header">控制面板</li>
             <?php
-           $root=$menu->where('pid','-1');
+
+            $current=array_key_exists('as',Route::current()->action)==true?(Route::current()->action)["as"]:"";
+            $root=$menu->where('pid','-1');
             foreach ($root as $v)
             {
             $childs=$menu->where('pid',$v['id']);
             if (!$childs->isEmpty())
             {
+                if ($current!=""&&in_array($current,array_column($childs->toArray(),"link")))
+                    echo  " <li class=\"active treeview menu-open\"><a href=\"#\"><i class=\"fa fa-users\"></i> <span>".$v["name"]."</span>";
+                else
                  echo  " <li class=\"treeview\"><a href=\"#\"><i class=\"fa fa-users\"></i> <span>".$v["name"]."</span>";
-                  echo "<span class=\"pull-right-container\"><i class=\"fa fa-angle-left pull-right\"></i></span></a>"
+
+
+                 echo "<span class=\"pull-right-container\"><i class=\"fa fa-angle-left pull-right\"></i></span></a>"
                  . "  <ul class=\"treeview-menu\">";
                     foreach ($childs as  $child){
                         if ($child["link"]==null||$child["link"]=="") echo "<li><a href=\"#\"><i class=\"fa fa-circle-o\"></i>".$child["name"]."</a></li>";
                     else
-                     echo "<li><a href=\"".route($child->link)."\"><i class=\"fa fa-circle-o\"></i>".$child["name"]."</a></li>";
+                        { if($current==$child->link)
+                            echo "<li class='active'><a href=\"".route($child->link)."\" style='color:#e14f1c'><i class=\"fa fa-circle-o\"></i>".$child["name"]."</a></li>";
+                        else
+                            echo "<li><a href=\"".route($child->link)."\"><i class=\"fa fa-circle-o\"></i>".$child["name"]."</a></li>";
+                        }
                     }
                     echo "</ul></li>";
             } else
