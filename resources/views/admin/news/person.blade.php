@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('css')
-    <link type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+    <link type="text/css" href="css/jquery-ui.css" rel="stylesheet" />
     <link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
     <script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
     <script src="{{asset('js/jquery-ui-timepicker-addon.js')}}"></script>
@@ -100,7 +100,7 @@
         </thead>
         <tbody>
          @foreach($newslist as $news)<tr>
-             <td> @if($news->tag==0) <input type="checkbox" value="{{$news->id}}" name="news[]">@endif</td>
+             <td> @if($news->tag==0) <input type="checkbox" value="{{$news->id}}" name="news[]">@else  <input type="hidden" value="{{$news->id}}">@endif</td>
              <td>{{strlen($news->title)>35?mb_substr($news->title,0,30).'...':$news->title}}</td>
             <td>{{$news->author}}</td>
             <td>{{$news->orientation}}</td>
@@ -161,8 +161,8 @@
          $("#modal-delete").modal();
      }
      function  allclick(obj) {
-        if($(obj).is(":checked"))$("input[name='news[]']").attr('checked','checked');
-         else $("input[name='news[]']").removeAttr('checked');
+         if($(obj).is(":checked"))$("input[name='news[]']").prop("checked",true);
+         else $("input[name='news[]']").prop("checked",false);
      }
      function verifybtn() {
          var array=$("input[name='news[]']");

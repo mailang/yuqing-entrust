@@ -27,8 +27,6 @@
                     echo  " <li class=\"active treeview menu-open\"><a href=\"#\"><i class=\"fa fa-users\"></i> <span>".$v["name"]."</span>";
                 else
                  echo  " <li class=\"treeview\"><a href=\"#\"><i class=\"fa fa-users\"></i> <span>".$v["name"]."</span>";
-
-
                  echo "<span class=\"pull-right-container\"><i class=\"fa fa-angle-left pull-right\"></i></span></a>"
                  . "  <ul class=\"treeview-menu\">";
                     foreach ($childs as  $child){
@@ -41,11 +39,7 @@
                         }
                     }
                     echo "</ul></li>";
-            } else
-                {
-                    if ($v["link"]==null||$v["link"]=="")  echo "<li><a href=\"#\"><i class=\"fa fa-circle-o text-red\"></i> <span>".$v["name"]."</span></a></li>";
-                    else echo "<li><a href=\"".route($v["link"])."\"><i class=\"fa fa-circle-o text-red\"></i> <span>".$v["name"]."</span></a></li>";
-                }
+            }
             }
             ?>
           <!--<li><a href="#"><i class="fa fa-circle-o text-red"></i> <span> important</span></a></li>

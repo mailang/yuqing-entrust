@@ -10,7 +10,7 @@
     </ol>
 @endsection
 @section('css')
-<link type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+<link type="text/css" href="css/jquery-ui.css" rel="stylesheet" />
 <link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <script src="{{asset('js/jquery-ui-timepicker-addon.js')}}"></script>

@@ -26,15 +26,24 @@
                                         <input type="text" class="form-control" name="new[name]" required="required" id="tag" autocomplete="off" value="" autofocus>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="tag" class="col-md-3 control-label">权限列表</label><div class="col-md-4">
-                                        @foreach($permissions as $key=>$permission)
-                                        <input type="checkbox" id="box{{$permission->id}}"
-                                               class="form-actions" name="permissions[]" id="tag" value="{{$permission->id}}" autofocus>
-                                            <label for="box{{$permission->id}}">
-                                                {{$permission['name']}}
-                                            </label>
-                                        @endforeach
+                                    <label class="col-md-3 control-label">权限列表</label>
+                                    <div class="col-md-8">
+                                        <?php $roots=$permissions->where('pid',"-1"); ?>
+                                        @foreach($roots as $key=>$root)
+                                            <div><label for="box{{$root->id}}">{{$root['name']}}</label>
+                                                <input type="hidden" id="box{{$root->id}}" class="form-actions" name="permissions[]" value="{{$root->id}}" autofocus> </div>
+                                                    <?php $childs=$permissions->where('pid',$root->id); ?>
+                                                        @foreach($childs as $child)
+                                                        <input type="checkbox" id="box{{$child->id}}"
+                                                               class="form-actions" name="permissions[]" value="{{$child->id}}" autofocus>
+                                                        <label for="box{{$child->id}}">
+                                                            {{$child['name']}}
+                                                        </label>
+                                                        @endforeach
+                                       @endforeach
+
                                 </div> </div>
                                 <div class="form-group">
                                     <div class="col-md-7 col-md-offset-3">

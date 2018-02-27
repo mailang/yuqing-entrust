@@ -4,7 +4,7 @@
     <script src="{{asset('js/jquery.json.min.js')}}"></script>
     <script src="{{asset('js/jquery.linq.min.js')}}"></script>
     <script src="{{asset('js/jquery.json.min.js')}}"></script>
-    <link type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+
     <link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
     <link type="text/css" href="{{asset('css/bootstrap-treeview.css')}}"/>
     <script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
@@ -12,6 +12,7 @@
     <script src="{{asset('js/jquery.ui.datepicker-zh-CN.js.js')}}" charset="gb2312"></script>
     <script src="{{asset('js/jquery-ui-timepicker-zh-CN.js')}}"></script>
     <script src="{{asset('js/bootstrap-treeview.js')}}"></script>
+
     <script type="text/javascript">
         $(function () {
             // 时间设置
@@ -112,7 +113,7 @@
                                     <div class="col-xs-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="transmit" class="col-md-3 control-label">转发数</label> </span>
-                                            <input type="text" class="form-control" name="news[transmit]" required="required" id="transmit" autocomplete="off" value="" autofocus>
+                                            <input type="text" class="form-control" name="news[transmit]" required="required integer" id="transmit" autocomplete="off" value="" autofocus>
                                         </div></div>
                                     <div class="col-xs-3">
                                         <div class="input-group">

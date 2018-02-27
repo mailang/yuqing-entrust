@@ -30,22 +30,24 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="tag" class="col-md-3 control-label">选择权限</label>
-                                        <div class="col-md-6"><div class="col-md-6" style="float:left;padding-left:20px;margin-top:8px;">
-                                            @foreach($permissions as $v)
-                                           <span class="checkbox-custom checkbox-default">
-                                            <i class="fa"></i>
-                                          <input class="form-actions"
-
-                                       @if((in_array($v['id'],$permitids)))
-                                        checked
-                                       @endif
-                                        id="inputChekbox{{$v['id']}}" type="checkbox" value="{{$v['id']}}"
-                                      name="permissions[]"> <label for="inputChekbox{{$v['id']}}">
-                                     {{$v['name']}}
-                                    </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                       </span>
-                                            @endforeach    </div>
-                                        </div>
+                                    <div class="col-md-8">
+                                        <?php $roots=$permissions->where('pid',"-1"); ?>
+                                        @foreach($roots as $key=>$root)
+                                            <div><label for="box{{$root->id}}">{{$root['name']}}</label>
+                                                <input type="hidden" id="box{{$root->id}}" class="form-actions" name="permissions[]" value="{{$root->id}}" autofocus> </div>
+                                            <?php $childs=$permissions->where('pid',$root->id); ?>
+                                            @foreach($childs as $child)
+                                                <input type="checkbox" id="box{{$child->id}}"
+                                                       @if((in_array($child['id'],$permitids)))
+                                                       checked
+                                                       @endif
+                                                       class="form-actions" name="permissions[]" value="{{$child->id}}" autofocus>
+                                                <label for="box{{$child->id}}">
+                                                    {{$child['name']}}
+                                                </label>
+                                            @endforeach
+                                        @endforeach
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-7 col-md-offset-3">

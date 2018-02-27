@@ -4,7 +4,7 @@
     <script src="{{asset('js/jquery.json.min.js')}}"></script>
     <script src="{{asset('js/jquery.linq.min.js')}}"></script>
     <script src="{{asset('js/jquery.json.min.js')}}"></script>
-    <link type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+    <link type="text/css" href="css/jquery-ui.css" rel="stylesheet" />
     <link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
     <link type="text/css" href="{{asset('css/bootstrap-treeview.css')}}"/>
     <script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>

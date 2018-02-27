@@ -14,6 +14,7 @@ use App\Models\News;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Contracts\Hashing\Hasher;
 
 class NewsController extends Controller
 {
@@ -175,6 +176,7 @@ class NewsController extends Controller
             $useful['oldsubject']=$news['subject'];
             $useful['transmit']=$news['transmit'];
             $useful['starttime']=$news['starttime'];
+            $useful['md5']=md5($news['title'].$news['author'].$news['firstwebsite']);
             $useful->save();
              if ($useful){
                  return 1;
@@ -195,6 +197,7 @@ class NewsController extends Controller
         $news=$req["news"];
         $news['admin_id']=Auth::guard('admin')->id();
         $news['areacode']=$news['areacode2'];
+        $news['md5']=md5($news['title'].$news['author'].$news['firstwebsite']);
         $use=Useful_news::create($news);
        if ($use)
        {
