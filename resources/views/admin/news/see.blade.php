@@ -92,7 +92,7 @@
                                     <div class="col-xs-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="orientation" class="col-md-3 control-label">倾向性</label> </span>
-                                            <select id="subject" name="news[orientation]" class="form-control">
+                                            <select id="orientation" name="news[orientation]" class="form-control">
                                                 <option value="正面" @if($news->orientation=="正面")selected @endif>正面</option>
                                                 <option value="中性" @if($news->orientation=="中性")selected @endif>中性</option>
                                                 <option value="负面" @if($news->orientation=="负面")selected @endif>负面</option>

@@ -28,7 +28,7 @@
                     <thead>
                     <tr>
                         <th data-sortable="false">&nbsp;</th>
-                        <th>专题名</th>
+                        <th>案件类型名</th>
                         <th class="hidden-md">创建时间</th>
                         <th data-sortable="false">操作</th>
                     </tr>

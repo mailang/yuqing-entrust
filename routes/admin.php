@@ -21,8 +21,10 @@
     Route::post('permission/delete/{id}', ['uses'=>'PermissionsController@destroy','as'=>'permission.delete']);
     Route::get('permschild/{pid}', ['uses'=>'PermissionsController@permschild','as'=>'permschild.add']);
     /*新闻管理*/
-     Route::get('newslist/{id?}', ['uses'=>'NewsController@index','as'=>'news.lists']);
-     Route::post('newslist/search', ['uses'=>'NewsController@search','as'=>'news.search']);//搜索的新闻搜索
+     Route::get('newslist', ['uses'=>'NewsController@index','as'=>'news.lists']);
+     Route::get('news/see/{id}', ['uses'=>'NewsController@see','as'=>'news.see']);
+
+     Route::any('newslist/search', ['uses'=>'NewsController@search','as'=>'news.search']);//搜索的新闻搜索
      Route::post('passed/search', ['uses'=>'NewsController@passed_search','as'=>'passed.search']);//审核通过的新闻进行搜索
      Route::post('person/search', ['uses'=>'NewsController@person_search','as'=>'person.search']);//我的新闻搜索
      Route::post('verify/search', ['uses'=>'NewsController@verify_search','as'=>'verify.search']);//审核新闻搜索
@@ -32,7 +34,7 @@
      Route::get('news/verify', ['uses'=>'NewsController@verify','as'=>'verify.lists']);
      Route::post('useful_news/submit/verify', ['uses'=>'NewsController@submitverify','as'=>'useful_news.submit.verify']);//批量提交到审核
      Route::get('useful_news/add/{id?}', ['uses'=>'NewsController@create','as'=>'useful_news.person.add']);/*编辑人员自行添加编辑新闻*/
-     Route::post('useful_news/store/{id}', ['uses'=>'NewsController@useful_news','as'=>'useful_news.add']);/*添加已有的新闻*/
+     Route::get('useful_news/store/{id}', ['uses'=>'NewsController@useful_news','as'=>'useful_news.add']);/*添加已有的新闻*/
      Route::post('useful_news/add', ['uses'=>'NewsController@store','as'=>'useful_news.store']);/*保存个人添加编辑新闻*/
      Route::get('useful_news/option_edit/{id}', ['uses'=>'NewsController@option_edit','as'=>'useful_news.option']);/*加载审核新闻页面*/
      Route::post('useful_news/verify_option/{id}', ['uses'=>'NewsController@verify_option','as'=>'useful_news.verify']);/*审核新闻*/
@@ -42,6 +44,10 @@
      /*早报管理*/
      Route::get('report/day', ['uses'=>'ReportformController@index','as'=>'report.day']);//日报
      Route::post('report/store', ['uses'=>'ReportformController@store','as'=>'report.store']);//日报添加
+     Route::get('report/edit/{id}', ['uses'=>'ReportformController@edit','as'=>'report.edit']);//日报编辑
+     Route::post('report/update/{id}', ['uses'=>'ReportformController@update','as'=>'report.update']);//日报编辑
+     Route::post('report/delete/{id}', ['uses'=>'ReportformController@destroy','as'=>'report.delete']);//删除
+     Route::get('report/useful/{id}', ['uses'=>'ReportformController@delete','as'=>'report.useful.delete']);//
      /*专题管理*/
      Route::get('subject/list', ['uses'=>'SubjectController@index','as'=>'subject.lists']);
      Route::get('subject/add/{id?}', ['uses'=>'SubjectController@create','as'=>'subject.add']);

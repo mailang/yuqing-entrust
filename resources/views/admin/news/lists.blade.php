@@ -87,7 +87,7 @@
         <tbody>
          @foreach($newslist as $news)<tr>
              <td></td>
-            <td>{{$news->title}}</td>
+             <td>{{strlen($news->title)>60?mb_substr($news->title,0,60).'...':$news->title}}</td>
             <td>{{$news->author}}</td>
             <td>{{$news->orientation}}</td>
              <td>{{$news->starttime}}</td>
@@ -95,7 +95,7 @@
             <td>
                 <a href="#" attr="{{$news->id}}" onclick="javascript:addnews(this);">
                     <i class="fa fa-plus-circle"></i>我的新闻</a>
-               | <a href="{{route('news.lists',$news->id)}}">查看</a>
+               | <a href="{{route('news.see',$news->id)}}">查看</a>
             </td>
         </tr>@endforeach
         </tbody>
@@ -103,8 +103,25 @@
     <script>
         function addnews(obj) {
             var id = $(obj).attr('attr');
-            $('.newsForm').attr('action', '/admin/useful_news/store/' + id);
-            $("#modal-news").modal();
+           // $('.newsForm').attr('action', '/admin/useful_news/store/' + id);
+            //$("#modal-news").modal();
+            $.ajax({
+               url:'/admin/useful_news/store/'+id,
+               type:'get',
+                async:false,
+               success:function (data) {
+                   if(data>0)$(".modal-body").html(" <p class=\"lead\">\n" +
+                       "                        <i class=\"fa fa-question-circle fa-lg\"></i>\n" +
+                       "                       操作成功\n" +
+                       "                    </p>");
+                   if(data<0)
+                       $(".modal-body").html(" <p class=\"lead\">\n" +
+                           "                        <i class=\"fa fa-question-circle fa-lg\"></i>\n" +
+                           "                       操作失败\n" +
+                           "                    </p>");
+                       $("#modal-news").modal();
+               }
+            });
         }
     </script>
     <div class="modal fade" id="modal-news" tabIndex="-1">
@@ -114,29 +131,16 @@
                     <button type="button" class="close" data-dismiss="modal">
                         ×
                     </button>
-                    <h4 class="modal-title">添加我的新闻</h4>
+                    <h4 class="modal-title">提示</h4>
                 </div>
-                <form id="newsForm" class="newsForm" method="POST" action="">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="tag" class="col-md-3 control-label">选择专题</label>
-                        <div class="col-md-5">
-                            <select id="subject" class="form-control" name="subject">
-                                <option value="" selected>--无--</option>
-                           @foreach($subjects as $subject)
-                               <option value="{{$subject->id}}">{{$subject->subject}}</option>
-                           @endforeach
-                       </select>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="modal-footer">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fa fa-times-circle"></i>提交
-                        </button></div>
-                    </form>
+                        <button class="btn btn-danger" data-dismiss="modal">
+                            <i class="fa fa-times-circle"></i>确认
+                        </button>
+
                 </div>
 
             </div>

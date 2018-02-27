@@ -80,7 +80,7 @@
                 <table id="tags-table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th  data-sortable="false"><input id="all" type="checkbox" value="" onclick="javascript:allclick(this);"><label for="all">全选</label></th>
+                        <th data-sortable="false"><input id="all" type="checkbox" value="" onclick="javascript:allclick(this);"><label for="all">全选</label></th>
                         <th>文章标题</th>
                         <th>作者</th>
                         <th>倾向性</th>
@@ -90,8 +90,8 @@
                     </thead>
                     <tbody>
                     @foreach($newslist as $news)<tr>
-                        <td> @if($news->reportform_id==null) <input type="checkbox" value="{{$news->id}}" name="news[]">@endif</td>
-                        <td>{{$news->title}}</td>
+                        <td> @if($news->reportform_id==null) <input type="checkbox" value="{{$news->id}}" name="news[]">@else<input type="hidden" value="{{$news->id}}" name="news[]">@endif</td>
+                        <td>{{strlen($news->title)>35?mb_substr($news->title,0,30).'...':$news->title}}</td>
                         <td>{{$news->author}}</td>
                         <td>{{$news->orientation}}</td>
                         <td>{{$news->created_at}}</td>
@@ -99,11 +99,12 @@
                             <a href="{{route('passed.lists',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 查看</a>
                         </td>
                     </tr>@endforeach
-                    <tr><td colspan="6">
-                            <a href="#" onclick="javascript:reportbtn();" class="btn btn-success btn-md">生成报表</a>
-                        </td></tr>
+
                     </tbody>
                 </table>
+                <table>   <tr><td colspan="6">
+                            <a href="#" onclick="javascript:reportbtn();" class="btn btn-success btn-md">生成报表</a>
+                        </td></tr></table>
             </div></div></div></div>
     <div class="modal fade" id="modal-delete" tabIndex="-1">
         <div class="modal-dialog">
@@ -135,6 +136,24 @@
                 </form>
             </div>
         </div>
+    </div>    <div class="modal fade" id="modal-alert" tabIndex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        ×
+                    </button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <form id="alertform" class="deleteForm" method="POST" action="">
+                    <div class="modal-body">
+                        <p class="lead">
+                            <i class="fa fa-question-circle fa-lg"></i>请选择新闻
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <script type="text/javascript">
         function  allclick(obj) {
@@ -146,20 +165,20 @@
     var s='';
     $("input[name='news[]']").each(
     function(){
-    s+=$(this).val()+',';
-    }
-    )
-        if(s=''){
-
+        if($(this).is(":checked"))
+          s+=$(this).val()+',';
+    });
+        if(s==''){
+            $("#modal-alert").modal();
         }
-            else
+        else
         {
-
+            s+="0";
+            $("#newsid").val(s);
+            $('.deleteForm').attr('action', '/admin/report/store');
+            $("#modal-delete").modal();
         }
-    s+="0";
-    $("#newsid").val(s);
-    $('.deleteForm').attr('action', '/admin/report/store');
-    $("#modal-delete").modal();
+
     }
     $(function () {
     allclick("#all");

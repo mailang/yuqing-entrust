@@ -101,7 +101,7 @@
         <tbody>
          @foreach($newslist as $news)<tr>
              <td> @if($news->tag==0) <input type="checkbox" value="{{$news->id}}" name="news[]">@endif</td>
-             <td>{{$news->title}}</td>
+             <td>{{strlen($news->title)>35?mb_substr($news->title,0,30).'...':$news->title}}</td>
             <td>{{$news->author}}</td>
             <td>{{$news->orientation}}</td>
             <td>{{$news->created_at}}</td>
@@ -118,11 +118,11 @@
                 @endif<a style="margin:3px;" onclick="javascript:deletebtn(this);" href="#" attr="{{$news->id}}" class="delBtn X-Small btn-xs text-danger "><i class="fa fa-times-circle-o"></i> 删除</a>
             </td>
         </tr>@endforeach
-        <tr><td colspan="6">
-                <a href="#" onclick="verifybtn()" class="btn btn-success btn-md">提交到审核</a>
-            </td></tr>
         </tbody>
     </table>
+         <table>   <tr><td colspan="6">
+                     <a href="#" onclick="verifybtn()" class="btn btn-success btn-md">提交到审核</a>
+                 </td></tr></table>
  </div></div></div></div>
 <div class="modal fade" id="modal-delete" tabIndex="-1">
     <div class="modal-dialog">

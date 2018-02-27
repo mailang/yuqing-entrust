@@ -101,7 +101,7 @@
                         <tbody>
                         @foreach($newslist as $news)<tr>
                             <td></td>
-                            <td>{{$news->title}}</td>
+                            <td>{{strlen($news->title)>35?mb_substr($news->title,0,30).'...':$news->title}}</td>
                             <td>{{$news->author}}</td>
                             <td>{{$news->orientation}}</td>
                             <td>@switch($news->tag)
@@ -113,7 +113,7 @@
                                 @endswitch</td>
                             <td>{{$news->created_at}}</td>
 
-                            <td>@if($news->tag==-1)
+                            <td>@if($news->tag<0)
                                 <a href="{{route('useful_news.option',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 审核</a>
                                 @endif
                             </td>

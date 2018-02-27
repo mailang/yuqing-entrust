@@ -33,14 +33,17 @@ class NewsController extends Controller
         return view('admin.news.person',compact('newslist','subjects','id'));
     }
     /*查看搜索新闻列表*/
-    public function index($id=null)
+    public function see($id)
     {
         if ($id)
         {
             $news=News::find($id);
             return view('admin.news.see',compact('news'));
-        }else
-        {
+        }
+    }
+    /*查看搜索新闻列表*/
+    public function index()
+    {
             $filed=['id','title','author','orientation','starttime','keywords'];
             $time1=date("Y-m-d H:i:s",strtotime('-2 day'));
             $time2=date("Y-m-d H:i:s");
@@ -49,7 +52,6 @@ class NewsController extends Controller
                 ->get( $filed);
             $subjects=Subject::all();
             return view('admin.news.lists',compact('newslist','subjects'));
-        }
 
     }
     /**
@@ -96,21 +98,22 @@ class NewsController extends Controller
      */
     public  function passed($id=null)
     {
+        $subjects=Subject::all();
         if ($id)
         {
-            $news=News::find($id);
-            return view('admin.news.passed_see',compact('news'));
+            $news=Useful_news::find($id);
+            $casetypes=casetype::all();
+            $areacode=Address::all()->toJson();
+            return view('admin.news.passed_see',compact('news','subjects','casetypes','areacode'));
         }
         else{
-       $subjects=Subject::all();
-        $filed=['id','title','author','orientation','created_at','keywords','reportform_id'];
-         $newslist=DB::table('useful_news')
+        $filed=['id','title','author','orientation','created_at','updated_at','keywords','reportform_id'];
+        $newslist=DB::table('useful_news')
                 ->where('tag','>','0')
-                ->limit(10000)
                 ->orderByDesc('created_at')
+               ->limit(10000)
                 ->get($filed);
-            return view('admin.news.passed',compact('newslist','subjects'));
-
+            return view('admin.news.passed',compact('newslist','newslist1','subjects'));
          }
     }
     /*
@@ -152,13 +155,13 @@ class NewsController extends Controller
     /*
      * 将新闻加到useful_news新闻中
      * */
-    public function useful_news(Request $request,$id)
+    public function useful_news($id)
     {
         if ($id){
             $news=News::find($id)->toArray();
             $useful=new Useful_news();
             $useful['admin_id']=Auth::guard('admin')->id();
-            $useful['subject_id']=$request->all()['subject'];
+           //$useful['subject_id']=$request->all()['subject'];
             $useful['news_id']=$id;
             $useful['title']=$news['title'];
             $useful['content']=$news['content'];
@@ -174,9 +177,10 @@ class NewsController extends Controller
             $useful['starttime']=$news['starttime'];
             $useful->save();
              if ($useful){
-                flash("操作成功");
-                return redirect()->back();
-            }else return redirect()->back()->withErrors('操作失败');
+                 return 1;
+                //flash("操作成功");
+                // return redirect()->back();
+            }else return -1; //return redirect()->back()->withErrors('操作失败');
         }
     }
     /**
@@ -358,6 +362,7 @@ class NewsController extends Controller
     public  function search(Request $request)
     {
         $req=$request->all();
+       if (empty($req))return redirect()->route('news.lists');
         $time1=$req['time1']==null?"":$req['time1'];
         $time2=$req['time2']==null?"":$req['time2'];
         $title=$req['title']==null?"":$req['title'];
@@ -387,8 +392,8 @@ class NewsController extends Controller
         $sql=$sql.$str;
         $sql=$sql."order by `created_at` desc limit 10000";
         $newslist=DB::select($sql);
-        $subjects=Subject::all();
-        return view('admin.news.lists',compact('newslist','subjects'));
+      //  $subjects=Subject::all();
+        return view('admin.news.lists',compact('newslist'));
 
     }
     /*通过审核的新闻进行搜索*/
@@ -402,7 +407,7 @@ class NewsController extends Controller
         $orientation=$req['orientation'];
         $subject_id=$req["subject"];
 
-        $sql="select `id`, `title`, `author`, `orientation`, `created_at`, `keywords` from `useful_news` WHERE ";
+        $sql="select `id`, `title`, `author`, `orientation`, `created_at`, `keywords`,`reportform_id` from `useful_news` WHERE ";
         if ($title!=null&&$title!='')
             $sql=$sql."title like '%".$title."%' and ";
         if ($court!=null&&$court!='')

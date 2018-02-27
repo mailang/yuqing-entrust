@@ -51,10 +51,6 @@
                                             <span class="input-group-addon"><label for="title" class="col-md-3 control-label">文章标题</label> </span>
                                             <input type="text" class="form-control" name="title" required="required" id="title" autocomplete="off" value="{{$news->title}}" autofocus>
                                         </div></div>
-                                    <div class="col-xs-6">
-                                        <div class="input-group">
-                                           <a href="#" target="_blank">查看详情</a>
-                                        </div></div>
                                 </div>
                             </div>
                             <div class="form-group">

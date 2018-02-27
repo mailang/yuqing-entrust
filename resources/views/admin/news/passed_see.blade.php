@@ -39,8 +39,7 @@
                         <h3 class="panel-title">添加新闻</h3>
                     </div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{route('useful_news.update',$news->id)}}">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <form class="form-horizontal" role="form">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-6">

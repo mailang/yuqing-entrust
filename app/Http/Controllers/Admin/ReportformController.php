@@ -17,7 +17,7 @@ class ReportformController extends Controller
      */
     public function index()
     {
-        $reports=Reportform::all();
+        $reports=Reportform::all()->sortByDesc('created_at');
         return view('admin.report.lists',compact('reports'));
     }
 
@@ -72,7 +72,9 @@ class ReportformController extends Controller
      */
     public function edit($id)
     {
-        //
+       $report=Reportform::find($id);
+        $newslist=DB::table('useful_news')->where('reportform_id',$id)->get();
+       return view('admin.report.edit',compact('report','newslist'));
     }
 
     /**
@@ -84,7 +86,15 @@ class ReportformController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $req=$request->all();
+        $post=$req["report"];
+        $report=Reportform::find($id);
+        $report["title"]=$post["title"];
+        $report["type"]=$post["type"];
+        $report->save();
+        flash('操作成功');
+        return redirect()->back();
+        //  return redirect()->route('report.day');
     }
 
     /**
@@ -95,6 +105,30 @@ class ReportformController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if ($id)
+        {
+            $report = Reportform::find($id);
+            $useful=DB::table('useful_news')
+                 ->where('reportform_id',$report->id)
+                 ->update(['reportform_id'=>null]);
+            $report->delete();
+            flash("操作成功");
+            return redirect()->back();
+        }
     }
+
+    /**
+     *从报表除去相关新闻，设置成未生成报表的状态
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $useful=DB::table('useful_news')->where('id',$id)
+            ->update(['reportform_id'=>null]);
+        flash("操作成功");
+        return redirect()->back();
+    }
+
 }
