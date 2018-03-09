@@ -63,7 +63,7 @@ class NewsController extends Controller
     public function create($id=null)
     {
         $subjects=Subject::all();
-        $casetypes=null;casetype::all();
+        $casetypes=null;
          $root=casetype::where('pid','-1')->get();
         if (!$root->isEmpty()){
             $casetypes=json_encode($this->getdata($root,array()));
