@@ -30,7 +30,7 @@
                                 <td>
                                     @switch($report->type)
                                         @case(0) 早报 @break
-                                        @case(1)中报  @break
+                                        @case(1) 午报 @break
                                         @case(2) 晚报 @break
                                 @endswitch
                                 </td>

@@ -1,8 +1,8 @@
 @extends('layouts.master')
 @section('css')
-    <link type="text/css" href="css/jquery-ui.css" rel="stylesheet" />
+    <link type="text/css" href="{{asset('css/jquery-ui.min.css')}}" rel="stylesheet" />
     <link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
-    <script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="{{asset('js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/jquery-ui-timepicker-addon.js')}}"></script>
     <script src="{{asset('js/jquery.ui.datepicker-zh-CN.js.js')}}" charset="gb2312"></script>
     <script src="{{asset('js/jquery-ui-timepicker-zh-CN.js')}}"></script>
@@ -122,7 +122,7 @@
                         </p>
                             <div>
                             <input type="radio" value="0" name="type" id="type0" checked><label for="type0">早报</label>
-                            <input type="radio" value="1" name="type" id="type1" ><label for="type1">中报</label>
+                            <input type="radio" value="1" name="type" id="type1" ><label for="type1">午报</label>
                             <input type="radio" value="2" name="type" id="type2"><label for="type2">晚报</label>
                              </div>
                     </div>

@@ -10,9 +10,9 @@
     </ol>
 @endsection
 @section('css')
-<link type="text/css" href="css/jquery-ui.css" rel="stylesheet" />
-<link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
-<script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <link type="text/css" href="{{asset('css/jquery-ui.min.css')}}" rel="stylesheet" />
+    <link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
+    <script type="text/javascript" src="{{asset('js/jquery-ui.min.js')}}"></script>
 <script src="{{asset('js/jquery-ui-timepicker-addon.js')}}"></script>
 <script src="{{asset('js/jquery.ui.datepicker-zh-CN.js.js')}}" charset="gb2312"></script>
 <script src="{{asset('js/jquery-ui-timepicker-zh-CN.js')}}"></script>
@@ -95,7 +95,7 @@
             <td>
                 <a href="#" attr="{{$news->id}}" onclick="javascript:addnews(this);">
                     <i class="fa fa-plus-circle"></i>我的新闻</a>
-               | <a href="{{route('news.see',$news->id)}}">查看</a>
+               | <a href="{{route('news.see',$news->id)}}" target="_blank">查看</a>
             </td>
         </tr>@endforeach
         </tbody>
