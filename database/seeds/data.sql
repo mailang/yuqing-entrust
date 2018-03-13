@@ -39,8 +39,8 @@ CREATE TABLE IF NOT EXISTS `admins` (
 
 -- 正在导出表  yuqing.admins 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
-INSERT IGNORE INTO `admins` (`id`, `username`, `realname`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(1, 'admin', '超级管理员', '$2y$10$66x80Mfjhj4dLCRtmvmSHOPDDtoXoSjJ5zo92nfFqmcPPX7Go/yoW', NULL, '2018-02-05 16:22:23', '2018-02-05 16:22:23');
+REPLACE INTO `admins` (`id`, `username`, `realname`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+	(1, 'admin', '超级管理员', '$2y$10$66x80Mfjhj4dLCRtmvmSHOPDDtoXoSjJ5zo92nfFqmcPPX7Go/yoW', 'oSbnbYg8NunZivAnrATZMPLqI2VVOaD3bcKviToL5vu8UCySZeMMjWRWqzz2', '2018-02-05 16:22:23', '2018-02-05 16:22:23');
 /*!40000 ALTER TABLE `admins` ENABLE KEYS */;
 
 -- 导出  表 yuqing.casetype 结构
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
 
 -- 正在导出表  yuqing.migrations 的数据：~10 rows (大约)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT IGNORE INTO `migrations` (`id`, `migration`, `batch`) VALUES
+REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(21, '2014_10_12_000000_create_users_table', 1),
 	(22, '2014_10_12_100000_create_password_resets_table', 1),
 	(23, '2018_01_12_084824_admin', 1),
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
 
 -- 正在导出表  yuqing.permissions 的数据：~18 rows (大约)
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
-INSERT IGNORE INTO `permissions` (`id`, `name`, `display_name`, `link`, `icon`, `pid`, `description`, `created_at`, `updated_at`) VALUES
+REPLACE INTO `permissions` (`id`, `name`, `display_name`, `link`, `icon`, `pid`, `description`, `created_at`, `updated_at`) VALUES
 	(1, '管理列表', '管理列表', 'role.lists', 'fa-users', '-1', NULL, NULL, NULL),
 	(2, '用户管理', '用户管理', 'admin.lists', 'fa-sliders', '1', NULL, NULL, NULL),
 	(3, '角色管理', '角色管理', 'role.lists', 'fa-sliders', '1', NULL, NULL, NULL),
@@ -152,7 +152,7 @@ INSERT IGNORE INTO `permissions` (`id`, `name`, `display_name`, `link`, `icon`, 
 	(15, '统计', '统计', NULL, NULL, '-1', NULL, NULL, NULL),
 	(16, '新闻统计', '新闻统计', 'tongji.lists', NULL, '15', NULL, NULL, NULL),
 	(17, '个人统计', '个人统计', 'tongji.person', NULL, '15', NULL, NULL, NULL),
-	(18, '专题列表', '专题列表', 'casetype.lists', NULL, '12', NULL, NULL, NULL);
+	(18, '专题列表', '专题列表', 'subject.lists', NULL, '12', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 
 -- 导出  表 yuqing.permission_role 结构
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `permission_role` (
 
 -- 正在导出表  yuqing.permission_role 的数据：~18 rows (大约)
 /*!40000 ALTER TABLE `permission_role` DISABLE KEYS */;
-INSERT IGNORE INTO `permission_role` (`permissions_id`, `roles_id`) VALUES
+REPLACE INTO `permission_role` (`permissions_id`, `roles_id`) VALUES
 	(1, 1),
 	(2, 1),
 	(3, 1),
@@ -220,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
 
 -- 正在导出表  yuqing.roles 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT IGNORE INTO `roles` (`id`, `name`, `display_name`, `description`, `created_at`, `updated_at`) VALUES
+REPLACE INTO `roles` (`id`, `name`, `display_name`, `description`, `created_at`, `updated_at`) VALUES
 	(1, 'administror', 'administror', 'administror', '2018-02-05 16:22:23', '2018-02-05 16:22:23');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 
@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `role_user` (
 
 -- 正在导出表  yuqing.role_user 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `role_user` DISABLE KEYS */;
-INSERT IGNORE INTO `role_user` (`user_id`, `role_id`) VALUES
+REPLACE INTO `role_user` (`user_id`, `role_id`) VALUES
 	(1, 1);
 /*!40000 ALTER TABLE `role_user` ENABLE KEYS */;
 

@@ -27,10 +27,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->call(function (){
-            //DB::table('test')->increment('testid');
-            \Artisan::call("spider:yuqing");
-        })->everyMinute();
+//        $schedule->call(function (){
+//            //DB::table('test')->increment('testid');
+//            \Artisan::call("spider:yuqing");
+//        })->everyMinute();
     }
 
     /**

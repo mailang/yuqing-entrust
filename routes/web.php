@@ -33,6 +33,9 @@ Route::get('/admin/login', ['uses'=>'Admin\LoginController@showLoginForm','as'=>
 Route::post('/admin/login',['uses'=>'Admin\LoginController@login']);
 Route::get('/admin/logout', ['uses'=>'Admin\LoginController@logout','as'=>'admin.logout']);
 
+/*test*/
+Route::get('/test', ['uses'=>'TestController@index','as'=>'test']);
+
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>['admin:admin','menu']], function () {
      include base_path('routes/admin.php');
 });

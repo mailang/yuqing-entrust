@@ -50,6 +50,7 @@ class spider extends Command
     public function handle()
     {
 
+        $t1 = microtime(true);
         //
         //$this->info('hello');
         $client = new Client([
@@ -72,7 +73,8 @@ class spider extends Command
         ]);
 
         $this->handleall($client);
-
+        $t2 = microtime(true);
+        Log::info($t2-$t1);
 
 
     }
@@ -110,11 +112,14 @@ class spider extends Command
             foreach ($lilist as $li){
                 $href = pq($li)->find('.title a')->attr('href');
                 $uuid = $this->getUrlKeyValue($href)['uuid'];
+                $abstract = pq($li)->find('.list_message')->text();
+
                 $new = News::where('uuid',$uuid)->first();
                 if ($new)
                     continue;
                 $reseach =  $client->request('GET',$href);
-                $this->handleonehtml($reseach,$uuid);
+                $this->handleonehtml($reseach,$uuid,$abstract);
+
             }
             $p ++;
         }
@@ -122,7 +127,7 @@ class spider extends Command
 
     }
 
-    function handleonehtml($html,$uuid){
+    function handleonehtml($html,$uuid,$abstract){
         \phpQuery::newDocumentHTML($html->getBody());
 
         $title = pq('.content h1')->text();
@@ -162,6 +167,7 @@ class spider extends Command
         $new = new News();
         $new->title = $title;
         $new->link = $link;
+        $new->abstract = $abstract;
         $new->content = htmlspecialchars($content);
         $new->keywords = $keywords;
         $new->subject = $subject;
@@ -180,6 +186,7 @@ class spider extends Command
             Log::error($e);
             Log::info($title);
             Log::info($link);
+            Log::info($abstract);
             Log::info($content);
             Log::info($keywords);
             Log::info($subject);
