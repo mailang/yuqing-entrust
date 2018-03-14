@@ -62,7 +62,7 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-footer">
-                                <a href="{{ route('admin.add',array('id'=>auth('admin')->user()->id)) }}" class="btn btn-default btn-flat">修改密码</a>
+                                <a href="{{ route('admin.mine',array('id'=>auth('admin')->user()->id)) }}" class="btn btn-default btn-flat">修改密码</a>
                             </li>
 
                             <!-- Menu Footer-->s

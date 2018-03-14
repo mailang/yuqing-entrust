@@ -7,6 +7,8 @@
     Route::post('admins/add', ['uses'=>'AdminController@store','as'=>'admin.store']);
     Route::post('admins/update/{id}', ['uses'=>'AdminController@update','as'=>'admin.update']);
     Route::post('adminsdelete/{id}', ['uses'=>'AdminController@destroy','as'=>'admin.delete']);
+    Route::get('admins/mine/{id?}', ['uses'=>'AdminController@modify','as'=>'admin.mine']);
+
     /*角色管理*/
     Route::get('rolelist', ['uses'=>'RolesController@index','as'=>'role.lists']);
     Route::get('role/add/{id?}', ['uses'=>'RolesController@create','as'=>'role.add']);
