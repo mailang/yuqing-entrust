@@ -36,7 +36,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-body">
-                    <form class="form-inline" role="form" action="{{route('verify.search')}}" method="post">
+                    <form class="form-inline" role="form" action="{{route('submit.search')}}" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
                             <div class="input-group">
@@ -66,15 +66,6 @@
                                 </select>
                             </div></div>
                         <br> <br>
-                        <div class="input-group">      <span class="input-group-addon"><label class="col-sm-3 control-label" for="tag">新闻状态</label> </span>
-                            <select id="tag" name="tag" class="form-control">
-                                <option value="all">--请选择--</option>
-                                <option value="-2">不合格</option>
-                                <option value="-1">未审核</option>
-                                <option value="1">合格并提交</option>
-                                <option value="2">重复</option>
-                            </select>
-                        </div>
                         <div class="input-group">
                             <span class="input-group-addon"><label for="title" class="col-md-3 control-label">起始时间</label> </span>
                             <input placeholder="开始时间" type="text" class="form-control" name="time1" id="time1" autocomplete="off" value="" autofocus>                    </div>
@@ -89,37 +80,31 @@
                     <table id="tags-table" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th  data-sortable="false">&nbsp;</th>
+
                             <th>文章标题</th>
                             <th>作者</th>
                             <th>倾向性</th>
-                            <th>状态</th>
                             <th>添加时间</th>
+                            <th data-sortable="false">上传者</th>
                             <th  data-sortable="false">操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($newslist as $news)<tr>
-                            <td></td>
-                            <td> <a href="{{route('useful_news.option',$news->id)}}" target="_blank" class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a></td>
+
+                            <td> <a href="{{route('passed.lists',$news->id)}}" target="_blank" class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a></td>
                             <td>{{$news->author}}</td>
                             <td>{{$news->orientation}}</td>
-                            <td>@switch($news->tag)
-                                    @case(-1)  <span style="color:blue">未审核 </span>@break
-                                    @case(0)未提交@break
-                                    @case(1)<span style="color:#00a65a">合格</span>@break
-                                    @case(2)<span style="color:#00a65a">重复</span>@break
-                                    @case(-2)<span style="color:red">不合格 </span>@break
-                                @endswitch</td>
                             <td>{{$news->created_at}}</td>
-
-                            <td>@if($news->tag<0)
-                                <a href="{{route('useful_news.option',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 审核</a>
-                                @endif
+                            <td>{{$news->username}}</td>
+                            <td>
+                                <a href="{{route('passed.lists',$news->id)}}" class="X-Small btn-xs text-success ">
+                                    查看</a>
                             </td>
                         </tr>@endforeach
+
                         </tbody>
                     </table>
                 </div></div></div></div>
-
+    </div>
 @endsection

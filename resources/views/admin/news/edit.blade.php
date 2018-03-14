@@ -65,20 +65,25 @@
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col-xs-6">
+                                    <div class="col-xs-5">
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="title" class="col-md-3 control-label">文章标题</label> </span>
                                             <input type="text" class="form-control" name="news[title]" required="required" id="title" autocomplete="off" value="{{$news->title}}" autofocus>
                                         </div></div>
+
                                     <div class="col-xs-6">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><label for="link" class="col-md-3 control-label">原文链接</label> </span>
-                                            <input type="text" class="form-control" name="news[link]" required="required" id="link" autocomplete="off" value="{{$news->link}}" autofocus>
+                                        <div>
+                                                    <input name="news[isrepeats]" type="hidden" value="0">
+                                                    <input id="isrepeats" name="news[isrepeats]" type="checkbox"
+                                                           @if($news->isrepeats==1)checked @endif  value="1"><label for="isrepeats" class="control-label">重复舆情</label>
+                                            <span ><label for="link" class="control-label">原文:</label> </span>
+                                            <a href="{{$news->link}}" target="_blank" id="link">{{$news->link}} </a>
                                         </div></div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
+
                                     <div class="col-xs-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="author" class="col-md-3 control-label">作者</label> </span>

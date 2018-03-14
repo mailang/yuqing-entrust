@@ -101,7 +101,8 @@
         <tbody>
          @foreach($newslist as $news)<tr>
              <td> @if($news->tag==0) <input type="checkbox" value="{{$news->id}}" name="news[]">@else  <input type="hidden" value="{{$news->id}}">@endif</td>
-             <td>{{strlen($news->title)>35?mb_substr($news->title,0,30).'...':$news->title}}</td>
+             <td>  @if($news->tag<1)  <a href="{{route('useful_news.person.add',$news->id)}}" target="_blank" class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a>
+                @else {{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}@endif</td>
             <td>{{$news->author}}</td>
             <td>{{$news->orientation}}</td>
             <td>{{$news->created_at}}</td>
@@ -115,7 +116,8 @@
              </td>
             <td>
               @if($news->tag<1)  <a href="{{route('useful_news.person.add',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 编辑</a>
-                @endif<a style="margin:3px;" onclick="javascript:deletebtn(this);" href="#" attr="{{$news->id}}" class="delBtn X-Small btn-xs text-danger "><i class="fa fa-times-circle-o"></i> 删除</a>
+                @endif
+                  @if($news->tag==0)   <a style="margin:3px;" onclick="javascript:deletebtn(this);" href="#" attr="{{$news->id}}" class="delBtn X-Small btn-xs text-danger "><i class="fa fa-times-circle-o"></i> 删除</a>@endif
             </td>
         </tr>@endforeach
         </tbody>

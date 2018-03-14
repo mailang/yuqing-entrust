@@ -45,10 +45,10 @@
                                             <span class="input-group-addon"><label for="title" class="col-md-3 control-label">文章标题</label> </span>
                                             <input type="text" class="form-control" name="news[title]" required="required" id="title" autocomplete="off" value="{{$news->title}}" autofocus>
                                         </div></div>
-                                    <div class="col-xs-6">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><label for="link" class="col-md-3 control-label">原文链接</label> </span>
-                                            <input type="text" class="form-control" name="news[link]" required="required" id="link" autocomplete="off" value="{{$news->link}}" autofocus>
+                                       <div class="col-xs-6">
+                                        <div>
+                                            <span><label for="link" class=" control-label">原文链接</label> </span>
+                                            <a href="{{$news->link}}" target="_blank">{{$news->link}}</a>
                                         </div></div>
                                 </div>
                             </div>

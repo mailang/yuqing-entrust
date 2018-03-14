@@ -28,10 +28,12 @@
      Route::post('passed/search', ['uses'=>'NewsController@passed_search','as'=>'passed.search']);//审核通过的新闻进行搜索
      Route::post('person/search', ['uses'=>'NewsController@person_search','as'=>'person.search']);//我的新闻搜索
      Route::post('verify/search', ['uses'=>'NewsController@verify_search','as'=>'verify.search']);//审核新闻搜索
+     Route::post('submit/search', ['uses'=>'NewsController@submit_search','as'=>'submit.search']);//提交到早报的新闻搜索
 
      Route::get('person/news/{id?}', ['uses'=>'NewsController@person','as'=>'person.lists']);
      Route::get('news/passed/{id?}', ['uses'=>'NewsController@passed','as'=>'passed.lists']);
      Route::get('news/verify', ['uses'=>'NewsController@verify','as'=>'verify.lists']);
+     Route::get('news/submit/{id?}', ['uses'=>'NewsController@submit','as'=>'submit.lists']);
      Route::post('useful_news/submit/verify', ['uses'=>'NewsController@submitverify','as'=>'useful_news.submit.verify']);//批量提交到审核
      Route::get('useful_news/add/{id?}', ['uses'=>'NewsController@create','as'=>'useful_news.person.add']);/*编辑人员自行添加编辑新闻*/
      Route::get('useful_news/store/{id}', ['uses'=>'NewsController@useful_news','as'=>'useful_news.add']);/*添加已有的新闻*/
