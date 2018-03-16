@@ -91,21 +91,21 @@
         <tr>
             <th  data-sortable="false"><input id="all" type="checkbox" value="" onclick="javascript:allclick(this);"><label for="all">全选</label></th>
             <th>文章标题</th>
-            <th>作者</th>
-            <th>倾向性</th>
             <th>添加时间</th>
+            <th>编辑状态</th>
             <th>状态</th>
-            <th  data-sortable="false">操作</th>
+            <th  data-sortable="false" width="100px">操作</th>
         </tr>
         </thead>
         <tbody>
          @foreach($newslist as $news)<tr>
              <td> @if($news->tag==0) <input type="checkbox" value="{{$news->id}}" name="news[]">@else  <input type="hidden" value="{{$news->id}}">@endif</td>
-             <td>  @if($news->tag<1)  <a href="{{route('useful_news.person.add',$news->id)}}" target="_blank" class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a>
+             <td>  @if($news->tag<1)  <a href="{{route('useful_news.person.add',$news->id)}}"  @if($news->isedit==1)style="color:red;" @endif  class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a>
                 @else {{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}@endif</td>
-            <td>{{$news->author}}</td>
-            <td>{{$news->orientation}}</td>
             <td>{{$news->created_at}}</td>
+             <td>
+             @if($news->isedit==0) 未曾编辑@else 已编辑@endif
+             </td>
              <td>@switch($news->tag)
                  @case(-1)  <span style="color:blue">未审核 </span>@break
                  @case(0)未提交@break
@@ -117,14 +117,17 @@
             <td>
               @if($news->tag<1)  <a href="{{route('useful_news.person.add',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 编辑</a>
                 @endif
-                  @if($news->tag==0)   <a style="margin:3px;" onclick="javascript:deletebtn(this);" href="#" attr="{{$news->id}}" class="delBtn X-Small btn-xs text-danger "><i class="fa fa-times-circle-o"></i> 删除</a>@endif
+                  @if($news->tag==0)  <br>  <a style="margin:3px;" onclick="javascript:deletebtn(this);" href="#" attr="{{$news->id}}" class="delBtn X-Small btn-xs text-danger "><i class="fa fa-times-circle-o"></i> 删除</a>@endif
             </td>
         </tr>@endforeach
         </tbody>
     </table>
-         <table>   <tr><td colspan="6">
-                     <a href="#" onclick="verifybtn()" class="btn btn-success btn-md">提交到审核</a>
-                 </td></tr></table>
+         <table>   <tr><td colspan="3">
+                     <a href="#" onclick="verifybtn()" class="btn btn-success btn-md">提交到审核</a>&nbsp;&nbsp;
+                 </td><td colspan="3">
+                     <a href="#" onclick="deletearray()" class="btn btn-success btn-md">批量删除</a>
+                 </td></tr>
+         </table>
  </div></div></div></div>
 <div class="modal fade" id="modal-delete" tabIndex="-1">
     <div class="modal-dialog">
@@ -145,7 +148,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" id="newsid" name="newsid" value="">
 
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="submit" class="btn btn-danger">
                         <i class="fa fa-times-circle"></i>确认
                     </button>
@@ -162,20 +165,28 @@
          $(".lead").html(" <i class=\"fa fa-question-circle fa-lg\"></i>确定要删除吗?");
          $("#modal-delete").modal();
      }
+     function  deletearray() {
+         bindid();
+         $('.deleteForm').attr('action', '/admin/useful_news/delete');
+         $(".lead").html(" <i class=\"fa fa-question-circle fa-lg\"></i>确定要删除所有选择的新闻吗?");
+         $("#modal-delete").modal();
+     }
      function  allclick(obj) {
          if($(obj).is(":checked"))$("input[name='news[]']").prop("checked",true);
          else $("input[name='news[]']").prop("checked",false);
      }
-     function verifybtn() {
-         var array=$("input[name='news[]']");
+     function bindid()
+     {
          var s='';
-         $("input[name='news[]']").each(
+         $("input[name='news[]']:checkbox:checked").each(
              function(){
-               s+=$(this).val()+',';
-             }
-         )
+                 s+=$(this).val()+',';
+             });
          s+="0";
          $("#newsid").val(s);
+     }
+     function verifybtn() {
+         bindid();
          $('.deleteForm').attr('action', '/admin/useful_news/submit/verify');
          $(".lead").html("<i class=\"fa fa-question-circle fa-lg\"></i>确定将所选项提交到审核吗?");
          $("#modal-delete").modal();

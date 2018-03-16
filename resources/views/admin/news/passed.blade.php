@@ -171,9 +171,8 @@
     function reportbtn() {
     var array=$("input[name='news[]']");
     var s='';
-    $("input[name='news[]']").each(
+    $("input[name='news[]']:checkbox:checked").each(
     function(){
-        if($(this).is(":checked"))
           s+=$(this).val()+',';
     });
         if(s==''){

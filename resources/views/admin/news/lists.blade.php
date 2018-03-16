@@ -78,27 +78,23 @@
             <th  data-sortable="false"></th>
             <th  data-sortable="false">文章标题</th>
             <th>作者</th>
-            <th>倾向性</th>
             <th>发布时间</th>
-            <th>关键词</th>
             <th  data-sortable="false" width="80px">操作</th>
         </tr>
         </thead>
         <tbody>
-         @foreach($newslist as $news)<tr>
-             <td></td>
-             <td>{{strlen($news->title)>60?mb_substr($news->title,0,60).'...':$news->title}}
+         @foreach($newslist as $key=>$news)<tr>
+             <td>{{$key+1}}</td>
+             <td><b>   <a href="{{route('news.see',$news->id)}}" target="_blank">{{strlen($news->title)>60?mb_substr($news->title,0,60).'...':$news->title}}</a></b>
              <br>
                  {{strip_tags(html_entity_decode($news->abstract))}}
              </td>
             <td>{{$news->author}}</td>
-            <td>{{$news->orientation}}</td>
              <td>{{$news->starttime}}</td>
-            <td>{{$news->keywords}}</td>
             <td>
                 <a href="#" attr="{{$news->id}}" onclick="javascript:addnews(this);">
                     <i class="fa fa-plus-circle"></i>我的新闻</a><br>
-               <a href="{{route('news.see',$news->id)}}" target="_blank">查看</a>
+              <!-- <a href="{{route('news.see',$news->id)}}" target="_blank">查看</a>-->
             </td>
         </tr>@endforeach
         </tbody>

@@ -44,7 +44,7 @@
      Route::post('useful_news/verify_option/{id}', ['uses'=>'NewsController@verify_option','as'=>'useful_news.verify']);/*审核新闻*/
 
      Route::post('useful_news/update/{id}', ['uses'=>'NewsController@update','as'=>'useful_news.update']);
-     Route::post('useful_news/delete/{id}', ['uses'=>'NewsController@destroy','as'=>'useful_news.delete']);
+     Route::post('useful_news/delete/{id?}', ['uses'=>'NewsController@destroy','as'=>'useful_news.delete']);
      /*早报管理*/
      Route::get('report/day', ['uses'=>'ReportformController@index','as'=>'report.day']);//日报
      Route::post('report/store', ['uses'=>'ReportformController@store','as'=>'report.store']);//日报添加

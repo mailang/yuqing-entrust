@@ -26,7 +26,7 @@
                         </thead>
                         <tbody>
                         @foreach($reports as $report)
-                            <tr> <td></td><td>{{ $report->title }}</td>
+                            <tr> <td></td><td> <a href="{{route('report.edit',$report->id)}}" class="X-Small btn-xs text-success ">{{ $report->title }}</a></td>
                                 <td>
                                     @switch($report->type)
                                         @case(0) 早报 @break

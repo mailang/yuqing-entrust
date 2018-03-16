@@ -48,6 +48,7 @@ class UsefulNews extends Migration
             $table->string('screen')->nullable();
             $table->string('md5')->nullable();
             $table->integer('isrepeats')->default(0);//舆情是否反复出现;1:反复出现
+            $table->integer('isedit')->default(0);//编辑人员是否已经编辑过
             $table->string('oldsubject')->nullable();//文章抓取所属专题
             $table->string('areacode')->nullable();//专题id
             $table->unsignedInteger('subject_id')->nullable();//专题id

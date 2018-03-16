@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Address;
 use App\Models\casetype;
+use App\Models\Reportform;
 use App\Models\Subject;
 use Faker\Provider\DateTime;
 use Illuminate\Database\Schema\SQLiteBuilder;
@@ -23,15 +24,15 @@ class NewsController extends Controller
      *用户查看个人添加的新闻
      * @return \Illuminate\Http\Response
      */
-    public function  person($id=null)
+    public function  person()
     {
         $subjects=Subject::all();
-        $filed=['id','title','author','orientation','created_at','tag'];
+        $filed=['id','title','isedit','created_at','tag'];
         $admin_id=Auth::guard('admin')->id();
         $newslist=DB::table('useful_news')->where('admin_id',$admin_id)
             ->orderByDesc('created_at')
             ->get($filed);
-        return view('admin.news.person',compact('newslist','subjects','id'));
+        return view('admin.news.person',compact('newslist','subjects'));
     }
     /*查看搜索新闻列表*/
     public function see($id)
@@ -93,9 +94,8 @@ class NewsController extends Controller
        }else{$p["nodes"]=null;array_push($data,$p);return $data;}
     }
    }
-    /*
-     * 获取已提交到早报的新闻列表
-     */
+    /* 获取已提交到早报的新闻列表
+    */
     public  function submit($id=null)
     {
         $subjects=Subject::all();
@@ -107,7 +107,8 @@ class NewsController extends Controller
             return view('admin.news.passed_see',compact('news','subjects','casetypes','areacode'));
         }
         else{
-        $filed=['useful_news.id','useful_news.title','useful_news.author','useful_news.orientation','useful_news.created_at','useful_news.updated_at','useful_news.keywords','useful_news.reportform_id','admins.username'];
+            //获取提交到三报的所有新闻列表
+        $filed=['useful_news.id','useful_news.abstract','useful_news.title','useful_news.author','useful_news.orientation','useful_news.created_at','useful_news.updated_at','useful_news.keywords','useful_news.reportform_id','admins.username'];
         $newslist=DB::table('useful_news')->leftJoin('admins', 'useful_news.admin_id', '=', 'admins.id')
                 ->where('tag','=','1')
             ->where('reportform_id','!=','null')
@@ -117,7 +118,6 @@ class NewsController extends Controller
             return view('admin.news.submit',compact('newslist','subjects'));
          }
     }
-
     /*
      * 获取审核通过的新闻列表
      */
@@ -165,7 +165,7 @@ class NewsController extends Controller
           ->update(['tag'=>$tag,'verify_option'=>$verify_option,'isrepeats'=>$isrepeats]);
       if ($num){
          flash('操作成功');
-        return redirect()->back();}
+        return redirect()->route('verify.lists');}
         else     return redirect()->back()->withErrors('操作失败');
     }
     /*进入审核页面*/
@@ -239,15 +239,14 @@ class NewsController extends Controller
      function submitverify(Request $request)
      {
          $req=$request->all();
-         //dd('['.$req["newsid"].']');
 
          try{
-             $num=Useful_news::whereIn('id',explode(',',$req["newsid"]))->update(['tag'=>'-1']);
+             $nums=Useful_news::whereIn('id',explode(',',$req["newsid"]))->where('isedit','0');
+             if ($nums->count()>0) return redirect()->back()->withErrors('提交项中存在未曾编辑项，请先编辑后再提交');
+             $num=Useful_news::whereIn('id',explode(',',$req["newsid"]))->where('isedit','1')->update(['tag'=>'-1']);
              flash('操作成功');return redirect()->back();
          }
          catch(Exception $e) { return redirect()->back()->withErrors('操作失败'); }
-
-
      }
     /**
      * Show the form for editing the specified resource.
@@ -287,15 +286,16 @@ class NewsController extends Controller
             $useful['starttime']=$news['starttime'];
             $useful['orientation']=$news['orientation'];
             $useful['yuqinginfo']=$news['yuqinginfo'];
-             $useful['subject_id']=$news['subject_id'];
-             $useful['casetype_id']=$news['casetype_id'];
-             $useful['abstract']=$news['abstract'];
+            $useful['subject_id']=$news['subject_id'];
+            $useful['casetype_id']=$news['casetype_id'];
+            $useful['abstract']=$news['abstract'];
+            $useful['isedit']=1;
              if (isset($news['areacode2'])&&$news['areacode2']!=null)
             $useful['areacode']=$news['areacode2'];
              if ($news['areacode2']==null&&$news['areacode1']!=null)  $useful['areacode']=$news['areacode1'];
             $useful->save();
             flash('操作成功');
-            return redirect()->back();
+            return redirect()->route('person.lists');//redirect()->back();
         }
         else return redirect()->back()->withErrors('操作失败');
     }
@@ -303,12 +303,12 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      *已经提交到审核的新闻不给删除
+     * $id为空时可能为批量删除
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id=null)
     {
-        //
        if ($id)
        {
            $news=Useful_news::find($id);
@@ -321,6 +321,17 @@ class NewsController extends Controller
            else
                return redirect()->back()->withErrors('该新闻您已提交，不可以删除');
 
+       }
+       else
+       {   //批量删除
+           $req=$request->all();
+           $newsid=$req['newsid'];
+           try{
+               $num=Useful_news::whereIn('id',explode(',',$req["newsid"]))->where('tag','0')->delete();
+               flash('操作成功');
+               return redirect()->back();
+           }
+          catch(Exception $e) { return redirect()->back()->withErrors('操作失败'); }
        }
     }
     /*审核新闻搜索*/
@@ -396,7 +407,7 @@ class NewsController extends Controller
         $firstwebsite=$req['firstwebsite']==null?"":$req['firstwebsite'];
         if ($time1==""&&$time2==""&&$title==""&&$orientation==""&&$firstwebsite=="")
         return redirect()->back();
-        $sql="select `id`, `title`,`tag`, `author`, `orientation`, `created_at`, `keywords`,`starttime` from `news` WHERE ";
+        $sql="select `id`,`abstract`, `title`, `author`, `orientation`, `created_at`, `keywords`,`starttime` from `news` WHERE ";
         $str='';
         if ($orientation!='')
             $str=$str."orientation='".$orientation."'";

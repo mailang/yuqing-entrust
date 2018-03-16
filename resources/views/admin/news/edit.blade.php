@@ -22,7 +22,6 @@
                 $("#modal-news").modal("show");
             })
         });
-
         function getTree() {
            return  eval({!! $casetypes !!});
         }
@@ -40,6 +39,7 @@
                 $("#modal-news").modal("hide");
             }
         }
+
     </script>
 @endsection
 @section('title')
@@ -236,9 +236,7 @@
                                 <label for="abstract" class="col-md-3 control-label"></label>
                                 <div class="col-md-10">
                                     <span><strong>文章摘要:</strong></span>
-                                    <textarea class="form-control" id="abstract" name="news[abstract]" required="required" rows="3" type="text">
-                                      {{$news->abstract}}
-                                    </textarea>
+                                    <textarea class="form-control" id="abstract" name="news[abstract]" required rows="3" type="text">{{$news->abstract}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">

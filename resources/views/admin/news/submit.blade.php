@@ -92,7 +92,9 @@
                         <tbody>
                         @foreach($newslist as $news)<tr>
 
-                            <td> <a href="{{route('passed.lists',$news->id)}}" target="_blank" class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a></td>
+                            <td> <a href="{{route('passed.lists',$news->id)}}" target="_blank" class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a>
+                            <br>{{$news->abstract}}
+                            </td>
                             <td>{{$news->author}}</td>
                             <td>{{$news->orientation}}</td>
                             <td>{{$news->created_at}}</td>
