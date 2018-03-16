@@ -46,12 +46,14 @@ class UsefulNews extends Migration
             $table->integer('ispush')->default(1);//是否推送到大屏
             $table->string('yuqinginfo')->nullable();//舆情信息
             $table->string('screen')->nullable();
-            $table->string('md5')->nullable(); 
+            $table->string('md5')->nullable();
+            $table->integer('isrepeats')->default(0);//舆情是否反复出现;1:反复出现
+            $table->integer('isedit')->default(0);//编辑人员是否已经编辑过
             $table->string('oldsubject')->nullable();//文章抓取所属专题
             $table->string('areacode')->nullable();//专题id
             $table->unsignedInteger('subject_id')->nullable();//专题id
             $table->unsignedInteger('reportform_id')->nullable();//早报id
-            $table->unsignedInteger('casetype_id')->nullable();//早报id
+            $table->unsignedInteger('casetype_id')->nullable();//案件类型id
 
             $table->foreign('news_id')->references('id')->on('news')
                 ->onUpdate('cascade')->onDelete('cascade');

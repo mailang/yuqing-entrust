@@ -67,6 +67,14 @@
                         </div></div>
                     <br> <br>
                     <div class="input-group">
+                        <span class="input-group-addon"><label for="orientation" class="col-md-3 control-label">新闻状态</label> </span>
+                        <select id="tag" name="tag" class="form-control">
+                            <option value="">--请选择--</option>
+                            <option value="1">合格</option>
+                            <option value="2">重复</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
                         <span class="input-group-addon"><label for="title" class="col-md-3 control-label">起始时间</label> </span>
                         <input placeholder="开始时间" type="text" class="form-control" name="time1" id="time1" autocomplete="off" value="" autofocus>                    </div>
                     <div class="input-group">
@@ -85,18 +93,18 @@
                         <th>作者</th>
                         <th>倾向性</th>
                         <th>添加时间</th>
-                        <th  data-sortable="false">操作</th>
+                        <th  data-sortable="false" width="40px">操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($newslist as $news)<tr>
                         <td> @if($news->reportform_id==null) <input type="checkbox" value="{{$news->id}}" name="news[]">@else<input type="hidden" value="{{$news->id}}">@endif</td>
-                        <td>{{strlen($news->title)>35?mb_substr($news->title,0,30).'...':$news->title}}</td>
+                        <td><a href="{{route('passed.lists',$news->id)}}" target="_blank" class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a></td>
                         <td>{{$news->author}}</td>
                         <td>{{$news->orientation}}</td>
                         <td>{{$news->created_at}}</td>
                         <td>
-                            <a href="{{route('passed.lists',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 查看</a>
+                            <a href="{{route('passed.lists',$news->id)}}" class="text-success ">查看</a>
                         </td>
                     </tr>@endforeach
 
@@ -163,9 +171,8 @@
     function reportbtn() {
     var array=$("input[name='news[]']");
     var s='';
-    $("input[name='news[]']").each(
+    $("input[name='news[]']:checkbox:checked").each(
     function(){
-        if($(this).is(":checked"))
           s+=$(this).val()+',';
     });
         if(s==''){

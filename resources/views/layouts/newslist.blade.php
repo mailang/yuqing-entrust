@@ -19,7 +19,7 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{asset('dist/css/skins/_all-skins.min.css')}}">
     <script src="{{asset('plugins/jquery/dist/jquery.min.js')}}"></script>
-       @yield('css');
+    @yield('css');
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -67,7 +67,7 @@
 
                             <!-- Menu Footer-->s
                             <li class="user-footer">
-                                    <a href="{{ route('admin.logout') }}" class="btn btn-default btn-flat">退出登录</a>
+                                <a href="{{ route('admin.logout') }}" class="btn btn-default btn-flat">退出登录</a>
                             </li>
                         </ul>
                     </li>
@@ -81,7 +81,7 @@
     </header>
 
     <!-- =============================================== -->
-  @include("layouts.left");
+    @include("layouts.left");
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -107,7 +107,7 @@
             </div>
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
-  @include("layouts.footer");
+    @include("layouts.footer");
 
     <!-- Control Sidebar -->
 
@@ -143,7 +143,7 @@
             'ordering'    : true,
             'info'        : true,
             'autoWidth'   : false,
-            'lengthMenu':[20],
+            'lengthMenu':[200],
             "oLanguage": {
                 "sProcessing":   "处理中...",
                 "sLengthMenu":   "_MENU_ 记录/页",

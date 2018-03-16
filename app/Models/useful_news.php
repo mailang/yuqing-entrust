@@ -31,6 +31,7 @@ class Useful_news extends Model
         'yuqinginfo',
         'screen',
         'md5',
+        'isrepeats',
         'oldsubject',
         'subject_id',
         'reportform_id',

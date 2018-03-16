@@ -23,6 +23,17 @@ class AdminController extends Controller
         $admins=Admins::all();
         return view('admin.admins.list',compact('admins'));
     }
+    /*后台登录用户修改密码*/
+     public function  modify($id)
+     {
+         $roleid=0;
+         $admins=Admins::find($id);
+         $arr= $admins->roles->toArray();
+         if ($arr) $roleid=$arr[0]["pivot"]["role_id"];
+         $roles=Roles::find($roleid);
+         return  view('admin.admins.my',compact('admins','roles'));
+     }
+
     /**
      * Show the form for creating a new resource.
      *

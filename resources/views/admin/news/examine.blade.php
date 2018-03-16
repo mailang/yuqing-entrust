@@ -73,7 +73,15 @@
                                         <option value="2">合格重复</option>
                                         <option value="-2">不合格</option>
                                     </select>
-                                </div></div></div></div>
+                                </div></div>
+                                    <div class="col-xs-4">
+                                        <div class="input-group">
+                                            <input name="isrepeats" type="hidden" value="0">
+                                            <input id="isrepeats" name="isrepeats" type="checkbox"
+                                                    @if($news->isrepeats==1)checked @endif value="1">
+                                             <label for="isrepeats">重复舆情</label>
+                                        </div></div>
+                                </div></div>
                             <div class="form-group">
                                 <label for="abstract" class="col-md-3 control-label"></label>
                                 <div class="col-md-10">
@@ -92,4 +100,16 @@
                             </div>
                         </form>
                             </div></div></div></div></div></div></div>
+    <script>
+          function btncheck (obj) {
+                if($(obj).prop("checked"))
+                {
+                    $(obj).val(1);
+                    alert("111");
+                }
+
+                else  $(obj).val(0);
+            }
+
+    </script>
 @endsection

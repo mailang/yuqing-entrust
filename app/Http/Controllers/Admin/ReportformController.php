@@ -93,7 +93,7 @@ class ReportformController extends Controller
         $report["type"]=$post["type"];
         $report->save();
         flash('操作成功');
-        return redirect()->back();
+        return redirect()->route('report.day');
         //  return redirect()->route('report.day');
     }
 
