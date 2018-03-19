@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Reportform;
 use Illuminate\Support\Facades\DB;
+use App\Src;
 
 class ReportformController extends Controller
 {
@@ -42,7 +43,8 @@ class ReportformController extends Controller
          $req=$request->all();
           $newsid=$req["newsid"];
 
-          $report["title"]=date('YmdHis');
+          $report["title"]=date('Ymd')."0".($request["type"]+1);
+          //dd($request,$report["title"]);
           $report["type"]=$req['type'];
           $report["admin_id"]=\Auth::guard('admin')->id();
           $rpt= Reportform::create($report);
@@ -131,4 +133,24 @@ class ReportformController extends Controller
         return redirect()->back();
     }
 
+    public function createzip($id)
+    {
+        $c = new Src\CreateFile();
+        if ($c->createzip($id)){
+            flash("生成成功");
+        }
+        return redirect()->back();
+    }
+
+    public function downloadzip($id)
+    {
+        $c = new Src\CreateFile();
+        return  $c->downloadzip($id);
+    }
+
+    public function downloaddocx($id)
+    {
+        $c = new Src\CreateFile();
+        return $c->downloaddocx($id);
+    }
 }

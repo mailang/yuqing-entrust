@@ -38,6 +38,10 @@
                                 <td>
                                   <a href="{{route('report.edit',$report->id)}}" class="X-Small btn-xs text-success "> 编辑</a>
                                     <a style="margin:3px;" onclick="javascript:deletebtn(this);" href="#" attr="{{$report->id}}" class="delBtn X-Small btn-xs text-danger "><i class="fa fa-times-circle-o"></i> 删除</a>
+
+                                    <a href="{{route('report.createzip',$report->id)}}" class="X-Small btn-xs text-success "> 生成三报</a>
+                                    <a href="{{route('report.downloadzip',$report->id)}}" class="X-Small btn-xs text-success "> 下载三报</a>
+                                    <a href="{{route('report.downloaddocx',$report->id)}}" class="X-Small btn-xs text-success "> 下载DOCX</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -54,6 +58,7 @@
         $('.deleteForm').attr('action', '/admin/report/delete/' + id);
         $("#modal-delete").modal();
     }
+
 </script>
     <div class="modal fade" id="modal-delete" tabIndex="-1">
         <div class="modal-dialog">

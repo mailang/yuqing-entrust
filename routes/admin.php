@@ -70,3 +70,11 @@
      Route::get('tongji/info/{id?}', ['uses'=>'StatisController@person','as'=>'tongji.person']);
      Route::post('tongji/search', ['uses'=>'StatisController@search','as'=>'tongji.search']);
      Route::post('tongji/person/search/{id?}', ['uses'=>'StatisController@person_search','as'=>'tongji.search.person']);
+
+     /*获取法院*/
+     Route::get('court/list', ['uses'=>'CourtController@index','as'=>'court.list']);
+
+     /*生成报表*/
+    Route::get('report/createzip/{id}', ['uses'=>'ReportformController@createzip','as'=>'report.createzip']);//
+    Route::get('report/downloadzip/{id}', ['uses'=>'ReportformController@downloadzip','as'=>'report.downloadzip']);//
+    Route::get('report/downloaddocx/{id}', ['uses'=>'ReportformController@downloaddocx','as'=>'report.downloaddocx']);//

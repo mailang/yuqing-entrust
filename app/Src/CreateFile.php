@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Src;
 
-use function GuzzleHttp\default_ca_bundle;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 //use App\Models\News;
@@ -12,21 +11,23 @@ use App\Models\Reportform;
 use App\Models\useful_news;
 use App\Models\Address;
 use Illuminate\Support\Facades\DB;
+use App\Models\Court;
 
-class TestController extends Controller
-{
+class CreateFile{
     //
 
-    function index(){
+    function createzip($id){
         $tmppath = resource_path("template/");
         $path = storage_path("tmp/");
+        $zippath = storage_path("zip/");
 
         if (!file_exists($path)){
             mkdir ($path,0777,true);
         }
+        if (!file_exists($zippath)){
+            mkdir ($path,0777,true);
+        }
 
-        //$resualt = News::where([])->orderBy("id")->limit(10)->get();
-        $id = 3;
         $r = Reportform::find($id);
         $zipname = $r["title"];
         $bm = "";
@@ -47,15 +48,50 @@ class TestController extends Controller
         $nameexcel = "最高执行指挥中心首页舆情信息".substr($zipname,0,8).$bm;
         $namewordall = substr($zipname,0,8).$bm."_执行舆情监测";
 
-        //dd($zipname,$name);
-        $resualt = useful_news::where("reportform_id",$id)->get();
-        //$resualt = DB::select("select *,concat(left(areacode,2),'0000') as areas from useful_news where reportform_id = $id");
-        //dd($resualt);
+        $fields = ['useful_news.*','court.province'];
+        $resualt = DB::table("useful_news")->leftJoin("court","useful_news.court","=","court.name")
+            ->where("useful_news.reportform_id","=",$id)
+            ->get($fields);
+        $this->createwordc($tmppath,$path,$resualt);
+        $this->createexcel($tmppath,$path,$nameexcel,$resualt);
+        //$this->createwordall($tmppath,$path,$namewordall,$zipname,$r["type"],$resualt);
+        $zippath = ($zippath.$zipname.'.zip');
+        $zip = new \ZipArchive();
+        if($zip->open($zippath, \ZipArchive::CREATE)){
 
-        //$this->createwordc($tmppath,$path,$resualt);
-        //$this->createexcel($tmppath,$path,$nameexcel,$resualt);
-        $this->createwordall($tmppath,$path,$namewordall,$zipname,$r["type"],$resualt);
+            $this->addFileToZip($path, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
+            $zip->close();
+        }
+        $this->delFile($path);
 
+        return true;
+    }
+
+    function addFileToZip($path,$zip){
+        $handler=opendir($path); //打开当前文件夹由$path指定。
+        while(($filename=readdir($handler))!==false){
+            if($filename != "." && $filename != ".."){//文件夹文件名字为'.'和‘..’，不要对他们进行操作
+                if(is_dir($path."/".$filename)){// 如果读取的某个对象是文件夹，则递归
+                    $this->addFileToZip($path."/".$filename, $zip);
+                }else{ //将文件加入zip对象
+                    $zip->addFile($path."/".$filename,$filename);
+                }
+            }
+        }
+        @closedir($path);
+    }
+
+    function delFile($path){
+        $handler=opendir($path);
+        while(($filename=readdir($handler))!==false){
+            if($filename != "." && $filename != ".."){
+                if(is_dir($path."/".$filename)){// 如果读取的某个对象是文件夹，则递归
+                    $this->delFile($path."/".$filename);
+                }else{ //将文件加入zip对象
+                    File::delete($path."/".$filename);
+                }
+            }
+        }
     }
 
     function createwordall($tmppath,$path,$name,$zipname,$type,$news){
@@ -103,11 +139,7 @@ class TestController extends Controller
             $templateProcessor->setValue("tid#$i", $i);
             $templateProcessor->setValue("ttitle#$i", htmlentities($new->title));
 
-            $areacodes = substr($new->areacode,0,2)."0000";
-            $dq = Address::where("areacode",$areacodes)->first()->name;
-
-
-            $templateProcessor->setValue("tarea#$i", $dq);
+            $templateProcessor->setValue("tarea#$i", $new->province);
             $templateProcessor->setValue("tcourt#$i", $new->court);
             $templateProcessor->setValue("tyuqinginfo#$i", $new->yuqinginfo);
             $templateProcessor->setValue("tstarttime#$i", $new->starttime);
@@ -120,31 +152,18 @@ class TestController extends Controller
         }
 
         //表格
-        $c1_00 = $c2_00 =              //最高
-        $c1_11 = $c2_11 =               //北京
-        $c1_12 = $c2_12 =               //天津
-        $c1_13 = $c2_13 =               //河北
-        $c1_14 = $c2_14 =               //山西
-        $c1_15 = $c2_15 =                //内蒙
-        $c1_21 = $c2_21 =               //辽宁
-             0;
+        //$allprovince = ["000" => "最高","100" => "北京","200" => "天津","300" => "河北","400" => "山西","500" => "内蒙","600" => "辽宁","700" => ""];
+        $fieldscp = ["code","province"];
+        $courtp = Court::where("code","like","%00")
+                ->orWhere("code","=","VI0")->get($fieldscp);
+        foreach ($courtp as $p){
+            $pc1 = $news1->where("province","=",$p->province)->count();
+            $pc2 = $news2->where("province","=",$p->province)->count();
+            $templateProcessor->setValueAndColor("c1_".$p->code,$pc1);
+            $templateProcessor->setValueAndColor("c2_".$p->code,$pc2);
+        }
 
-
-        //$bg_c1 = $news1->where('areacode','like','11%');
-        $bg_c2 = $news2->where('areacode','like','11%');
-
-
-
-
-       // dd($news1,$news2,$bg_c1,$bg_c2);
-
-        $c2_00 = 1;
-        //$templateProcessor->setValue('c1_00', $c1_00);
-        $templateProcessor->setValueAndColor('c1_00', $c1_00);
-        $templateProcessor->setValueAndColor('c2_00', $c2_00);
-
-        $templateProcessor->saveAs($path.$name.".docx");
-
+        return $templateProcessor->save();
     }
 
     function createexcel($tmppath,$path,$name,$news){
@@ -163,12 +182,9 @@ class TestController extends Controller
             $worksheet0->setCellValue("B".$i,$new->abstract);
             $worksheet0->setCellValue("C".$i,$new->starttime);
 
-            //$areacode = $new->areacode;
-            $areacodes = substr($new->areacode,0,2)."0000";
-            $dq = Address::where("areacode",$areacodes)->first()->name;
 
             //dd($dq);
-            $worksheet0->setCellValue("D".$i,$dq);
+            $worksheet0->setCellValue("D".$i,$new->province);
 
             $worksheet0->setCellValue("E".$i,$new->firstwebsite);
             $worksheet0->setCellValue("F".$i,$new->sitetype);
@@ -227,11 +243,11 @@ class TestController extends Controller
             $inputFileName = $tmppath.iconv('UTF-8', 'GBK//IGNORE','tempc' ).'.docx';
 
             $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessorRe($inputFileName);
-            $templateProcessor->setValue('time', htmlentities($new["starttime"]));
-            $templateProcessor->setValue('url', htmlentities($new["link"]));
-            $templateProcessor->setValue('title', htmlentities($new["title"]));
+            $templateProcessor->setValue('time', htmlentities($new->starttime));
+            $templateProcessor->setValue('url', htmlentities($new->link));
+            $templateProcessor->setValue('title', htmlentities($new->title));
 
-            $contentall = html_entity_decode($new["content"]);
+            $contentall = html_entity_decode($new->content);
             //$contentallst = trim(strip_tags($contentall));
 
 
@@ -253,8 +269,60 @@ class TestController extends Controller
             foreach ($contents as $content){
                 $templateProcessor->setValue('content', $content,1);
             }
-            $templateProcessor->saveAs($path.$new["title"].'.docx');
+            $templateProcessor->saveAs($path.$new->title.'.docx');
 
         }
+    }
+
+    function downloadzip($id){
+        $zippath = storage_path("zip/");
+        $r = Reportform::find($id);
+        $filename = $zippath.$r->title.".zip";
+        //dd($filename);
+        if (File::exists($filename)){
+            return response()->download($filename);
+        }else{
+            flash("文件没有生成",'error');
+            return redirect()->back();
+        }
+    }
+
+    function downloaddocx($id){
+            $tmppath = resource_path("template/");
+            $path = storage_path("report/");
+
+
+            if (!file_exists($path)){
+                mkdir ($path,0777,true);
+            }
+
+            $r = Reportform::find($id);
+            $zipname = $r["title"];
+            $bm = "";
+            switch ($r["type"]) {
+                case 0:
+                    $bm = "早报";
+                    break;
+                case 1:
+                    $bm = "午报";
+                    break;
+                case 2:
+                    $bm = "晚报";
+                    break;
+                default:
+                    $bm = "测试";
+                    return;
+            }
+
+            $namewordall = substr($zipname,0,8).$bm."_执行舆情监测";
+
+            $fields = ['useful_news.*','court.province'];
+            $resualt = DB::table("useful_news")->leftJoin("court","useful_news.court","=","court.name")
+                ->where("useful_news.reportform_id","=",$id)
+                ->get($fields);
+
+            $name = $this->createwordall($tmppath,$path,$namewordall,$zipname,$r["type"],$resualt);
+
+            return response()->download($name,$namewordall.".docx")->deleteFileAfterSend(true);
     }
 }

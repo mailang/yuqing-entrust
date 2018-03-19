@@ -4,11 +4,26 @@
     <script src="{{asset('js/jquery.json.min.js')}}"></script>
     <link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
     <link type="text/css" href="{{asset('css/bootstrap-treeview.css')}}"/>
+    <link type="text/css" href="{{asset('css/jquery-ui.min.css')}}" rel="stylesheet" />
     <script type="text/javascript" src="{{asset('js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/jquery-ui-timepicker-addon.js')}}"></script>
     <script src="{{asset('js/jquery.ui.datepicker-zh-CN.js.js')}}" charset="gb2312"></script>
     <script src="{{asset('js/jquery-ui-timepicker-zh-CN.js')}}"></script>
     <script src="{{asset('js/bootstrap-treeview.js')}}"></script>
+    <style>
+        .ui-autocomplete {
+            max-height: 200px;
+            overflow-y: auto;
+            /* 防止水平滚动条 */
+            overflow-x: hidden;
+        }
+        /* IE 6 不支持 max-height
+         * 我们使用 height 代替，但是这会强制菜单总是显示为那个高度
+         */
+        * html .ui-autocomplete {
+            height: 200px;
+        }
+    </style>
 
     <script type="text/javascript">
         $(function () {
@@ -269,5 +284,14 @@
         //实例化编辑器
         //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
         var ue = UE.getEditor('editor');
+
+        $(function() {
+            $.getJSON('{{route("court.list")}}',"", function(data) {
+                $("#court").autocomplete({
+                    source:data,
+                    minLength: 1
+                });
+            });
+        });
         </script>
 @endsection

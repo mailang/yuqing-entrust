@@ -37,9 +37,4 @@ class Useful_news extends Model
         'reportform_id',
         'casetype_id',
     ];
-
-    public function hasOneCourt()
-    {
-        return $this->hasOne('Court', 'user_id', 'id');
-    }
 }
