@@ -26,7 +26,6 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 <!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
 <!-- the fixed layout is not compatible with sidebar-mini -->
@@ -103,10 +102,12 @@
                     @endif
                 </div>
                 @include('flash::message')
+                <style type="text/css"> div.dataTables_wrapper div.dataTables_length select{ width: 175px;margin-top: 5px;display: inline-block;}</style>
                 @yield('content')
             </div>
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
+
     @include("layouts.footer");
 
     <!-- Control Sidebar -->
@@ -134,19 +135,17 @@
 <script src="{{asset('plugins/datatables.net/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('plugins/datatables.net-bs/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
 @yield('js')
+
 <script>
     $(function () {
         $('.table').DataTable({
-            'paging'      : true,
-            'lengthChange': false,
+            "pagingType": "full_numbers",
             'searching'   : false,
             'ordering'    : true,
-            'info'        : true,
-            'autoWidth'   : false,
-            'lengthMenu':[200],
+            "aLengthMenu": [ 25, 50, 100,200 ],
             "oLanguage": {
                 "sProcessing":   "处理中...",
-                "sLengthMenu":   "_MENU_ 记录/页",
+                "sLengthMenu":   "选择记录/每页_MENU_",
                 "sZeroRecords":  "没有匹配的记录",
                 "sInfo":         "显示第 _START_ 至 _END_ 项记录，共 _TOTAL_ 项",
                 "sInfoEmpty":    "显示第 0 至 0 项记录，共 0 项",
