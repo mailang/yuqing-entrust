@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -27,10 +28,14 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-//        $schedule->call(function (){
-//            //DB::table('test')->increment('testid');
-//            \Artisan::call("spider:yuqing");
-//        })->everyMinute();
+        if (!env("SPIDER",false)){
+            $schedule->call(function (){
+                \Artisan::call("spider:yuqing");
+            })->everyMinute();
+        }else{
+            //Log::info("no spider");
+        }
+
     }
 
     /**
