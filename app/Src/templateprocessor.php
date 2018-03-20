@@ -69,7 +69,7 @@ class TemplateProcessorRe extends TemplateProcessor{
             return parent::setValue($search,$replace);
         }
         else{
-            $pre = '#(<\?xml.*)(<w:color w:val=\"000000\"\/><w:kern w:val=\"0\"\/><w:sz w:val=\"20\"\/><w:szCs w:val=\"20\"\/><w:lang w:val=\"en-US\" w:eastAsia=\"zh-CN\"\/></w:rPr><w:t>\${' . $search . '}</w:t>)#is';
+            $pre = '/(<\?xml.*)(<w:color.*\${' . $search . '}<\/w:t>)/is';
             preg_match(
                 $pre,
                 $this->tempDocumentMainPart,
