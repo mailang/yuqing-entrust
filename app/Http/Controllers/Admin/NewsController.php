@@ -47,7 +47,7 @@ class NewsController extends Controller
     public function index()
     {
             $filed=['id','title','author','orientation','starttime','keywords','abstract'];
-            $time1=date("Y-m-d H:i:s",strtotime('-1 day'));
+            $time1=date("Y-m-d H:i:s",strtotime('-2 hour'));
             $time2=date("Y-m-d H:i:s");
             $newslist=DB::table('news')->whereBetween('starttime',[$time1,$time2])
               ->orderByDesc('starttime')
