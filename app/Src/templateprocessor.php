@@ -75,7 +75,7 @@ class TemplateProcessorRe extends TemplateProcessor{
                 $this->tempDocumentMainPart,
                 $matches
             );
-            dd($pre,$this->tempDocumentMainPart,$matches);
+            //dd($pre,$this->tempDocumentMainPart,$matches);
             $str = $matches[2];
             $strc = str_replace('000000','FF0000',$str);
             $stra = str_replace('${' . $search . '}',$replace,$strc);
