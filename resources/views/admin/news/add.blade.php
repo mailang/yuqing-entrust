@@ -228,9 +228,7 @@
                                 <label for="abstract" class="col-md-3 control-label"></label>
                                 <div class="col-md-10">
                                     <span><strong>文章摘要:</strong></span>
-                                    <textarea class="form-control" id="abstract" name="news[abstract]" rows="3" type="text">
-
-                                    </textarea>
+                                    <textarea class="form-control" id="abstract" name="news[abstract]" rows="3" type="text"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">

@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">添加新闻</h3>
+                     <h3 class="panel-title"><a href="#"  attr="{{$news->id}}" onclick="javascript:addnews(this);" style="color:#23527c;">  <i class="fa fa-plus-circle"></i>我的新闻</a></h3>
                     </div>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form">
@@ -115,3 +115,50 @@
         var ue = UE.getEditor('editor');
     </script>
 @endsection
+
+<script>
+    function addnews(obj) {
+        var id = $(obj).attr('attr');
+        // $('.newsForm').attr('action', '/admin/useful_news/store/' + id);
+        //$("#modal-news").modal();
+        $.ajax({
+            url:'/admin/useful_news/store/'+id,
+            type:'get',
+            async:false,
+            success:function (data) {
+                if(data>0)$(".modal-body").html(" <p class=\"lead\">\n" +
+                    "                        <i class=\"fa fa-question-circle fa-lg\"></i>\n" +
+                    "                       操作成功\n" +
+                    "                    </p>");
+                if(data<0)
+                    $(".modal-body").html(" <p class=\"lead\">\n" +
+                        "                        <i class=\"fa fa-question-circle fa-lg\"></i>\n" +
+                        "                       操作失败\n" +
+                        "                    </p>");
+                $("#modal-news").modal();
+            }
+        });
+    }
+</script>
+<div class="modal fade" id="modal-news" tabIndex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    ×
+                </button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal">
+                    <i class="fa fa-times-circle"></i>确认
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
