@@ -477,7 +477,7 @@ class NewsController extends Controller
         $court=$req['court'];
         $orientation=$req['orientation'];
         $subject_id=$req["subject"];
-        $sql="select `useful_news`.`id`, `useful_news`.`title`, `useful_news`.`author`, `useful_news`.`orientation`, `useful_news`.`created_at`, `useful_news`.`updated_at`, `useful_news`.`keywords`, `useful_news`.`reportform_id`, `admins`.`username` from `useful_news` left join `admins` on `useful_news`.`admin_id` = `admins`.`id` where ";
+        $sql="select `useful_news`.`id`, `useful_news`.`title`,`useful_news`.`abstract`, `useful_news`.`author`, `useful_news`.`orientation`, `useful_news`.`created_at`, `useful_news`.`updated_at`, `useful_news`.`keywords`, `useful_news`.`reportform_id`, `admins`.`username` from `useful_news` left join `admins` on `useful_news`.`admin_id` = `admins`.`id` where ";
         if ($title!=null&&$title!='')
             $sql=$sql."title like '%".$title."%' and ";
         if ($court!=null&&$court!='')
