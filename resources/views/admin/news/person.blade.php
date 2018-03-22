@@ -125,8 +125,12 @@
          <table>   <tr><td colspan="3">
                      <a href="#" onclick="verifybtn()" class="btn btn-success btn-md">提交到审核</a>&nbsp;&nbsp;
                  </td><td colspan="3">
-                     <a href="#" onclick="deletearray()" class="btn btn-success btn-md">批量删除</a>
-                 </td></tr>
+                     <a href="#" onclick="deletearray()" class="btn btn-success btn-md">批量删除</a>&nbsp;&nbsp;
+                 </td>
+                 <td colspan="3">
+                     <a href="#" onclick="createzip()" class="btn btn-success btn-md">生成</a>
+                 </td>
+             </tr>
          </table>
  </div></div></div></div>
 <div class="modal fade" id="modal-delete" tabIndex="-1">
@@ -175,6 +179,19 @@
          if($(obj).is(":checked"))$("input[name='news[]']").prop("checked",true);
          else $("input[name='news[]']").prop("checked",false);
      }
+     function createzip() {
+         bindid();
+         alert(  $("#newsid").val());
+         $.ajax({
+             url:'/admin/report/person/createzip',
+             type:'get',
+             async:false,
+             data:{id:$("#newsid").val()},
+             success:function (data) {
+                 alert(data);
+             }
+         });
+     }
      function bindid()
      {
          var s='';
@@ -182,7 +199,7 @@
              function(){
                  s+=$(this).val()+',';
              });
-         s+="0";
+         if (s!='')s+='0';
          $("#newsid").val(s);
      }
      function verifybtn() {

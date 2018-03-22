@@ -325,4 +325,43 @@ class CreateFile{
 
             return response()->download($name,$namewordall.".docx")->deleteFileAfterSend(true);
     }
+
+    function person_createzip($newsid){
+        $tmppath = resource_path("template/");
+        $path = storage_path("tmp/");
+        $zippath = storage_path("zip/");
+
+        if (!file_exists($path)){
+            mkdir ($path,0777,true);
+        }
+        if (!file_exists($zippath)){
+            mkdir ($path,0777,true);
+        }
+        $zipname = '临时报表'.date('Ymd').\Auth::guard('admin')->user()->username;
+
+        $nameexcel = "最高执行指挥中心首页舆情信息".substr($zipname,0,8);
+        $namewordall = substr($zipname,0,8)."_执行舆情监测";
+
+        $fields = ['useful_news.*','court.province'];
+        $resualt = DB::table("useful_news")->leftJoin("court","useful_news.court","=","court.name")
+           ->whereIn('useful_news.id',$newsid)
+            ->get($fields);
+        $this->createwordc($tmppath,$path,$resualt);
+        $this->createexcel($tmppath,$path,$nameexcel,$resualt);
+        $zippath = ($zippath.$zipname.'.zip');
+        $zip = new \ZipArchive();
+        if($zip->open($zippath, \ZipArchive::CREATE)){
+
+            $this->addFileToZip($path, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
+            $zip->close();
+        }
+        $this->delFile($path);
+        if (File::exists($zipname)){
+            return response()->download($zipname);
+        }else{
+            flash("文件没有生成",'error');
+            return redirect()->back();
+        }
+        return true;
+    }
 }

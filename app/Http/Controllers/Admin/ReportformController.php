@@ -153,4 +153,13 @@ class ReportformController extends Controller
         $c = new Src\CreateFile();
         return $c->downloaddocx($id);
     }
+
+    public function createpersonzip()
+    {
+
+        $newsid=explode(',',$_GET['id']);
+        $c = new Src\CreateFile();
+        return $c-> person_createzip($newsid);
+
+    }
 }

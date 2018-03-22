@@ -78,3 +78,4 @@
     Route::get('report/createzip/{id}', ['uses'=>'ReportformController@createzip','as'=>'report.createzip']);//
     Route::get('report/downloadzip/{id}', ['uses'=>'ReportformController@downloadzip','as'=>'report.downloadzip']);//
     Route::get('report/downloaddocx/{id}', ['uses'=>'ReportformController@downloaddocx','as'=>'report.downloaddocx']);//
+    Route::get('report/person/createzip', ['uses'=>'ReportformController@createpersonzip','as'=>'report.person.createzip']);//
