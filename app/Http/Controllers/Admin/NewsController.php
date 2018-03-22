@@ -358,8 +358,8 @@ class NewsController extends Controller
         if ($time1!=null&&$time2!=null)
             $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
          if ($tag!="all")
-        $sql=$sql."`tag` ='".$tag."' order by `created_at` desc limit 10000";
-         else $sql=$sql."`tag` !='0' order by `created_at` desc limit 10000";
+        $sql=$sql."`tag` ='".$tag."' order by `created_at` desc limit 5000";
+         else $sql=$sql."`tag` !='0' order by `created_at` desc limit 5000";
         $newslist=DB::select($sql);
         $subjects=Subject::all();
         return view('admin.news.verify',compact('newslist','subjects'));
@@ -389,7 +389,7 @@ class NewsController extends Controller
         if ($time1!=null&&$time2!=null)
             $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
         $id=Auth::guard('admin')->id();
-        $sql=$sql."`admin_id` = '".$id."' order by `created_at` desc limit 10000";
+        $sql=$sql."`admin_id` = '".$id."' order by `created_at` desc limit 5000";
         $newslist=DB::select($sql);
         $subjects=Subject::all();
         return view('admin.news.person',compact('newslist','subjects'));
@@ -427,7 +427,7 @@ class NewsController extends Controller
             $str=$str."`starttime` between '".$time1."' and '".$time2."'";
         }
         $sql=$sql.$str;
-        $sql=$sql."order by `created_at` desc limit 10000";
+        $sql=$sql."order by `created_at` desc limit 5000";
         $newslist=DB::select($sql);
       //  $subjects=Subject::all();
         return view('admin.news.lists',compact('newslist'));
@@ -458,9 +458,9 @@ class NewsController extends Controller
         if ($time1!=null&&$time2!=null)
             $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
         if ($tag!=null&&$tag!='')
-            $sql=$sql."`tag` = '".$tag."' order by `created_at` desc limit 10000";
+            $sql=$sql."`tag` = '".$tag."' order by `created_at` desc limit 5000";
         else
-            $sql=$sql."`tag` = '1' order by `created_at` desc limit 10000";
+            $sql=$sql."`tag` = '1' order by `created_at` desc limit 5000";
           $newslist=DB::select($sql);
           $subjects=Subject::all();
         return view('admin.news.passed',compact('newslist','subjects'));
@@ -489,7 +489,7 @@ class NewsController extends Controller
             $sql=$sql."subject_id='".$subject_id."' and ";
         if ($time1!=null&&$time2!=null)
             $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
-            $sql=$sql."`tag` = '1' order by `created_at` desc limit 10000";
+            $sql=$sql."`tag` = '1' order by `created_at` desc limit 5000";
         $newslist=DB::select($sql);
         $subjects=Subject::all();
         return view('admin.news.submit',compact('newslist','subjects'));
