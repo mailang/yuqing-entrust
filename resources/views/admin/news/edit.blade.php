@@ -29,7 +29,13 @@
             // 时间设置
             $('#starttime').datetimepicker({
                 timeFormat: "HH:mm:ss",
-                dateFormat: "yy-mm-dd"
+                dateFormat: "yy-mm-dd",
+                beforeShow: function () {
+                    setTimeout(function () {
+                            $('#ui-datepicker-div').css("z-index", 1500);
+                        }, 100
+                    );
+                }
             });
             $('#treeview').treeview({data: getTree()});
             $("#casetype").mousedown(function () {
