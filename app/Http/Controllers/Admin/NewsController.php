@@ -224,6 +224,9 @@ class NewsController extends Controller
         if (isset($news['areacode2'])&&$news['areacode2']!=null)
             $useful['areacode']=$news['areacode2'];
         if ($news['areacode2']==null&&$news['areacode1']!=null)  $useful['areacode']=$news['areacode1'];
+        $news["transmit"]= $news["transmit"]==null?"0":$news["transmit"];
+        $news["visitnum"]= $news["visitnum"]==null?"0":$news["visitnum"];
+        $news["replynum"]= $news["replynum"]==null?"0":$news["replynum"];
         $news['isedit']=1;
         $news['md5']=md5($news['title'].$news['author'].$news['firstwebsite']);
         $use=Useful_news::create($news);

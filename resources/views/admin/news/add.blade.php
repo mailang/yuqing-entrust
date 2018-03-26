@@ -35,11 +35,26 @@
             $('#treeview').treeview({data: getTree()});
             $("#casetype").mousedown(function () {
                 $("#modal-news").modal("show");
-            })
+            });
+            $("#ui-datepicker-div").css('z-index',"1500");
         });
         function getTree() {
             return  eval({!! $casetypes !!});
-
+        }
+        function  validate() {
+            var html="<div class=\"alert alert-danger\">请输入整数</div>";
+            var transmit=$("#transmit").val()==""?false:integer($("#transmit").val()),reply=$("#replynum").val()==""?false:integer($("#replynum").val()),visit=$("#visitnum").val()==""?false:integer($("#visitnum").val());
+            transmit==true?$("#transmit").css("border","1px solid red"):$("#transmit").css("border","");
+            reply==true?$("#replynum").css("border","1px solid red"):$("#replynum").css("border","");
+            visit==true?$("#visitnum").css("border","1px solid red"):$("#visitnum").css("border","");
+            if(transmit||reply||visit)
+            {
+                $(".box .info").html(html);
+                return false;
+            }
+        }
+        function integer(value) {
+            return (!/^[0-9]\d*$/.test(value));
         }
         function btnok() {
             var arr = $('#treeview').treeview('getSelected');
@@ -68,6 +83,7 @@
     </ol>
 @endsection
 @section('content')
+
     <div class="main animsition">
         <div class="container-fluid">
             <div class="row">
@@ -76,7 +92,7 @@
                         <h3 class="panel-title">添加新闻</h3>
                     </div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{route('useful_news.store')}}">
+                        <form class="form-horizontal" role="form" method="POST" onsubmit="return validate();" action="{{route('useful_news.store')}}">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
                                 <div class="row">
@@ -120,22 +136,22 @@
                                     <div class="col-xs-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="court" class="col-md-3 control-label">涉及法院</label> </span>
-                                            <input type="text" class="form-control" name="news[court]" required="required" id="court" autocomplete="off" value="" autofocus>
+                                            <input type="text" class="form-control" name="news[court]" id="court" autocomplete="off" value="" autofocus>
                                         </div></div>
                                     <div class="col-xs-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="transmit" class="col-md-3 control-label">转发数</label> </span>
-                                            <input type="text" class="form-control" name="news[transmit]" required="required integer" id="transmit" autocomplete="off" value="" autofocus>
+                                            <input type="text" class="form-control" name="news[transmit]" id="transmit" autocomplete="off" value="" autofocus>
                                         </div></div>
                                     <div class="col-xs-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="visitnum" class="col-md-3 control-label">访问数</label> </span>
-                                            <input type="text" class="form-control" name="news[visitnum]" required="required" id="visitnum" autocomplete="off" value="" autofocus>
+                                            <input type="text" class="form-control" name="news[visitnum]" id="visitnum" autocomplete="off" value="" autofocus>
                                         </div></div>
                                     <div class="col-xs-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="replynum" class="col-md-3 control-label">回复数</label> </span>
-                                            <input type="text" class="form-control" name="news[replynum]" required="required" id="replynum" autocomplete="off" value="" autofocus>
+                                            <input type="text" class="form-control" name="news[replynum]"  id="replynum" autocomplete="off" value="" autofocus>
                                         </div></div>
                                 </div>      </div>
                             <div class="form-group">
@@ -158,7 +174,7 @@
                                     <div class="col-xs-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="yuqinginfo" class="col-md-3 control-label">舆情信息</label> </span>
-                                            <input type="text" class="form-control" name="news[yuqinginfo]"  id="yuqinginfo" autocomplete="off" value="" autofocus>
+                                            <input type="text" class="form-control" name="news[yuqinginfo]"  id="yuqinginfo" value="" autofocus>
                                         </div></div>
                                     <div class="col-xs-3">
                                         <div class="input-group">
