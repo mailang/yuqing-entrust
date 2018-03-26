@@ -63,7 +63,8 @@ class CreateFile{
             $zip->close();
         }
         $this->delFile($path);
-        if($ftppath = env("FTP_DIR","") !== "") {
+        $ftppath = env("FTP_DIR","");
+        if($ftppath !== "") {
             if(file_exists($ftppath)){
                 copy($zippath,$ftppath);
             }
