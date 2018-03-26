@@ -25,7 +25,7 @@ class CreateFile{
             mkdir ($path,0777,true);
         }
         if (!file_exists($zippath)){
-            mkdir ($path,0777,true);
+            mkdir ($zippath,0777,true);
         }
 
         $r = Reportform::find($id);
@@ -63,7 +63,11 @@ class CreateFile{
             $zip->close();
         }
         $this->delFile($path);
-
+        if($ftppath = env(FTP_DIR,"") !== "") {
+            if(file_exists($ftppath)){
+                copy($zippath,$ftppath);
+            }
+        }
         return true;
     }
 
@@ -170,6 +174,7 @@ class CreateFile{
         $inputFileName = $tmppath.iconv('UTF-8', 'GBK//IGNORE','temp' ).'.xlsx';
         //$inputFileName = $tmppath.iconv('UTF-8', 'GBK//IGNORE','26template' ).'.xlsx';
         //dd($inputFileName);
+        //dd($tmppath,$path,$name,$news);
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
         //dd($spreadsheet);
         $worksheet0 = $spreadsheet->getSheet(0);
@@ -233,6 +238,7 @@ class CreateFile{
 
         $spreadsheet->setActiveSheetIndex(0);
         $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet,'Xlsx');
+        //dd($path.$name);
         $objWriter->save($path.$name.".xlsx");
     }
 
@@ -329,18 +335,18 @@ class CreateFile{
     function person_createzip($newsid){
         $tmppath = resource_path("template/");
         $path = storage_path("tmp/");
-        $zippath = storage_path("zip/");
+        $zippath = storage_path("test/");
 
         if (!file_exists($path)){
             mkdir ($path,0777,true);
         }
         if (!file_exists($zippath)){
-            mkdir ($path,0777,true);
+            mkdir ($zippath,0777,true);
         }
         $zipname = '临时报表'.date('Ymd').\Auth::guard('admin')->user()->username;
 
-        $nameexcel = "最高执行指挥中心首页舆情信息".substr($zipname,0,8);
-        $namewordall = substr($zipname,0,8)."_执行舆情监测";
+        $nameexcel = "最高执行指挥中心首页舆情信息".$zipname;
+        //$namewordall = substr($zipname,0,8)."_执行舆情监测";
 
         $fields = ['useful_news.*','court.province'];
         $resualt = DB::table("useful_news")->leftJoin("court","useful_news.court","=","court.name")
@@ -356,12 +362,12 @@ class CreateFile{
             $zip->close();
         }
         $this->delFile($path);
-        if (File::exists($zipname)){
-            return response()->download($zipname);
+        if (File::exists($zippath)){
+            return response()->download($zippath)->deleteFileAfterSend(true);
         }else{
             flash("文件没有生成",'error');
             return redirect()->back();
         }
-        return true;
+        //return true;
     }
 }

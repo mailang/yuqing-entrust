@@ -181,16 +181,17 @@
      }
      function createzip() {
          bindid();
-         alert(  $("#newsid").val());
-         $.ajax({
-             url:'/admin/report/person/createzip',
-             type:'get',
-             async:false,
-             data:{id:$("#newsid").val()},
-             success:function (data) {
-                 alert(data);
-             }
-         });
+         //alert(  $("#newsid").val());
+         location.href = "/admin/report/person/createzip?id="+ $("#newsid").val();
+//         $.ajax({
+//             url:'/admin/report/person/createzip',
+//             type:'get',
+//             async:false,
+//             data:{id:$("#newsid").val()},
+//             success:function (data) {
+//                 location.href=data;
+//             }
+//         });
      }
      function bindid()
      {

@@ -112,8 +112,8 @@ class spider extends Command
             foreach ($lilist as $li){
                 $href = pq($li)->find('.title a')->attr('href');
                 $uuid = $this->getUrlKeyValue($href)['uuid'];
-                $abstract = pq($li)->find('.list_message')->text();
-
+                //$abstract = pq($li)->find('.list_message')->text();
+                $abstract = pq($li)->find('.list_message')->html();
                 $new = News::where('uuid',$uuid)->first();
                 if ($new)
                     continue;

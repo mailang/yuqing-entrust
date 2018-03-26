@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        if (!env("SPIDER",false)){
+        if (env("SPIDER_ENABLE",false)){
             $schedule->call(function (){
                 \Artisan::call("spider:yuqing");
             })->everyMinute();

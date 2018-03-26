@@ -159,7 +159,7 @@ class ReportformController extends Controller
 
         $newsid=explode(',',$_GET['id']);
         $c = new Src\CreateFile();
-        return $c-> person_createzip($newsid);
+        return $c->person_createzip($newsid);
 
     }
 }
