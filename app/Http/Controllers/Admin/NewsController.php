@@ -221,12 +221,15 @@ class NewsController extends Controller
         $req=$request->all();
         $news=$req["news"];
         $news['admin_id']=Auth::guard('admin')->id();
-        $news['areacode']=$news['areacode2'];
+        if (isset($news['areacode2'])&&$news['areacode2']!=null)
+            $useful['areacode']=$news['areacode2'];
+        if ($news['areacode2']==null&&$news['areacode1']!=null)  $useful['areacode']=$news['areacode1'];
+        $news['isedit']=1;
         $news['md5']=md5($news['title'].$news['author'].$news['firstwebsite']);
         $use=Useful_news::create($news);
        if ($use)
        {
-           flash('操作成功');return redirect()->back();
+           flash('操作成功');   return redirect()->route('person.lists');
        }else return redirect()->back()->withErrors('操作失败');
     }
 
@@ -428,7 +431,7 @@ class NewsController extends Controller
         }
         $sql=$sql.$str;
         $sql=$sql."order by `created_at` desc limit 5000";
-        $newslist=DB::select($sql);
+        $newslist=DB::select($sql)->simplePaginate(25);
       //  $subjects=Subject::all();
         return view('admin.news.lists',compact('newslist'));
 

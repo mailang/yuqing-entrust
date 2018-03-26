@@ -32,6 +32,7 @@ class Useful_news extends Model
         'screen',
         'md5',
         'isrepeats',
+        'isedit',
         'oldsubject',
         'subject_id',
         'reportform_id',
