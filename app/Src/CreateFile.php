@@ -66,7 +66,7 @@ class CreateFile{
         $ftppath = env("FTP_DIR","");
         if($ftppath !== "") {
             if(file_exists($ftppath)){
-                copy($zippath,$ftppath);
+                copy($zippath,$ftppath.$zipname.'.zip');
             }
         }
         return true;
