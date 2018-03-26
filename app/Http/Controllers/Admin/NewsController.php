@@ -227,6 +227,7 @@ class NewsController extends Controller
         $news["transmit"]= $news["transmit"]==null?"0":$news["transmit"];
         $news["visitnum"]= $news["visitnum"]==null?"0":$news["visitnum"];
         $news["replynum"]= $news["replynum"]==null?"0":$news["replynum"];
+        $news["content"]= $news["content"]==null?"":$news["content"];
         $news['isedit']=1;
         $news['md5']=md5($news['title'].$news['author'].$news['firstwebsite']);
         $use=Useful_news::create($news);

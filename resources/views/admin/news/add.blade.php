@@ -244,11 +244,11 @@
                                 <label for="abstract" class="col-md-3 control-label"></label>
                                 <div class="col-md-10">
                                     <span><strong>文章摘要:</strong></span>
-                                    <textarea class="form-control" id="abstract" name="news[abstract]" rows="3" type="text"></textarea>
+                                    <textarea class="form-control" required id="abstract" name="news[abstract]" rows="3" type="text"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-md-5"><strong> 文章内容:</strong><script id="editor" name="news[content]" type="text/plain" style="width:1024px;height:500px;"></script></div>        </div>
+                                <div class="col-md-5"><strong> 文章内容:</strong><script id="editor" name="news[content]" required="required" type="text/plain" style="width:1024px;height:500px;"></script></div>        </div>
                             <div class="form-group">
                                 <div class="col-md-7 col-md-offset-3">
                                     <button type="submit" class="btn btn-primary btn-md">
