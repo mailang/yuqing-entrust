@@ -1,0 +1,81 @@
+.maintext {
+    background-color:#ffffff;
+    padding:30px;
+}
+.maintext h1 {
+    text-align: center;
+    line-height:28px;
+    font-size:20px;
+    font-weight:700;
+}
+.information {
+    width: 100%;
+    height: 56px;
+    color:#B7B7B7;
+    line-height:56px;
+}
+.information i {
+    font-style: normal;
+    margin-left: 3%;
+}
+ .url {
+     color: #b7b7b7;
+     width: 100%;
+     height: 32px;
+ }
+ .url a:hover {
+    text-decoration: underline;
+}
+ a{
+     color: #333;}
+.pic_wrap {
+    width: 100%;
+    height: 47px;
+}
+ .pic_wrap ul {
+    width: 100%;
+    height: 15px;
+}
+  .pic_wrap ul li {
+    float: left;
+    margin-right: 15px;
+}
+  .pic_wrap ul li a {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+  .pic_wrap ul li.one .kongjian {
+    background: url(../images/push_anniu.png) 0 -28px no-repeat;
+}
+  .pic_wrap ul li.briefings .kongjian {
+    background: url(../images/push_anniu.png) -75px 0 no-repeat;
+    width: 20px;
+    /* height: 19px; */
+}
+.pic_wrap ul li.gambit .kongjian {
+    background: url(../images/push_anniu.png) -38px 0 no-repeat;
+    width: 20px;
+    height: 19px;
+}
+  .pic_wrap ul li.seven .kongshi {
+    background: url(../images/push_anniu.png) -260px 0 no-repeat;
+}
+.content_wrap {
+    width: 100%;
+    height: auto;
+    margin-bottom: 60px;
+}
+  .content_wrap p {
+    width: 100%;
+    height: auto;
+    text-indent: 2em;
+    line-height: 22px;
+    color: #686868;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+  .content_wrap img {
+    margin: auto;
+    display: block;
+}

@@ -1,0 +1,139 @@
+@charset "UTF-8";
+body {
+    font-size: 12px;
+    font-family: 微软雅黑, 黑体, 宋体;
+    background: rgb(255, 255, 255);
+    color:#333333;
+    background-color:#f3f3f3;
+}
+html, body, div, form, p, a, h1, h2, h3, h4, h5, h6, img, table, td, th, input, span, section, header, footer, nav, article, aside, fieldset, textarea, dl, dt, dd, blockquote, ul, ol, strong {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: "宋体",Arial,sans-serif;
+}
+*, *:before, *:after {
+    -webkit-tap-highlight-color: transparent;/*清除点击默认的高亮效果*/
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+img {
+    border:none;
+}
+ul{
+    list-style: none;
+
+}
+a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+    color:#006fc5
+}
+input,textarea{
+    border:0;
+    resize: none;
+    outline: none;
+    -webkit-appearance: none;/*清除浏览器默认的样式*/
+}
+em, i {
+    font-style: normal;
+}
+/*清除浮动*/
+.clearfix::before,.clearfix::after {
+    content: ".";
+    display: block;
+    height:0;
+    line-height:0;
+    visibility: hidden;
+    clear: both;
+}
+.clear {
+    height: 0;
+     clear: both;
+ }
+.w{
+    width:1270px;
+    margin:0 auto;
+}
+.fl {float: left;}
+.fr {float: right;}
+/*head*/
+.header {
+    background-color:#006fb4;}
+.header p{
+    font-size: 14px;}
+.rightlog {
+    padding-top:10px;
+    cursor: pointer;
+    color: #ffffff;
+}
+.logbtn {
+    width: 70px;
+    height: 40px;
+    margin-right:40px;
+    /*background: #006fc5;*/
+    border-radius: 12px;
+    border:2px double #ffffff;
+    line-height:40px;
+    text-align: center;
+    font-size:14px;
+    color: #ffffff;
+    box-shadow: 0 0 4px #ffffff;
+}
+.logbtn:hover {
+    box-shadow: 0 0 12px #ffffff;
+
+}
+
+/*footer*/
+.footer {
+    width: 100%;
+    height: 105px;
+    background-color: #323333;
+    color: #e9e9e9;
+    margin-top: 20px;
+}
+.footer .footer-left {
+    float: left;
+    margin-top: 25px;
+    margin-left: 90px;
+    width: 500px;
+    font-size: 12px;
+}
+.footer p {
+    float: left;
+    display: inline-block;
+    margin: 5px 0 0 5px;
+    width: 430px;
+}
+.footer .footer-right {
+    float: right;
+    margin-top: 25px;
+    margin-right: 75px;
+    width: 350px;
+    font-size: 12px;
+}
+.footer img {
+    float: left;
+    display: block;
+}
+.footer .footer-right img {
+    width: 65px;
+}
+.footer .footer-right p {
+    width: 270px;
+    text-align: right;
+}
+.footer .footer-right a {
+    color: #e9e9e9;
+    text-decoration: none;
+}
+.clear {
+    clear: both;
+    height: 0;
+}

@@ -79,3 +79,6 @@
     Route::get('report/downloadzip/{id}', ['uses'=>'ReportformController@downloadzip','as'=>'report.downloadzip']);//
     Route::get('report/downloaddocx/{id}', ['uses'=>'ReportformController@downloaddocx','as'=>'report.downloaddocx']);//
     Route::get('report/person/createzip', ['uses'=>'ReportformController@createpersonzip','as'=>'report.person.createzip']);//
+      /*云词图*/
+      Route::get('cloud/index', ['uses'=>'CloudController@index','as'=>'cloud.word']);
+      Route::post('cloud/add', ['uses'=>'CloudController@add','as'=>'cloud.add']);
