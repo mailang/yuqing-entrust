@@ -435,7 +435,7 @@ class NewsController extends Controller
         }
         $sql=$sql.$str;
         $sql=$sql."order by `created_at` desc limit 5000";
-        $newslist=DB::select($sql)->simplePaginate(25);
+        $newslist=DB::select($sql);
       //  $subjects=Subject::all();
         return view('admin.news.lists',compact('newslist'));
 
