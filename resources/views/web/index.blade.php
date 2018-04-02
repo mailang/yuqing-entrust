@@ -59,14 +59,247 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($listmaps as $map)
+
+
                             <tr>
-                                <td>{{$map->province}}</td>
-                                <td class="td1">{{$map->total==null?"0":$map->total}}</td>
-                                <td class="td2">{{$map->fumian==null?"0":$map->fumian}}</td>
-                                <td class="td2">{{$map->fumian==null?"0":round(($map->fumian/$map->total)*100,2)}}%</td>
+                                <td>陕西</td>
+                                <td class="td1">78881</td>
+                                <td class="td2">5384</td>
+                                <td class="td2">6.83%</td>
                             </tr>
-                                @endforeach
+
+                            <tr>
+                                <td>湖南</td>
+                                <td class="td1">91791</td>
+                                <td class="td2">6239</td>
+                                <td class="td2">6.80%</td>
+                            </tr>
+
+                            <tr>
+                                <td>北京</td>
+                                <td class="td1">275509</td>
+                                <td class="td2">17077</td>
+                                <td class="td2">6.20%</td>
+                            </tr>
+
+                            <tr>
+                                <td>河北</td>
+                                <td class="td1">98655</td>
+                                <td class="td2">6067</td>
+                                <td class="td2">6.15%</td>
+                            </tr>
+
+                            <tr>
+                                <td>江西</td>
+                                <td class="td1">64420</td>
+                                <td class="td2">3912</td>
+                                <td class="td2">6.07%</td>
+                            </tr>
+
+                            <tr>
+                                <td>浙江</td>
+                                <td class="td1">164326</td>
+                                <td class="td2">9763</td>
+                                <td class="td2">5.94%</td>
+                            </tr>
+
+                            <tr>
+                                <td>湖北</td>
+                                <td class="td1">90826</td>
+                                <td class="td2">5346</td>
+                                <td class="td2">5.89%</td>
+                            </tr>
+
+                            <tr>
+                                <td>安徽</td>
+                                <td class="td1">82161</td>
+                                <td class="td2">4730</td>
+                                <td class="td2">5.76%</td>
+                            </tr>
+
+                            <tr>
+                                <td>香港</td>
+                                <td class="td1">57784</td>
+                                <td class="td2">3308</td>
+                                <td class="td2">5.72%</td>
+                            </tr>
+
+                            <tr>
+                                <td>广西</td>
+                                <td class="td1">48659</td>
+                                <td class="td2">2739</td>
+                                <td class="td2">5.63%</td>
+                            </tr>
+
+                            <tr>
+                                <td>台湾</td>
+                                <td class="td1">50352</td>
+                                <td class="td2">2816</td>
+                                <td class="td2">5.59%</td>
+                            </tr>
+
+                            <tr>
+                                <td>江苏</td>
+                                <td class="td1">192673</td>
+                                <td class="td2">10663</td>
+                                <td class="td2">5.53%</td>
+                            </tr>
+
+                            <tr>
+                                <td>福建</td>
+                                <td class="td1">85326</td>
+                                <td class="td2">4636</td>
+                                <td class="td2">5.43%</td>
+                            </tr>
+
+                            <tr>
+                                <td>辽宁</td>
+                                <td class="td1">70188</td>
+                                <td class="td2">3806</td>
+                                <td class="td2">5.42%</td>
+                            </tr>
+
+                            <tr>
+                                <td>山西</td>
+                                <td class="td1">56427</td>
+                                <td class="td2">3012</td>
+                                <td class="td2">5.34%</td>
+                            </tr>
+
+                            <tr>
+                                <td>河南</td>
+                                <td class="td1">122892</td>
+                                <td class="td2">6316</td>
+                                <td class="td2">5.14%</td>
+                            </tr>
+
+                            <tr>
+                                <td>天津</td>
+                                <td class="td1">45422</td>
+                                <td class="td2">2315</td>
+                                <td class="td2">5.10%</td>
+                            </tr>
+
+                            <tr>
+                                <td>重庆</td>
+                                <td class="td1">51369</td>
+                                <td class="td2">2616</td>
+                                <td class="td2">5.09%</td>
+                            </tr>
+
+                            <tr>
+                                <td>山东</td>
+                                <td class="td1">171526</td>
+                                <td class="td2">8335</td>
+                                <td class="td2">4.86%</td>
+                            </tr>
+
+                            <tr>
+                                <td>黑龙江</td>
+                                <td class="td1">42380</td>
+                                <td class="td2">2020</td>
+                                <td class="td2">4.77%</td>
+                            </tr>
+
+                            <tr>
+                                <td>上海</td>
+                                <td class="td1">158924</td>
+                                <td class="td2">7579</td>
+                                <td class="td2">4.77%</td>
+                            </tr>
+
+                            <tr>
+                                <td>贵州</td>
+                                <td class="td1">39875</td>
+                                <td class="td2">1871</td>
+                                <td class="td2">4.69%</td>
+                            </tr>
+
+                            <tr>
+                                <td>云南</td>
+                                <td class="td1">72102</td>
+                                <td class="td2">3359</td>
+                                <td class="td2">4.66%</td>
+                            </tr>
+
+                            <tr>
+                                <td>海南</td>
+                                <td class="td1">34189</td>
+                                <td class="td2">1544</td>
+                                <td class="td2">4.52%</td>
+                            </tr>
+
+                            <tr>
+                                <td>四川</td>
+                                <td class="td1">142267</td>
+                                <td class="td2">6395</td>
+                                <td class="td2">4.50%</td>
+                            </tr>
+
+                            <tr>
+                                <td>甘肃</td>
+                                <td class="td1">36159</td>
+                                <td class="td2">1620</td>
+                                <td class="td2">4.48%</td>
+                            </tr>
+
+                            <tr>
+                                <td>吉林</td>
+                                <td class="td1">36170</td>
+                                <td class="td2">1584</td>
+                                <td class="td2">4.38%</td>
+                            </tr>
+
+                            <tr>
+                                <td>澳门</td>
+                                <td class="td1">7834</td>
+                                <td class="td2">328</td>
+                                <td class="td2">4.19%</td>
+                            </tr>
+
+                            <tr>
+                                <td>广东</td>
+                                <td class="td1">251262</td>
+                                <td class="td2">10428</td>
+                                <td class="td2">4.15%</td>
+                            </tr>
+
+                            <tr>
+                                <td>青海</td>
+                                <td class="td1">27553</td>
+                                <td class="td2">1113</td>
+                                <td class="td2">4.04%</td>
+                            </tr>
+
+                            <tr>
+                                <td>新疆</td>
+                                <td class="td1">37263</td>
+                                <td class="td2">1367</td>
+                                <td class="td2">3.67%</td>
+                            </tr>
+
+                            <tr>
+                                <td>内蒙古</td>
+                                <td class="td1">42214</td>
+                                <td class="td2">1516</td>
+                                <td class="td2">3.59%</td>
+                            </tr>
+
+                            <tr>
+                                <td>西藏</td>
+                                <td class="td1">20444</td>
+                                <td class="td2">546</td>
+                                <td class="td2">2.67%</td>
+                            </tr>
+
+                            <tr>
+                                <td>宁夏</td>
+                                <td class="td1">37531</td>
+                                <td class="td2">822</td>
+                                <td class="td2">2.19%</td>
+                            </tr>
+
+
                             </tbody>
                         </table>
                     </div>
@@ -133,7 +366,33 @@
                     splitArea : {show : true}
                    }
                 ],
-                series : {!!json_encode($week["data"]) !!}
+          series : [
+                {
+                    name:'全部',
+                    type:'bar',
+                    data:[18812, 19533, 19014, 15955, 10076, 8142, 1527]
+                },
+                {
+                    name:'正面',
+                    type:'bar',
+                    data:[8520, 8765, 1572, 645, 201, 254, 60]
+                },
+                {
+                    name:'中性',
+                    type:'bar',
+                    data:[3612, 4660, 13525, 11228, 7095, 6008, 1053]
+                },
+                {
+                    name:'负面',
+                    type:'bar',
+                    data:[6680, 6108, 4289, 4363, 2860, 1954, 441]
+                },
+                {
+                    name:'推送舆情',
+                    type:'bar',
+                    data:[52, 57, 58, 63, 30, 25, 4]
+                }
+            ]
             });
 
             // --- 地图 ---
@@ -160,7 +419,9 @@
                             normal:{label:{show:true}},
                             emphasis:{label:{show:true}}
                         },
-                        data:{!!json_encode($datamap) !!}
+                        data:[
+                            {'name':'陕西','value':78881},{'name':'湖南','value':91791},{'name':'北京','value':275509},{'name':'河北','value':98655},{'name':'江西','value':64420},{'name':'浙江','value':164326},{'name':'湖北','value':90826},{'name':'安徽','value':82161},{'name':'香港','value':57784},{'name':'广西','value':48659},{'name':'台湾','value':50352},{'name':'江苏','value':192673},{'name':'福建','value':85326},{'name':'辽宁','value':70188},{'name':'山西','value':56427},{'name':'河南','value':122892},{'name':'天津','value':45422},{'name':'重庆','value':51369},{'name':'山东','value':171526},{'name':'黑龙江','value':42380},{'name':'上海','value':158924},{'name':'贵州','value':39875},{'name':'云南','value':72102},{'name':'海南','value':34189},{'name':'四川','value':142267},{'name':'甘肃','value':36159},{'name':'吉林','value':36170},{'name':'澳门','value':7834},{'name':'广东','value':251262},{'name':'青海','value':27553},{'name':'新疆','value':37263},{'name':'内蒙古','value':42214},{'name':'西藏','value':20444},{'name':'宁夏','value':37531},
+                        ]
                     }
                 ]
             });

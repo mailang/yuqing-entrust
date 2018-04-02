@@ -138,12 +138,11 @@
     $(function () {
         $('.table').DataTable({
             'paging'      : true,
-            'lengthChange': false,
             'searching'   : false,
             'ordering'    : true,
             'info'        : true,
             'autoWidth'   : false,
-            'lengthMenu':[20],
+            'lengthMenu':[10,20,50,100],
             "oLanguage": {
                 "sProcessing":   "处理中...",
                 "sLengthMenu":   "_MENU_ 记录/页",

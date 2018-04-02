@@ -40,7 +40,12 @@ class NewsController extends Controller
         if ($id)
         {
             $news=News::find($id);
-            return view('admin.news.see',compact('news'));
+            //添加相同新闻
+            $newslist=News::where('title','like','%'.$news->title.'%')
+                ->where('id','!=',$news->title)
+                ->orderByDesc('starttime')
+                ->get(['title','link','firstwebsite','starttime']);
+            return view('admin.news.see',compact('news','newslist'));
         }
     }
     /*查看搜索新闻列表*/

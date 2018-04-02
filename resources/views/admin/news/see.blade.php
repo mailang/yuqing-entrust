@@ -99,7 +99,17 @@
                                 </div>      </div>
                             <div class="form-group">
                                 <div class="col-md-5"><strong> 文章内容:</strong><script id="editor" name="news[content]" type="text/plain" style="width:1024px;height:500px;">{!!html_entity_decode($news->content)!!}</script></div>        </div>
-
+                             <div class="form-group">
+                                 <table width="90%">
+                                     @foreach($newslist as $news)
+                                     <tr>
+                                         <td width="70%"><a href="{{$news->link}}" target="_blank">{{$news->title}}</a></td>
+                                         <td  width="10%">{{$news->firstwebsite}}</td>
+                                         <td  width="20%">{{$news->starttime}}</td>
+                                     </tr>
+                                    @endforeach
+                                 </table>
+                             </div>
                         </form>
                     </div></div></div></div></div>
 @endsection
