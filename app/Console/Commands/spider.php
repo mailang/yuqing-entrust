@@ -114,9 +114,14 @@ class spider extends Command
                 $uuid = $this->getUrlKeyValue($href)['uuid'];
                 //$abstract = pq($li)->find('.list_message')->text();
                 $abstract = pq($li)->find('.list_message')->html();
-                $new = News::where('uuid',$uuid)->first();
-                if ($new)
-                    continue;
+                if ($uuid){
+                    $new = News::where('uuid',$uuid)->first();
+                    if ($new)
+                        continue;
+                }
+                else{
+                    $uuid = "";
+                }
                 $reseach =  $client->request('GET',$href);
                 $this->handleonehtml($reseach,$uuid,$abstract);
 
