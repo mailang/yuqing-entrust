@@ -105,17 +105,18 @@ class CreateFile{
 
         $templateProcessor->setValue('alltitle', $name);
         //dd(date("Y-m-d",strtotime($zipname)));
+        $datethis = substr($zipname,0,8);
         $time = "";
         switch ($type) {
             case 0:
-                $time = date("Y-m-d 18:00:00",strtotime("-1 day",strtotime($zipname)))." - ".date("Y-m-d 08:00:00",strtotime($zipname));
+                $time = date("Y-m-d 18:00:00",strtotime("-1 day",strtotime($datethis)))." - ".date("Y-m-d 08:00:00",strtotime($datethis));
                 break;
             case 1:
-                $time = date("Y-m-d 8:00:00",strtotime($zipname))." - ".date("Y-m-d 12:00:00",strtotime($zipname));
+                $time = date("Y-m-d 8:00:00",strtotime($datethis))." - ".date("Y-m-d 12:00:00",strtotime($datethis));
                 break;
             case 2:
             default:
-                $time = date("Y-m-d 12:00:00",strtotime($zipname))." - ".date("Y-m-d 18:00:00",strtotime($zipname));
+                $time = date("Y-m-d 12:00:00",strtotime($datethis))." - ".date("Y-m-d 18:00:00",strtotime($datethis));
                 break;
         }
         $templateProcessor->setValue('time', $time);
