@@ -41,6 +41,7 @@
 
                                     <a href="{{route('report.createzip',$report->id)}}" class="X-Small btn-xs text-success "> 生成三报</a>
                                     <a href="{{route('report.downloadzip',$report->id)}}" class="X-Small btn-xs text-success "> 下载三报</a>
+                                    <a href="{{route('report.pushzip',$report->id)}}" class="X-Small btn-xs text-success "> 推送三报</a>
                                     <a href="{{route('report.downloaddocx',$report->id)}}" class="X-Small btn-xs text-success "> 下载DOCX</a>
                                 </td>
                             </tr>

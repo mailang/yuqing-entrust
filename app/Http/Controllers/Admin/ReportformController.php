@@ -142,6 +142,16 @@ class ReportformController extends Controller
         return redirect()->back();
     }
 
+    public function pushzip($id)
+    {
+        $c = new Src\CreateFile();
+        if ($c->push($id)){
+            flash("推送成功");
+        }
+        return redirect()->back();
+    }
+
+
     public function downloadzip($id)
     {
         $c = new Src\CreateFile();

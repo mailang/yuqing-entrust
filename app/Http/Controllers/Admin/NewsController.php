@@ -328,7 +328,7 @@ class NewsController extends Controller
            if ($news!=null&&$news['tag']==0)
            {
                 $news->delete();
-               flash('操作成功能');return redirect()->back();
+               flash('操作成功');return redirect()->back();
            }
            else
                return redirect()->back()->withErrors('该新闻您已提交，不可以删除');

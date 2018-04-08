@@ -63,7 +63,21 @@ class CreateFile{
             $zip->close();
         }
         $this->delFile($path);
+//        $ftppath = env("FTP_DIR","");
+//        if($ftppath !== "") {
+//            if(file_exists($ftppath)){
+//                copy($zippath,$ftppath.$zipname.'.zip');
+//            }
+//        }
+        return true;
+    }
+
+    function push($id){
         $ftppath = env("FTP_DIR","");
+        $zippath = storage_path("zip/");
+        $r = Reportform::find($id);
+        $zipname = $r["title"];
+        $zippath = ($zippath.$zipname.'.zip');
         if($ftppath !== "") {
             if(file_exists($ftppath)){
                 copy($zippath,$ftppath.$zipname.'.zip');
