@@ -138,29 +138,6 @@
 
 <script>
     $(function () {
-        $('.table').DataTable({
-            "pagingType": "full_numbers",
-            'searching'   : false,
-            'ordering'    : true,
-            "aLengthMenu": [ 25, 50, 100,200 ],
-            "oLanguage": {
-                "sProcessing":   "处理中...",
-                "sLengthMenu":   "选择记录/每页_MENU_",
-                "sZeroRecords":  "没有匹配的记录",
-                "sInfo":         "显示第 _START_ 至 _END_ 项记录，共 _TOTAL_ 项",
-                "sInfoEmpty":    "显示第 0 至 0 项记录，共 0 项",
-                "sInfoFiltered": "(由 _MAX_ 项记录过滤)",
-                "sInfoPostFix":  "",
-                "sSearch":       "过滤:",
-                "sUrl":          "",
-                "oPaginate": {
-                    "sFirst":    "首页",
-                    "sPrevious": "上页",
-                    "sNext":     "下页",
-                    "sLast":     "末页"
-                }
-            }
-        });
         var modeltext = "{{ session('modeltext')}}";
         if(modeltext != '')
         {

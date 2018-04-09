@@ -50,37 +50,37 @@
                                              <div class="form-group">
                                                  <div class="input-group">
                                                      <span class="input-group-addon"><label for="title" class="col-md-3 control-label">文章标题</label> </span>
-                                                     <input type="text" class="form-control" name="title" placeholder="文章标题"  id="title" autocomplete="off" value="" autofocus>
+                                                     <input type="text" class="form-control" name="title" placeholder="文章标题"  id="title" autocomplete="off" value="@if(isset($data['title'])){{$data['title']}}@endif" autofocus>
                                                  </div>
                                                  <div class="input-group">
                                                      <span class="input-group-addon"><label for="court" class="col-md-3 control-label">法院</label> </span>
-                                                     <input type="text" class="form-control" name="court"  id="title" placeholder="法院" autocomplete="off" value="" autofocus>
+                                                     <input type="text" class="form-control" name="court"  id="court" placeholder="法院" autocomplete="off" value="@if(isset($data['court'])){{$data['court']}}@endif" autofocus>
                                                  </div>
                                                  <div class="input-group">
                                                      <span class="input-group-addon"><label for="orientation" class="col-md-3 control-label">倾向性</label> </span>
                                                      <select id="orientation" name="orientation" class="form-control">
                                                          <option value="">--请选择--</option>
-                                                         <option value="正面">正面</option>
-                                                         <option value="中性">中性</option>
-                                                         <option value="负面">负面</option>
+                                                         <option @if(isset($data['orientation'])&&$data['orientation']=="正面")selected @endif value="正面">正面</option>
+                                                         <option @if(isset($data['orientation'])&&$data['orientation']=="中性")selected @endif value="中性">中性</option>
+                                                         <option @if(isset($data['orientation'])&&$data['orientation']=="负面")selected @endif value="负面">负面</option>
                                                      </select>
                                                  </div>
-                                                 <div class="input-group">      <span class="input-group-addon"><label class="col-sm-3 control-label" for="subject">专题</label> </span>
+                                                 <div class="input-group"><span class="input-group-addon"><label class="col-sm-3 control-label" for="subject">专题</label> </span>
                                                      <select id="subject" name="subject" class="form-control">
                                                          <option value="all">--请选择--</option>
-                                                         <option value="">未分类</option>
+                                                         <option @if(empty($data['subject_id']))selected @endif value="">未分类</option>
                                                          @foreach($subjects as $key=>$subject)
-                                                             <option>{{$subject->subject}}</option>
+                                                             <option @if(isset($data['subject_id'])&&$data['subject_id']==$subject->id)selected @endif value="{{$subject->id}}">{{$subject->subject}}</option>
                                                          @endforeach
                                                      </select>
                                                  </div></div>
                                              <br> <br>
                                              <div class="input-group">
                                                  <span class="input-group-addon"><label for="title" class="col-md-3 control-label">起始时间</label> </span>
-                                                 <input placeholder="开始时间" type="text" class="form-control" name="time1" id="time1" autocomplete="off" value="" autofocus>                    </div>
+                                                 <input placeholder="开始时间" type="text" class="form-control" name="time1" id="time1" autocomplete="off" value="@if(isset($data['time1'])){{$data['time1']}}@endif" autofocus>                    </div>
                                              <div class="input-group">
                                                  <span class="input-group-addon"><label for="title" class="col-md-3 control-label">结束时间</label> </span>
-                                                 <input placeholder="结束时间" type="text" class="form-control" name="time2" id="time2" autocomplete="off" value="" autofocus>
+                                                 <input placeholder="结束时间" type="text" class="form-control" name="time2" id="time2" autocomplete="off" value="@if(isset($data['time2'])){{$data['time2']}}@endif" autofocus>
                                              </div>
                                              <button class="btn btn-success btn-md">
                                                  <i class="fa fa-search-plus"></i>搜索

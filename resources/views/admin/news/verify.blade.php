@@ -41,27 +41,27 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon"><label for="title" class="col-md-3 control-label">文章标题</label> </span>
-                                <input type="text" class="form-control" name="title" placeholder="文章标题"  id="title" autocomplete="off" value="" autofocus>
+                                <input type="text" class="form-control" name="title" placeholder="文章标题"  id="title" autocomplete="off" value="@if(isset($data['title'])){{$data['title']}}@endif" autofocus>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon"><label for="court" class="col-md-3 control-label">法院</label> </span>
-                                <input type="text" class="form-control" name="court"  id="title" placeholder="法院" autocomplete="off" value="" autofocus>
+                                <input type="text" class="form-control" name="court"  id="title" placeholder="法院" autocomplete="off" value="@if(isset($data['court'])){{$data['court']}}@endif" autofocus>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon"><label for="orientation" class="col-md-3 control-label">倾向性</label> </span>
                                 <select id="orientation" name="orientation" class="form-control">
                                     <option value="">--请选择--</option>
-                                    <option value="正面">正面</option>
-                                    <option value="中性">中性</option>
-                                    <option value="负面">负面</option>
+                                    <option @if(isset($data['orientation'])&&$data['orientation']=="正面")selected @endif value="正面">正面</option>
+                                    <option @if(isset($data['orientation'])&&$data['orientation']=="中性")selected @endif value="中性">中性</option>
+                                    <option @if(isset($data['orientation'])&&$data['orientation']=="负面")selected @endif value="负面">负面</option>
                                 </select>
                             </div>
                             <div class="input-group">      <span class="input-group-addon"><label class="col-sm-3 control-label" for="subject">专题</label> </span>
                                 <select id="subject" name="subject" class="form-control">
                                     <option value="all">--请选择--</option>
-                                    <option value="">未分类</option>
+                                    <option   @if(empty($data['subject_id']))selected @endif value="">未分类</option>
                                     @foreach($subjects as $key=>$subject)
-                                        <option>{{$subject->subject}}</option>
+                                        <option @if(isset($data['subject_id'])&&$data['subject_id']==$subject->id)selected @endif value="{{$subject->id}}">{{$subject->subject}}</option>
                                     @endforeach
                                 </select>
                             </div></div>
@@ -69,18 +69,18 @@
                         <div class="input-group">      <span class="input-group-addon"><label class="col-sm-3 control-label" for="tag">新闻状态</label> </span>
                             <select id="tag" name="tag" class="form-control">
                                 <option value="all">--请选择--</option>
-                                <option value="-2">不合格</option>
-                                <option value="-1">未审核</option>
-                                <option value="1">合格并提交</option>
-                                <option value="2">重复</option>
+                                <option @if(isset($data['tag'])&&$data['tag']=="-2")selected @endif value="-2">不合格</option>
+                                <option @if(isset($data['tag'])&&$data['tag']=="-1")selected @endif value="-1">未审核</option>
+                                <option @if(isset($data['tag'])&&$data['tag']=="1")selected @endif value="1">合格并提交</option>
+                                <option @if(isset($data['tag'])&&$data['tag']=="2")selected @endif value="2">重复</option>
                             </select>
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon"><label for="title" class="col-md-3 control-label">起始时间</label> </span>
-                            <input placeholder="开始时间" type="text" class="form-control" name="time1" id="time1" autocomplete="off" value="" autofocus>                    </div>
+                            <input placeholder="开始时间" type="text" class="form-control" name="time1" id="time1" autocomplete="off" value="@if(isset($data['time1'])){{$data['time1']}}@endif" autofocus>                    </div>
                         <div class="input-group">
                             <span class="input-group-addon"><label for="title" class="col-md-3 control-label">结束时间</label> </span>
-                            <input placeholder="结束时间" type="text" class="form-control" name="time2" id="time2" autocomplete="off" value="" autofocus>
+                            <input placeholder="结束时间" type="text" class="form-control" name="time2" id="time2" autocomplete="off" value="@if(isset($data['time2'])){{$data['time2']}}@endif" autofocus>
                         </div>
                         <button class="btn btn-success btn-md">
                             <i class="fa fa-search-plus"></i>搜索
@@ -91,7 +91,7 @@
                         <tr>
                             <th  data-sortable="false">&nbsp;</th>
                             <th>文章标题</th>
-                            <th>作者</th>
+                            <th>法院</th>
                             <th>倾向性</th>
                             <th>状态</th>
                             <th>添加时间</th>
@@ -102,7 +102,7 @@
                         @foreach($newslist as $news)<tr>
                             <td></td>
                             <td> <a href="{{route('useful_news.option',$news->id)}}" target="_blank" class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a></td>
-                            <td>{{$news->author}}</td>
+                            <td>{{$news->court}}</td>
                             <td>{{$news->orientation}}</td>
                             <td>@switch($news->tag)
                                     @case(-1)  <span style="color:blue">未审核 </span>@break
