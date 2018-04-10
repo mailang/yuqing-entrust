@@ -247,7 +247,7 @@ class CreateFile{
         foreach ($news as $new)
         {
             $i++;
-            $worksheet1->setCellValue("A".$i,$new->title."docx");
+            $worksheet1->setCellValue("A".$i,$new->title.".docx");
             $worksheet1->getRowDimension($i)->setRowHeight(60);
         }
         $worksheet1->getStyle('A2:B'.$i)->applyFromArray($styleArray);//这里就是画出从单元格A5到N5的边框，看单元格最右边在哪哪个格就把这个N改为那个字母替代
