@@ -72,7 +72,7 @@
                             <i class="fa fa-search-plus"></i>搜索
                         </button></div>
                     </form>
-                    <table id="tags-table" class="table-bordered table-striped">
+                    <table id="tags-table" class="table table-bordered table-striped">
         <thead>
         <tr>
             <th  data-sortable="false"></th>

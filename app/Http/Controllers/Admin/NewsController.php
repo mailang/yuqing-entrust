@@ -456,7 +456,7 @@ class NewsController extends Controller
             $str=$str."`starttime` between '".$data["time1"]."' and '".$data["time2"]."'";
         }
         $sql=$sql.$str;
-        $sql=$sql."order by `created_at` desc limit 5000";
+        $sql=$sql."order by `starttime` desc";
         if ($request->has('page')) {
             $current_page = $request->input('page');
             $current_page = $current_page <= 0 ? 1 :$current_page;
@@ -464,7 +464,7 @@ class NewsController extends Controller
             $current_page = 1;
         }
         $list=DB::select($sql);
-        $perPage = 100;
+        $perPage = 200;
 
         $item = array_slice($list, ($current_page-1)*$perPage, $perPage); //注释1
         $total = count($list);
