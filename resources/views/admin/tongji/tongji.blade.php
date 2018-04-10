@@ -71,7 +71,7 @@
                                         <li><label> 已审核：</label><span>{{$search["verify"]==null?"0":$search["verify"]}}</span></li>
                                         <li><label> 重复： </label><span>{{$search["repeat"]==null?"0":$search["repeat"]}}</span> </li>
                                         <li><label> 不合格：</label><span>{{$search["nopass"]==null?"0":$search["nopass"]}}</span></li>
-                                        <li><label> 提交早报：</label><span>{{ $search["pass"]==null?"0":$search["pass"]}}</span></li>
+                                        <li><label> 提交三报：</label><span>{{ $search["pass"]==null?"0":$search["pass"]}}</span></li>
                                     </ul>
                                 @endif
                                 @if(isset($day))
@@ -86,7 +86,7 @@
                                     <li><label> 已审核：</label><span>{{$day["verify"]==null?"0":$day["verify"]}}</span></li>
                                     <li><label> 重复： </label><span>{{$day["repeat"]==null?"0":$day["repeat"]}}</span> </li>
                                     <li><label> 不合格：</label><span>{{$day["nopass"]==null?"0":$day["nopass"]}}</span></li>
-                                    <li><label> 提交早报：</label><span>{{ $day["pass"]==null?"0":$day["pass"]}}</span></li>
+                                    <li><label> 提交三报：</label><span>{{ $day["pass"]==null?"0":$day["pass"]}}</span></li>
                                 </ul>
                                @endif
                             </div>

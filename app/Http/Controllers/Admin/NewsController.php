@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Contracts\Hashing\Hasher;
-
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Cache;
+use Carbon\Carbon;
 class NewsController extends Controller
 {
     /**
@@ -52,11 +55,11 @@ class NewsController extends Controller
     public function index()
     {
             $filed=['id','title','author','orientation','starttime','keywords','abstract'];
-            $time1=date("Y-m-d H:i:s",strtotime('-2 hour'));
+            $time1=date("Y-m-d H:i:s",strtotime('-5 hour'));
             $time2=date("Y-m-d H:i:s");
-            $newslist=DB::table('news')->whereBetween('starttime',[$time1,$time2])
-              ->orderByDesc('starttime')
-             ->get( $filed);
+            $newslist=DB::table('news')
+                ->whereBetween('starttime',[$time1,$time2])
+             ->orderByDesc('starttime')->paginate(200);
             //$sql="select `id`, `title`, `author`, `orientation`, `starttime`, `keywords`,left(content,200) as abstract from `news` where `starttime` between '".$time1."' and '".$time2."' order by `starttime` desc";
             //$newslist=DB::select($sql);
             return view('admin.news.lists',compact('newslist'));
@@ -152,7 +155,7 @@ class NewsController extends Controller
     public function verify()
     {
             $subjects=Subject::all();
-            $filed=['id','title','tag','author','orientation','created_at','keywords'];
+            $filed=['id','title','tag','author','court','orientation','created_at','keywords'];
             $newslist=DB::table('useful_news')
                 ->where('tag','<','0')
                 ->orderByDesc('created_at')
@@ -349,133 +352,162 @@ class NewsController extends Controller
     /*审核新闻搜索*/
     public function verify_search(Request $request){
         $req=$request->all();
-        $time1=$req['time1'];
-        $time2=$req['time2'];
-        $title=$req['title'];
-        $court=$req['court'];
-        $orientation=$req['orientation'];
-        $subject_id=$req["subject"];
-        $tag=$req["tag"];
-
-        $sql="select `id`, `title`, `tag`,`author`, `orientation`, `created_at`, `keywords` from `useful_news` WHERE ";
-        if ($title!=null&&$title!='')
-            $sql=$sql."title like '%".$title."%' and ";
-        if ($court!=null&&$court!='')
-            $sql=$sql."court like '%".$court."%' and ";
-        if ($orientation!=null&&$orientation!='')
-            $sql=$sql."orientation='".$orientation."' and ";
-        if ($subject_id==null) $sql=$sql."subject_id is null and ";
-        if ($subject_id!=null&&$subject_id!="all")
-            $sql=$sql."subject_id='".$subject_id."' and ";
-        if ($time1!=null&&$time2!=null)
-            $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
-         if ($tag!="all")
-        $sql=$sql."`tag` ='".$tag."' order by `created_at` desc limit 5000";
+        $data["time1"] = $req['time1'] == null ? "" : $req['time1'];
+        $data["time2"] = $req['time2'] == null ? "" : $req['time2'];
+        $data["title"] = $req['title'] == null ? "" : $req['title'];
+        $data["court"] = $req['court'] == null ? "" : $req['court'];
+        $data["orientation"] = $req['orientation'] == null ? "" : $req['orientation'];
+        $data["subject_id"] = $req['subject'];
+        $data["tag"] = $req['tag'];
+        if ($data["time1"]=""&&$data["time2"]=""&&$data["title"]=""&&$data["court"]=""&&$data["orientation"]=""&&$data["subject_id"]="all"&&$data["tag"]=="all")
+            return redirect()->route('verify.lists');
+        $sql="select `id`, `title`, `tag`,`author`,`court`, `orientation`, `created_at`, `keywords` from `useful_news` WHERE ";
+        if ($data["title"]!='')
+            $sql=$sql."title like '%".$data["title"]."%' and ";
+        if ( $data["court"]!='')
+            $sql=$sql."court like '%". $data["court"]."%' and ";
+        if ( $data["orientation"]!='')
+            $sql=$sql."orientation='". $data["orientation"]."' and ";
+        if ( $data["subject_id"]==null) $sql=$sql."subject_id is null and ";
+        if ( $data["subject_id"]!=null&& $data["subject_id"]!="all")
+            $sql=$sql."subject_id='". $data["subject_id"]."' and ";
+        if ( $data["time1"]!=""&& $data["time2"]!="")
+            $sql=$sql."`starttime` between '".$data["time1"]."' and '".$data["time2"]."' and ";
+         if ($data["tag"]!="all")
+        $sql=$sql."`tag` ='".$data["tag"]."' order by `created_at` desc limit 5000";
          else $sql=$sql."`tag` !='0' order by `created_at` desc limit 5000";
         $newslist=DB::select($sql);
         $subjects=Subject::all();
-        return view('admin.news.verify',compact('newslist','subjects'));
+        return view('admin.news.verify',compact('newslist','subjects','data'));
 
     }
     /*我的新闻搜索*/
     public function person_search(Request $request)
     {
         $req=$request->all();
-        $time1=$req['time1'];
-        $time2=$req['time2'];
-        $title=$req['title'];
-        $court=$req['court'];
-        $orientation=$req['orientation'];
-        $subject_id=$req["subject"];
+        $data["time1"] =  $req['time1'];
+        $data["time2"] =  $req['time2'];
+        $data["title"] = $req['title'];
+        $data["court"] =  $req['court'];
+        $data["orientation"] = $req['orientation'];
+        $data["subject_id"]=$req["subject"];
 
-        $sql="select `id`, `title`, `author`,`tag`, `orientation`, `created_at`, `keywords` from `useful_news` WHERE ";
-        if ($title!=null&&$title!='')
-            $sql=$sql."title like '%".$title."%' and ";
-        if ($court!=null&&$court!='')
-            $sql=$sql."court like '%".$court."%' and ";
-        if ($orientation!=null&&$orientation!='')
-            $sql=$sql."orientation='".$orientation."' and ";
-        if ($subject_id==null) $sql=$sql."subject_id is null and ";
-        if ($subject_id!=null&&$subject_id!="all")
-            $sql=$sql."subject_id='".$subject_id."' and ";
-        if ($time1!=null&&$time2!=null)
-            $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
+        if ($data["time1"]==null&&$data["time2"]==null&&$data["title"]==null&&$data["court"]==null&&$data["orientation"]==null&&$data["subject_id"]=="all")
+            return redirect()->route('person.lists');
+        $sql="select `id`, `title`,`isedit`, `author`,`tag`, `orientation`, `created_at`, `keywords` from `useful_news` WHERE ";
+        if ($data["title"]!=null&&$data["title"]!='')
+            $sql=$sql."title like '%".$data["title"]."%' and ";
+        if ($data["court"]!=null&&$data["court"]!='')
+            $sql=$sql."court like '%".$data["court"]."%' and ";
+        if ($data["orientation"]!=null&&$data["orientation"]!='')
+            $sql=$sql."orientation='".$data["orientation"]."' and ";
+        if ( $data["subject_id"]==null) $sql=$sql."subject_id is null and ";
+        if ( $data["subject_id"]!=null&& $data["subject_id"]!="all")
+            $sql=$sql."subject_id='". $data["subject_id"]."' and ";
+        if ($data["time1"]!=null&&$data["time2"]!=null)
+            $sql=$sql."`starttime` between '".$data["time1"]."' and '".$data["time2"]."' and ";
         $id=Auth::guard('admin')->id();
         $sql=$sql."`admin_id` = '".$id."' order by `created_at` desc limit 5000";
         $newslist=DB::select($sql);
         $subjects=Subject::all();
-        return view('admin.news.person',compact('newslist','subjects'));
+        return view('admin.news.person',compact('newslist','subjects','data'));
 
     }
     /*news搜索新闻*/
     public  function search(Request $request)
     {
-        $req=$request->all();
-       if (empty($req))return redirect()->route('news.lists');
-        $time1=$req['time1']==null?"":$req['time1'];
-        $time2=$req['time2']==null?"":$req['time2'];
-        $title=$req['title']==null?"":$req['title'];
-        $orientation=$req['orientation']==null?"":$req['orientation'];
-        $firstwebsite=$req['firstwebsite']==null?"":$req['firstwebsite'];
-        if ($time1==""&&$time2==""&&$title==""&&$orientation==""&&$firstwebsite=="")
+        $req = $request->all();
+
+        if (empty($req)) return redirect()->route('news.lists');
+
+        if (!$request->has('page'))
+        {
+        $data["title"] = $req['title'] == null ? "" : $req['title'];
+        $data["time1"] = $req['time1'] == null ? "" : $req['time1'];
+        $data["time2"] = $req['time2'] == null ? "" : $req['time2'];
+        $data["orientation"] = $req['orientation'] == null ? "" : $req['orientation'];
+        $data["firstwebsite"] = $req['firstwebsite'] == null ? "" : $req['firstwebsite'];
+        $request->session()->put('search', $data);
+        }
+        else
+        {
+            $sessions = $request->session()->all();
+            $data= $sessions["search"];
+        }
+        if ($data["time1"]==""&&$data["time2"]==""&&$data["title"]==""&& $data["orientation"]==""&&$data["firstwebsite"]=="")
         return redirect()->back();
         $sql="select `id`,`abstract`, `title`, `author`, `orientation`, `created_at`, `keywords`,`starttime` from `news` WHERE ";
         $str='';
-        if ($orientation!='')
-            $str=$str."orientation='".$orientation."'";
-        if ($title!='')
+        if ($data["orientation"]!='')
+            $str=$str."orientation='".$data["orientation"]."'";
+        if ( $data["title"]!='')
         {
             if ($str!='') $str=$str.' and ';
-                $str=$str."title like '%".$title."%'";
+                $str=$str."title like '%". $data["title"]."%'";
         }
-        if ($firstwebsite!=''){
+        if ( $data["firstwebsite"]!=''){
             if ($str!='') $str=$str.' and ';
-            $str=$str."firstwebsite='".$firstwebsite."'";
+            $str=$str."firstwebsite='". $data["firstwebsite"]."'";
         }
-        if ($time1!=''&&$time2!='')
+        if ($data["time1"]!=''&&$data["time2"]!='')
         {
-            if (!strtotime($time1)||!strtotime($time2))return redirect()->back()->withErrors('时间输入不正确');
+            if (!strtotime($data["time1"])||!strtotime($data["time2"]))return redirect()->back()->withErrors('时间输入不正确');
             if ($str!='') $str=$str.' and ';
-            $str=$str."`starttime` between '".$time1."' and '".$time2."'";
+            $str=$str."`starttime` between '".$data["time1"]."' and '".$data["time2"]."'";
         }
         $sql=$sql.$str;
         $sql=$sql."order by `created_at` desc limit 5000";
-        $newslist=DB::select($sql);
-      //  $subjects=Subject::all();
-        return view('admin.news.lists',compact('newslist'));
+        if ($request->has('page')) {
+            $current_page = $request->input('page');
+            $current_page = $current_page <= 0 ? 1 :$current_page;
+        } else {
+            $current_page = 1;
+        }
+        $list=DB::select($sql);
+        $perPage = 100;
+
+        $item = array_slice($list, ($current_page-1)*$perPage, $perPage); //注释1
+        $total = count($list);
+
+        $paginator =new LengthAwarePaginator($item, $total, $perPage, $current_page, [
+            'path' => Paginator::resolveCurrentPath(),  //注释2
+            'pageName' => 'page',
+        ]);
+        $newslist =$paginator->toArray()['data'];
+        return view('admin.news.lists',compact('newslist','paginator','data'));
 
     }
     /*通过审核的新闻进行搜索*/
     public  function passed_search(Request $request)
     {
         $req=$request->all();
-        $time1=$req['time1'];
-        $time2=$req['time2'];
-        $title=$req['title'];
-        $court=$req['court'];
-        $orientation=$req['orientation'];
-        $subject_id=$req["subject"];
-        $tag=$req["tag"];
+        $data["time1"] =  $req['time1'];
+        $data["time2"] =  $req['time2'];
+        $data["title"] = $req['title'];
+        $data["court"] =  $req['court'];
+        $data["orientation"] = $req['orientation'];
+        $data["subject_id"]=$req["subject"];
+        $data["tag"]=$req["tag"];
 
         $sql="select `id`, `title`, `author`, `orientation`, `created_at`, `keywords`,`reportform_id` from `useful_news` WHERE ";
-        if ($title!=null&&$title!='')
-            $sql=$sql."title like '%".$title."%' and ";
-        if ($court!=null&&$court!='')
-            $sql=$sql."court like '%".$court."%' and ";
-        if ($orientation!=null&&$orientation!='')
-            $sql=$sql."orientation='".$orientation."' and ";
-        if ($subject_id==null) $sql=$sql."subject_id is null and ";
-        if ($subject_id!=null&&$subject_id!="all")
-            $sql=$sql."subject_id='".$subject_id."' and ";
-        if ($time1!=null&&$time2!=null)
-            $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
-        if ($tag!=null&&$tag!='')
-            $sql=$sql."`tag` = '".$tag."' order by `created_at` desc limit 5000";
+        if ($data["title"] !=null&&$data["title"] !='')
+            $sql=$sql."title like '%".$data["title"] ."%' and ";
+        if ($data["court"]!=null&&$data["court"]!='')
+            $sql=$sql."court like '%".$data["court"]."%' and ";
+        if ($data["orientation"]!=null&&$data["orientation"]!='')
+            $sql=$sql."orientation='".$data["orientation"]."' and ";
+        if ($data["subject_id"]==null) $sql=$sql."subject_id is null and ";
+        if ($data["subject_id"]!=null&&$data["subject_id"]!="all")
+            $sql=$sql."subject_id='".$data["subject_id"]."' and ";
+        if ($data["time1"]!=null&&$data["time2"] !=null)
+            $sql=$sql."`starttime` between '".$data["time1"]."' and '".$data["time2"] ."' and ";
+        if ($data["tag"]!=null&&$data["tag"]!='')
+            $sql=$sql."`tag` = '".$data["tag"]."' order by `created_at` desc limit 5000";
         else
             $sql=$sql."`tag` = '1' order by `created_at` desc limit 5000";
           $newslist=DB::select($sql);
           $subjects=Subject::all();
-        return view('admin.news.passed',compact('newslist','subjects'));
+        return view('admin.news.passed',compact('newslist','subjects','data'));
 
 
     }
@@ -483,28 +515,28 @@ class NewsController extends Controller
     public  function submit_search(Request $request)
     {
         $req=$request->all();
-        $time1=$req['time1'];
-        $time2=$req['time2'];
-        $title=$req['title'];
-        $court=$req['court'];
-        $orientation=$req['orientation'];
-        $subject_id=$req["subject"];
+        $data["time1"] =  $req['time1'];
+        $data["time2"] =  $req['time2'];
+        $data["title"] = $req['title'];
+        $data["court"] =  $req['court'];
+        $data["orientation"] = $req['orientation'];
+        $data["subject_id"]=$req["subject"];
         $sql="select `useful_news`.`id`, `useful_news`.`title`,`useful_news`.`abstract`, `useful_news`.`author`, `useful_news`.`orientation`, `useful_news`.`created_at`, `useful_news`.`updated_at`, `useful_news`.`keywords`, `useful_news`.`reportform_id`, `admins`.`username` from `useful_news` left join `admins` on `useful_news`.`admin_id` = `admins`.`id` where ";
-        if ($title!=null&&$title!='')
-            $sql=$sql."title like '%".$title."%' and ";
-        if ($court!=null&&$court!='')
-            $sql=$sql."court like '%".$court."%' and ";
-        if ($orientation!=null&&$orientation!='')
-            $sql=$sql."orientation='".$orientation."' and ";
-        if ($subject_id==null) $sql=$sql."subject_id is null and ";
-        if ($subject_id!=null&&$subject_id!="all")
-            $sql=$sql."subject_id='".$subject_id."' and ";
-        if ($time1!=null&&$time2!=null)
-            $sql=$sql."`starttime` between '".$time1."' and '".$time2."' and ";
+        if ($data["title"]!=null&&$data["title"]!='')
+            $sql=$sql."title like '%".$data["title"]."%' and ";
+        if ($data["court"]!=null&&$data["court"]!='')
+            $sql=$sql."court like '%".$data["court"]."%' and ";
+        if ($data["orientation"]!=null&&$data["orientation"]!='')
+            $sql=$sql."orientation='".$data["orientation"]."' and ";
+        if ( $data["subject_id"]==null) $sql=$sql."subject_id is null and ";
+        if ( $data["subject_id"]!=null&& $data["subject_id"]!="all")
+            $sql=$sql."subject_id='". $data["subject_id"]."' and ";
+        if ($data["time1"] !=null&&$data["time2"] !=null)
+            $sql=$sql."`starttime` between '".$data["time1"] ."' and '".$data["time2"] ."' and ";
             $sql=$sql."`tag` = '1' order by `created_at` desc limit 5000";
         $newslist=DB::select($sql);
         $subjects=Subject::all();
-        return view('admin.news.submit',compact('newslist','subjects'));
+        return view('admin.news.submit',compact('newslist','subjects','data'));
 
 
     }
