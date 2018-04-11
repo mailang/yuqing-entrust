@@ -136,9 +136,11 @@ class spider extends Command
         \phpQuery::newDocumentHTML($html->getBody());
 
         $title = pq('.content h1')->text();
+        $link= pq('.url')->text();
 
-        $link = pq('.url a')->text();
-
+        if (preg_match("/<a href=[\'\"]?([^\'\" ]+).*?>/",  pq('.url')->html(), $matches)){
+            $link = $matches[1];
+        }
         $content = pq('.content_wrap')->html();
 
         $keywordslist = pq('.keyword a');
