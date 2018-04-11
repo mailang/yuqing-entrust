@@ -51,6 +51,7 @@ class CreateFile{
         $fields = ['useful_news.*','court.province'];
         $resualt = DB::table("useful_news")->leftJoin("court","useful_news.court","=","court.name")
             ->where("useful_news.reportform_id","=",$id)
+            ->orderBy('starttime')
             ->get($fields);
         $this->createwordc($tmppath,$path,$resualt);
         $this->createexcel($tmppath,$path,$nameexcel,$resualt);
@@ -341,6 +342,7 @@ class CreateFile{
             $fields = ['useful_news.*','court.province'];
             $resualt = DB::table("useful_news")->leftJoin("court","useful_news.court","=","court.name")
                 ->where("useful_news.reportform_id","=",$id)
+                ->orderBy('starttime')
                 ->get($fields);
 
             $name = $this->createwordall($tmppath,$path,$namewordall,$zipname,$r["type"],$resualt);
