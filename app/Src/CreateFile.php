@@ -59,7 +59,7 @@ class CreateFile{
         //$this->createwordall($tmppath,$path,$namewordall,$zipname,$r["type"],$resualt);
         $zippath = ($zippath.$zipname.'.zip');
         $zip = new \ZipArchive();
-        if($zip->open($zippath, \ZipArchive::CREATE)){
+        if($zip->open($zippath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE)){
 
             $this->addFileToZip($path, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
             $zip->close();
@@ -376,7 +376,7 @@ class CreateFile{
         $this->createexcel($tmppath,$path,$nameexcel,$resualt);
         $zippath = ($zippath.$zipname.'.zip');
         $zip = new \ZipArchive();
-        if($zip->open($zippath, \ZipArchive::CREATE)){
+        if($zip->open($zippath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE)){
 
             $this->addFileToZip($path, $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
             $zip->close();
