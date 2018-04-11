@@ -51,6 +51,7 @@ class CreateFile{
         $fields = ['useful_news.*','court.province'];
         $resualt = DB::table("useful_news")->leftJoin("court","useful_news.court","=","court.name")
             ->where("useful_news.reportform_id","=",$id)
+            ->where("useful_news.tag","=",1)
             ->orderBy('starttime')
             ->get($fields);
         $this->createwordc($tmppath,$path,$resualt);
@@ -342,6 +343,7 @@ class CreateFile{
             $fields = ['useful_news.*','court.province'];
             $resualt = DB::table("useful_news")->leftJoin("court","useful_news.court","=","court.name")
                 ->where("useful_news.reportform_id","=",$id)
+                ->where("useful_news.tag","=",1)
                 ->orderBy('starttime')
                 ->get($fields);
 
