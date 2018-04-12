@@ -10,26 +10,79 @@
     </ol>
 @endsection
 @section('content')
+    <style type="text/css">
+        #num{ margin-left:10px;width: 80px;height: 34px;padding: 6px 12px;font-size: 14px;line-height: 1.42857143;color: #555;background-color: #fff;background-image: none;border: 1px solid #ccc;border-radius: 4px;}
+        #wordlist,#oldlist,#wordlist li,#oldlist li{list-style: none;}
+        input{border: 1px solid #ccc;}
+        .subkeyword{border:1px solid transparent}
+    </style>
+ <script type="text/javascript">
+     $(function () {
+         $(".addkeyword").click(function () {
+             var num=$("#num").val();
+             if(/^[1-9]\d*$/.test(num))
+             {
+                 $(".box .info").html("");
+                 for (var i=0;i<num;i++){
+                     var li="<li><label for=\"words\">热词:</label><input class=\"words\" required=\"required\"><label for=\"val\">值:</label><input class=\"val\" required=\"required\" type='number'> <button type=\"button\" class=\"btn-primary subkeyword\">" +
+                         "                            <span class=\"glyphicon glyphicon-minus\"></span>\n" +
+                         "                        </button></li>";
+                     $("#wordlist").append(li);
+                 }
+                 $(".subkeyword").click(function () {
+                    $(this).parent("li").remove();
+                 });
+             }
+             else { var html="<div class=\"alert alert-danger\">请输入正确热词数量</div>";$(".box .info").html(html);return false;}
+         });
+         $(".subkeyword").click(function () {
+             $(this).parent("li").remove();
+         });
+     });
+
+ </script>
     <div style="margin-top: 5px;">
     <form class="form-horizontal" role="form" onsubmit="return validate();" method="POST" action="{{route('cloud.add')}}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="itemstyle" id="itemstyle" value="">
+        <input type="hidden" name="old" id="old" value="">
+        <input type="hidden" name="new" id="new" value="">
         <div class="box-footer">
-            <div class="form-group">
-                <label for="keyword" class="col-md-3 control-label">热词</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" name="keyword" required="required" id="keyword" autocomplete="off" value="" autofocus>
+            <div style=" overflow-y:auto; overflow-x:auto;width:100%;height: 450px;">
+            <div style=" float: left; width: 50%; height: 100%;">
+                <div class="form-group">&nbsp;&nbsp;
+                    <label for="num">热词数量:</label><input type="text" name="keyword" required="required" id="num" autocomplete="off" value="1" autofocus>
+                    <button type="button" class="btn btn-primary addkeyword">
+                        <span class="glyphicon glyphicon-plus"></span>增加
+                    </button>
+                    <button type="submit" class="btn btn-info">提交保存</button> <font style="color: red;font-size: 12px;">*填写好热词后需要点击提交保存</font>
+                </div>
+                <div class="form-group">
+                    <ul id="wordlist"></ul>
                 </div>
             </div>
+            <div style="float: left;">
+                <div class="form-group"><h4>现有热词:</h4></div>
+                <ul id="oldlist">
+                </ul>
+                <!--
                 <div class="form-group">
-                <label for="wordnum" class="col-md-3 control-label">值：</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" name="wordnum" required="required" id="wordnum" autocomplete="off" value="">
-                </div> <button type="submit" class="btn btn-info">提交</button>
+                    <label for="keyword" class="col-md-3 control-label">热词</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="keyword" required="required" id="keyword" autocomplete="off" value="" autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="wordnum" class="col-md-3 control-label">值：</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="wordnum" required="required" id="wordnum" autocomplete="off" value="">
+                    </div> <button type="submit" class="btn btn-info">提交</button>
+                </div>
+                -->
             </div>
             </div>
+        </div>
     </form>
-            <div id="wordcloud"  style="height:400px"></div>
+        <div id="wordcloud"  style="height:400px"></div>
     </div>
 <script src="{{asset('web/js/echarts.js')}}"></script>
 <script type="text/javascript">
@@ -78,6 +131,17 @@
                 async: false,
                 success: function (data) {
                     re=data;
+                    var wordlist=eval(data);
+                    for(var i=0;i<wordlist.length;i++)
+                    {
+                      var  li=" <li><label for=\"words\">热词:</label><input class=\"words\" required=\"required\" value='"+wordlist[i]["name"]+"'><label for=\"val\">值:</label><input class=\"val\" required=\"required\" type='number' value='"+wordlist[i]["value"]+"'>\n" +
+                          "                        <button type=\"button\" class=\"btn-primary subkeyword\">\n" +
+                          "                        <span class=\"glyphicon glyphicon-minus\"></span>\n" +
+                          "                        </button>\n" +
+                          "                        </li>";
+                        $("#oldlist").append(li);
+
+                    }
                 }
             });
             return re;
@@ -90,12 +154,27 @@
                 ].join(',') + ')';
     }
     function validate() {
-        var name=$("#keyword").val();
-        var value=$("#wordnum").val();
+        var old="",words="";
+        $("#oldlist li").each(function () {
+            var data=new Array(3);
+            data[0]=$(this).children(".words").val();
+            data[1]=$(this).children(".val").val();
+            data[2]=createRandomItemStyle();
+            old+=data+"|";
+        });
+        $("#old").val(old);
+        $("#wordlist li").each(function () {
+            var data=new Array(3);
+            data[0]=$(this).children(".words").val();
+            data[1]=$(this).children(".val").val();
+            data[2]=createRandomItemStyle();
+            words+=data+"|";
+        });
+        $("#new").val(words);
         var html="<div class=\"alert alert-danger\">输入项不能为空</div>";
-        if(name==null||name==""){  $(".box .info").html(html);return false;}
-           if ((!/^[0-9]\d*$/.test(value))) {$(".box .info").html("<div class=\"alert alert-danger\">请将热词的值输入整数</div>");return false;}
-        $("#itemstyle").val(createRandomItemStyle());
+        if(old==null&&words==null){  $(".box .info").html(html);return false;}
+           //if ((!/^[0-9]\d*$/.test(value))) {$(".box .info").html("<div class=\"alert alert-danger\">请将热词的值输入整数</div>");return false;}
+       // $("#itemstyle").val(createRandomItemStyle());
         return true;
     }
 </script>

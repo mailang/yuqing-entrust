@@ -22,8 +22,58 @@ class CloudController extends Controller
         $cloud = WordCloud::all()->first();
         return $cloud->words;
     }
-        /*post添加热词*/
     public  function  add(Request $request)
+    {
+         $req = $request->all();
+         $old=explode("|",$req["old"]);
+         $news=explode("|",$req["new"]);
+         $words = array();
+         foreach ($old as $items)
+        {
+            if ($items!="")
+            {
+                $item=explode(",",$items);
+                $data["name"] = $item[0];
+                $data["value"] = $item[1];
+                $color["color"]= $item[2].",".$item[3].",".$item[4];
+                $normal["normal"]=$color;
+                $data["itemStyle"] = $normal;
+                array_push($words, $data);
+            }
+        }
+        foreach ($news as $items)
+        {
+            if ($items!="")
+            {
+                $item=explode(",",$items);
+                $data["name"] = $item[0];
+                $data["value"] = $item[1];
+                $color["color"]= $item[2].",".$item[3].",".$item[4];
+                $normal["normal"]=$color;
+                $data["itemStyle"] = $normal;
+                array_push($words, $data);
+            }
+        }
+        $cloud = WordCloud::all()->first();
+        try{
+            if ($cloud) {
+                //数据库中存在数据
+                // $first=$cloud->first();
+                $id = $cloud->id;
+                $cloud["words"] =json_encode($words);
+                $cloud->update();
+            } else
+            {
+                $cloud["words"] =json_encode($words);
+                WordCloud::create($cloud);
+            } flash("操作成功");
+        }
+        catch (Exception $exception){redirect()->back()->withErrors("操作失败");}
+
+        return redirect()->route('cloud.word');
+    }
+        /*post添加热词*/
+    public  function  oldadd(Request $request)
     {
         $req = $request->all();
         $data["name"] = $req["keyword"];
