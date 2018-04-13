@@ -71,7 +71,7 @@
                                 <option value="all">--请选择--</option>
                                 <option @if(isset($data['tag'])&&$data['tag']=="-2")selected @endif value="-2">不合格</option>
                                 <option @if(isset($data['tag'])&&$data['tag']=="-1")selected @endif value="-1">未审核</option>
-                                <option @if(isset($data['tag'])&&$data['tag']=="1")selected @endif value="1">合格并提交</option>
+                                <option @if(isset($data['tag'])&&$data['tag']=="1")selected @endif value="1">合格未生成三报</option>
                                 <option @if(isset($data['tag'])&&$data['tag']=="2")selected @endif value="2">重复</option>
                             </select>
                         </div>
@@ -112,10 +112,8 @@
                                     @case(-2)<span style="color:red">不合格 </span>@break
                                 @endswitch</td>
                             <td>{{$news->created_at}}</td>
-
-                            <td>@if($news->tag<0)
+                            <td>
                                 <a href="{{route('useful_news.option',$news->id)}}" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 审核</a>
-                                @endif
                             </td>
                         </tr>@endforeach
                         </tbody>

@@ -85,8 +85,8 @@
         <tbody>
          @foreach($newslist as $key=>$news)<tr>
              <td>{{$key+1}}</td>
-             <td><h4>   <a href="{{route('news.see',$news->id)}}" target="_blank">{{$news->title}}</a></h4>
-             <div>
+             <td><h3>   <a href="{{route('news.see',$news->id)}}" target="_blank">{{$news->title}}</a></h3>
+             <div style=" font-size: 16px;">
                  {!!html_entity_decode($news->abstract)!!}
              </div>
              </td>

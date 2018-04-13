@@ -502,7 +502,7 @@ class NewsController extends Controller
         if ($data["time1"]!=null&&$data["time2"] !=null)
             $sql=$sql."`starttime` between '".$data["time1"]."' and '".$data["time2"] ."' and ";
         if ($data["tag"]!=null&&$data["tag"]!='')
-            $sql=$sql."`tag` = '".$data["tag"]."' order by `created_at` desc limit 5000";
+            $sql=$sql."`tag` = '".$data["tag"]." and reportform_id is null' order by `created_at` desc limit 5000";
         else
             $sql=$sql."`tag` = '1' order by `created_at` desc limit 5000";
           $newslist=DB::select($sql);

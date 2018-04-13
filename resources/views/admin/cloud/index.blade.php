@@ -84,7 +84,7 @@
     </form>
         <div id="wordcloud"  style="height:400px"></div>
     </div>
-<script src="{{asset('web/js/echarts.js')}}"></script>
+    <script src="{{asset('web/js/echarts.js')}}"></script>
 <script type="text/javascript">
 
         // Step:3 为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
@@ -111,9 +111,9 @@
                     series: [{
                         name: '热词图',
                         type: 'wordCloud',
-                        size: ['100%', '100%'],
-                        textRotation: [0, 45, 90, -45],
-                        textPadding: 10,
+                        size: ['80%', '80%'],
+                        textRotation: [0,0],
+                        textPadding: 0,
                         autoSize: {
                             enable: true,
                             minSize: 14

@@ -25,20 +25,21 @@
                         <div class="tab-content">
                             <div class="tab-pane" id="useful_news">
                                 <div><h3> {{$news->title}}</h3></div>
-                                <div style="text-align: left;height: 20px;color: #b7b7b7;font-size: 13px;font-style: normal;">
-                                    <span>作者: {{$news->author}}</span> <span>|</span>
-                                    <span>涉及法庭:{{$news->court}}</span> <span>|</span>
-                                    <span>属性:{{$news->orientation}}</span> <span>|</span>
-                                    <span>首次发布时间:{{$news->starttime}}</span>
+                                <div style="text-align: left;height: 20px;color:blue;font-size: 15px;font-style: normal;">
+                                    <span><font style="color: red">作者: </font>{{$news->author}}</span> <span>|</span>
+                                    <span><font style="color: red">涉及法庭:</font>{{$news->court}}</span> <span>|</span>
+                                    <span><font style="color: red">属性:</font>{{$news->orientation}}</span> <span>|</span>
+                                    <span><font style="color: red">首次发布时间:</font>{{$news->starttime}}</span>
                                 </div>
-                                <div style="text-align: left;height: 20px;color: #b7b7b7;font-size: 13px;font-style: normal;">                                    <span>首发网站：{{$news->firstwebsite}}</span>
-                                    <span>网站类型：{{$news->sitetype}}</span>
-                                    <span>转发数：{{$news->transmit}}</span>
-                                    <span>访问数：{{$news->visitnum}}</span>
-                                    <span>回复数：{{$news->replynum}}</span>
+                                <div style="text-align: left;height: 20px;color: blue;font-size: 15px;font-style: normal;">
+                                    <span><font style="color: red">首发网站：</font>{{$news->firstwebsite}}</span>
+                                    <span><font style="color: red">网站类型：</font>{{$news->sitetype}}</span>
+                                    <span><font style="color: red">转发数：</font>{{$news->transmit}}</span>
+                                    <span><font style="color: red">访问数：</font>{{$news->visitnum}}</span>
+                                    <span><font style="color: red">回复数：</font>{{$news->replynum}}</span>
                                 </div>
-                                <div style="text-align: left;height: 20px;color: #b7b7b7;font-size: 13px;font-style: normal;">  <span>原链接：{{$news->link}}</span></div>
-                                <div><strong>摘要：</strong>{!!html_entity_decode($news->abstract)!!}</div>
+                                <div style="text-align: left;height: 20px;color: blue;font-size: 14px;font-style: normal;">  <span>原链接：{{$news->link}}</span></div>
+                                <div style="font-size: 15px;"><strong>摘要：</strong>{!!html_entity_decode($news->abstract)!!}</div>
                                 <div><strong>原文：</strong>{!!html_entity_decode($news->content)!!}</div>
                             </div>
                             <div class="active tab-pane" id="verify">
