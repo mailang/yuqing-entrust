@@ -111,7 +111,7 @@
                     series: [{
                         name: '热词图',
                         type: 'wordCloud',
-                        size: ['80%', '80%'],
+                        size: ['100%', '100%'],
                         textRotation: [0, 45, 90, -45],
                         textPadding: 10,
                         autoSize: {
