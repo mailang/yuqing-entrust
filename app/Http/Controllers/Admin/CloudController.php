@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use  App\Models\WordCloud;
+use Illuminate\Support\Facades\DB;
 
 class CloudController extends Controller
 {
@@ -19,8 +20,8 @@ class CloudController extends Controller
      */
     public function getjson()
     {
-        $cloud = WordCloud::all()->first();
-        return $cloud->words;
+        $cloud=DB::table("wordcloud")->limit(1)->orderByDesc("id")->get(['id','words']);
+        return $cloud[0]->words;
     }
     public  function  add(Request $request)
     {
@@ -54,11 +55,11 @@ class CloudController extends Controller
                 array_push($words, $data);
             }
         }
-        $cloud = WordCloud::all()->first();
+         $first = DB::table('wordcloud')->whereDate('created_at','>',date('Y-m-d'))->get();
+         $cloud=$first->first();
         try{
             if ($cloud) {
                 //数据库中存在数据
-                // $first=$cloud->first();
                 $id = $cloud->id;
                 $cloud["words"] =json_encode($words);
                 $cloud->update();
