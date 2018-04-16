@@ -105,6 +105,7 @@
                         text: '热词图',
                         link: '/Web/index'
                     },
+                    shape:'circle',
                     tooltip: {
                         show: false
                     },

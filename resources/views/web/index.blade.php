@@ -429,13 +429,13 @@
             var myChart3 = ec.init(document.getElementById('wordcloud'));
             myChart3.setOption({
                 tooltip: {
-                    show: true
+                    show: false
                 },
                 series: [{
                     name: '热词图',
                     type: 'wordCloud',
                     size: ['80%', '80%'],
-                    textRotation: [0, 45, 90, -45],
+                    textRotation: [0, 0],
                     textPadding: 0,
                     autoSize: {
                         enable: true,
