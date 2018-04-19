@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Useful_news;
 use App\Models\Admins;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Array_;
 use Symfony\Component\VarDumper\Caster\DateCaster;
 
 class StatisController extends Controller
@@ -123,15 +124,107 @@ class StatisController extends Controller
           else{ return redirect()->back()->withErrors('时间输入不正确'); }
       }
     /**
-     * Show the form for creating a new resource.
+     * 区域性新闻统计
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function province()
     {
-        //
+        $search['time1']=date('Y-m-d',strtotime('-7 day'));
+        $search['time2']=date('Y-m-d');
+        $list=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
+            ->select(DB::raw('court.province,useful_news.orientation,count(1) as num'))
+           ->where('tag','1')
+            ->whereBetween('useful_news.starttime',$search)
+            ->groupBy(['court.province','useful_news.orientation'])
+            ->orderByDesc('num')
+            ->get();
+       $newslist=$list->groupBy('province');
+       $datalist=array();
+       foreach ($newslist as $key=>$news)
+       {
+            $data["province"]=$key;
+            $data["total"]=$news->sum('num');
+            $data["fumian"]=$news->where('orientation','负面')->first()==null?0:$news->where('orientation','负面')->first()->num;
+            $data["zhengmian"]=$news->where('orientation','正面')->first()==null?0:$news->where('orientation','正面')->first()->num;
+            $data["zhongxing"]=$news->where('orientation','中性')->first()==null?0:$news->where('orientation','中性')->first()->num;
+            array_push($datalist,$data);
+       }
+        $dblist= collect($datalist)->sortByDesc('total');
+        return view('admin.tongji.province',compact('dblist','search'));
     }
-
+    /**
+     * 区域性新闻统计搜索
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function province_search(Request $request)
+    {
+        $req=$request->all();
+        $search['time1']=date('Y-m-d H:i:s',strtotime($req['time1']));
+        $search['time2']=date('Y-m-d H:i:s',strtotime($req['time2']));
+        $list=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
+            ->select(DB::raw('court.province,useful_news.orientation,count(1) as num'))
+            ->where('tag','1')
+            ->whereBetween('useful_news.starttime',$search)
+            ->groupBy(['court.province','useful_news.orientation'])
+            ->orderByDesc('num')
+            ->get();
+        $newslist=$list->groupBy('province');
+        $datalist=array();
+        foreach ($newslist as $key=>$news)
+        {
+            $data["province"]=$key;
+            $data["total"]=$news->sum('num');
+            $data["fumian"]=$news->where('orientation','负面')->first()==null?0:$news->where('orientation','负面')->first()->num;
+            $data["zhengmian"]=$news->where('orientation','正面')->first()==null?0:$news->where('orientation','正面')->first()->num;
+            $data["zhongxing"]=$news->where('orientation','中性')->first()==null?0:$news->where('orientation','中性')->first()->num;
+            array_push($datalist,$data);
+        }
+        $dblist= collect($datalist)->sortByDesc('total');
+        return view('admin.tongji.province',compact('dblist','search'));
+    }
+    /**
+     * 新闻来源统计
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function source()
+    {
+        $search['time1']=date('Y-m-d',strtotime('-7 day'));
+        $search['time2']=date('Y-m-d');
+        $list=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
+            ->select(DB::raw('court.province,useful_news.orientation,count(1) as num'))
+            ->where('tag','1')
+            ->whereBetween('useful_news.starttime',$search)
+            ->groupBy(['court.province','useful_news.orientation'])
+            ->orderByDesc('num')
+            ->get();
+        $newslist=$list->groupBy('province');
+        $datalist=array();
+        foreach ($newslist as $key=>$news)
+        {
+            $data["province"]=$key;
+            $data["total"]=$news->sum('num');
+            $data["fumian"]=$news->where('orientation','负面')->first()==null?0:$news->where('orientation','负面')->first()->num;
+            $data["zhengmian"]=$news->where('orientation','正面')->first()==null?0:$news->where('orientation','正面')->first()->num;
+            $data["zhongxing"]=$news->where('orientation','中性')->first()==null?0:$news->where('orientation','中性')->first()->num;
+            array_push($datalist,$data);
+        }
+        $dblist= collect($datalist)->sortByDesc('total');
+        return view('admin.tongji.source',compact('dblist','search'));
+    }
+    /**
+     * 新闻来源统计搜索
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function source_search(Request $request)
+    {
+        $search['time1']=date('Y年m月d日',strtotime('-7 day'));
+        $search['time2']=date('Y年m月d日');
+        return view('admin.tongji.province',compact('search'));
+    }
     /**
      * Store a newly created resource in storage.
      *

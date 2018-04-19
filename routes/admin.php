@@ -83,3 +83,8 @@
       /*云词图*/
       Route::get('cloud/index', ['uses'=>'CloudController@index','as'=>'cloud.word']);
       Route::post('cloud/add', ['uses'=>'CloudController@add','as'=>'cloud.add']);
+      /*区域倾向性新闻统计*/
+      Route::get('tongji/province', ['uses'=>'StatisController@province','as'=>'tongji.province']);
+      Route::post('tongji/province', ['uses'=>'StatisController@province_search','as'=>'tongji.province_search']);
+      Route::get('tongji/source', ['uses'=>'StatisController@source','as'=>'tongji.source']);
+      Route::post('tongji/source', ['uses'=>'StatisController@source_search','as'=>'tongji.source_search']);
