@@ -61,23 +61,9 @@
                 </div>
             </div>
             <div style="float: left;">
-                <div class="form-group"><h4>现有热词:</h4></div>
+                <div class="form-group"><h4>现有热词(<font color="red">降序</font>):</h4></div>
                 <ul id="oldlist">
                 </ul>
-                <!--
-                <div class="form-group">
-                    <label for="keyword" class="col-md-3 control-label">热词</label>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="keyword" required="required" id="keyword" autocomplete="off" value="" autofocus>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="wordnum" class="col-md-3 control-label">值：</label>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="wordnum" required="required" id="wordnum" autocomplete="off" value="">
-                    </div> <button type="submit" class="btn btn-info">提交</button>
-                </div>
-                -->
             </div>
             </div>
         </div>
@@ -133,6 +119,9 @@
                 success: function (data) {
                     re=data;
                     var wordlist=eval(data);
+                    wordlist.sort(function(x,y){
+                        return y["value"] - x["value"];
+                    });
                     for(var i=0;i<wordlist.length;i++)
                     {
                       var  li=" <li><label for=\"words\">热词:</label><input class=\"words\" required=\"required\" value='"+wordlist[i]["name"]+"'><label for=\"val\">值:</label><input class=\"val\" required=\"required\" type='number' value='"+wordlist[i]["value"]+"'>\n" +

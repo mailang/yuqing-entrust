@@ -202,7 +202,23 @@ class NewsController extends Controller
             $useful['author']=$news['author'];
             $useful['orientation']=$news['orientation'];
             $useful['firstwebsite']=$news['firstwebsite'];
-            $useful['sitetype']=$news['sitetype'];
+            switch ($news['media_type'])
+            {
+                //02论坛03博客04,08微博05报刊06微信07视频09APP;10评论；99搜索
+                case 0:$media_type=$news['sitetype'];break;
+                case 1:$media_type='网媒'; break;
+                case 2:$media_type='论坛'; break;
+                case 3:$media_type='博客'; break;
+                case 4:$media_type='微博'; break;
+                case 5:$media_type='报刊'; break;
+                case 6:$media_type='微信'; break;
+                case 7:$media_type='视频'; break;
+                case 8:$media_type='微博'; break;
+                case 9:$media_type='APP'; break;
+                case 10:$media_type='评论'; break;
+                case 99:$media_type='搜索'; break;
+            }
+            $useful['sitetype']=$media_type;
             $useful['link']=$news['link'];
             $useful['uuid']=$news['uuid'];
             $useful['keywords']=$news['keywords'];

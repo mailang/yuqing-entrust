@@ -38,7 +38,7 @@
                                     <span><font style="color: red">访问数：</font>{{$news->visitnum}}</span>
                                     <span><font style="color: red">回复数：</font>{{$news->replynum}}</span>
                                 </div>
-                                <div style="text-align: left;height: 20px;color: blue;font-size: 14px;font-style: normal;">  <span>原链接：{{$news->link}}</span></div>
+                                <div style="text-align: left;color: blue;font-size: 14px;font-style: normal;">  <span>原链接：{{$news->link}}</span></div>
                                 <div style="font-size: 15px;"><strong>摘要：</strong>{!!html_entity_decode($news->abstract)!!}</div>
                                 <div><strong>原文：</strong>{!!html_entity_decode($news->content)!!}</div>
                             </div>

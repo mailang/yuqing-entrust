@@ -22,6 +22,7 @@ class News extends Model
         'keywords',
         'subject',
         'transmit',
-        'starttime'
+        'starttime',
+        'media_type'
     ];
 }

@@ -28,6 +28,8 @@ class News extends Migration
             $table->string('subject')->nullable();//涉及专题
             $table->integer('transmit')->default(0);//转发数
             $table->dateTime('starttime');//文章发布时间
+            //media_type:1网媒2论坛3博客4,8微博5报刊6微信7视频9APP;10评论；99搜索
+            $table->dateTime('media_type');//文章媒体类型
             $table->timestamps();
         });
     }

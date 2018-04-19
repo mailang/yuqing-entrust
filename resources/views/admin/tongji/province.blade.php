@@ -66,6 +66,7 @@
                                             <td>{{round($data['zhongxing']/$data['total'],3)*100}}%</td>
                                         </tr>
                                     @endforeach
+                                    @if(!$dblist->IsEmpty())
                                     <tr>
                                         <td></td>
                                         <td>全部</td>
@@ -77,6 +78,7 @@
                                         <td>{{$dblist->sum('zhongxing')}}</td>
                                         <td>{{round($dblist->sum('zhongxing')/$dblist->sum('total'),3)*100}}%</td>
                                     </tr>
+                                    @endif
                                     </tbody>
                                 </table>
                             </div>

@@ -122,8 +122,10 @@ class spider extends Command
                 else{
                     $uuid = "";
                 }
+                //$href获取sourcetype;
+                $media_type= $this->getUrlKeyValue($href)['sourcetype'];
                 $reseach =  $client->request('GET',$href);
-                $this->handleonehtml($reseach,$uuid,$abstract);
+                $this->handleonehtml($reseach,$uuid,$abstract,$media_type);
 
             }
             $p ++;
@@ -132,11 +134,11 @@ class spider extends Command
 
     }
 
-    function handleonehtml($html,$uuid,$abstract){
+    function handleonehtml($html,$uuid,$abstract,$media_type){
         \phpQuery::newDocumentHTML($html->getBody());
 
         $title = pq('.content h1')->text();
-        $link= pq('.url')->text();
+        $link= pq('.url a')->text();
 
         if (preg_match("/<a href=[\'\"]?([^\'\" ]+).*?>/",  pq('.url')->html(), $matches)){
             $link = $matches[1];
@@ -185,6 +187,7 @@ class spider extends Command
         $new->transmit = $transmit;
         $new->author = $author;
         $new->firstwebsite = $firstwebsite;
+        $new->media_type=$media_type;
         try{
             $new->save();
         }
