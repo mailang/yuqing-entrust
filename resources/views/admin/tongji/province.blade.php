@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">区域倾向性新闻统计</h3>
+                        <h3 class="panel-title">区域倾向性新闻统计<font color="red">提交三报的新闻统计</font></h3>
                     </div>
                     <div class="panel-body">
                         <div  class="tab-content">
@@ -49,6 +49,7 @@
                                         <th class="hidden-md">正面条数</th>
                                         <th class="hidden-md">正面占比</th>
                                         <th data-sortable="false">中性条数</th>
+                                        <th class="hidden-md">中性占比</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -58,12 +59,24 @@
                                             <td>{{$data['province']}}</td>
                                             <td>{{$data['total']}}</td>
                                             <td>{{$data['fumian']}}</td>
-                                            <td>{{round($data['fumian']/$data['total'],2)*100}}%</td>
+                                            <td>{{round($data['fumian']/$data['total'],3)*100}}%</td>
                                             <td>{{$data['zhengmian']}}</td>
-                                            <td>{{round($data['zhengmian']/$data['total'],2)*100}}%</td>
+                                            <td>{{round($data['zhengmian']/$data['total'],3)*100}}%</td>
                                             <td>{{$data['zhongxing']}}</td>
+                                            <td>{{round($data['zhongxing']/$data['total'],3)*100}}%</td>
                                         </tr>
                                     @endforeach
+                                    <tr>
+                                        <td></td>
+                                        <td>全部</td>
+                                        <td>{{$dblist->sum('total')}}</td>
+                                        <td>{{$dblist->sum('fumian')}}</td>
+                                        <td>{{round($dblist->sum('fumian')/$dblist->sum('total'),3)*100}}%</td>
+                                        <td>{{$dblist->sum('zhengmian')}}</td>
+                                        <td>{{round($dblist->sum('zhengmian')/$dblist->sum('total'),3)*100}}%</td>
+                                        <td>{{$dblist->sum('zhongxing')}}</td>
+                                        <td>{{round($dblist->sum('zhongxing')/$dblist->sum('total'),3)*100}}%</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
