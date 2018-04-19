@@ -187,7 +187,7 @@ class spider extends Command
         $new->transmit = $transmit;
         $new->author = $author;
         $new->firstwebsite = $firstwebsite;
-        $new->media_type=$media_type;
+        $new->media_type=$media_type==null?0:$media_type;
         try{
             $new->save();
         }
