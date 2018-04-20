@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.newslist')
 @section('css')
     <link type="text/css" href="{{asset('css/jquery-ui.min.css')}}" rel="stylesheet" />
     <link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
@@ -85,6 +85,9 @@
                         <i class="fa fa-search-plus"></i>搜索
                     </button>
                 </form>
+                <table> <tr><td colspan="6">
+                            <a href="#" onclick="javascript:reportbtn();" class="btn btn-success btn-md">生成报表</a>
+                        </td></tr></table>
                 <table id="tags-table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -107,12 +110,9 @@
                             <a href="{{route('passed.lists',$news->id)}}" class="text-success ">查看</a>
                         </td>
                     </tr>@endforeach
-
                     </tbody>
                 </table>
-                <table>   <tr><td colspan="6">
-                            <a href="#" onclick="javascript:reportbtn();" class="btn btn-success btn-md">生成报表</a>
-                        </td></tr></table>
+                <table width="100%"><tr><td>@if(isset($paginator)) 当前页{{$paginator->currentPage()}}共计{{$paginator->lastPage()}}页，总记录数{{$paginator->total()}}条 @else当前页{{$newslist->currentPage()}}共计{{$newslist->lastPage()}}页,总记录数{{$newslist->total()}}条  @endif </td><td style="text-align: right;">@if(isset($paginator))  {{ $paginator->render() }} @else{{$newslist->links()}} @endif</td></tr></table>
             </div></div></div></div>
     <div class="modal fade" id="modal-delete" tabIndex="-1">
         <div class="modal-dialog">

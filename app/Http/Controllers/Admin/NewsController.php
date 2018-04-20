@@ -142,10 +142,10 @@ class NewsController extends Controller
         else{
             $filed=['id','title','author','orientation','created_at','updated_at','keywords','reportform_id'];
             $newslist=DB::table('useful_news')
+                ->select($filed)
                 ->where('tag','=','1')
                 ->orderByDesc('created_at')
-                ->limit(10000)
-                ->get($filed);
+                ->paginate(100);
             return view('admin.news.passed',compact('newslist','subjects'));
         }
     }
@@ -520,10 +520,23 @@ class NewsController extends Controller
         if ($data["tag"]!=null&&$data["tag"]!='')
             $sql=$sql."`tag` = '".$data["tag"]." and reportform_id is null' order by `created_at` desc limit 5000";
         else
-            $sql=$sql."`tag` = '1' order by `created_at` desc limit 5000";
-          $newslist=DB::select($sql);
+            $sql=$sql."`tag` = '1' order by `created_at` desc limit 5000";   if ($request->has('page')) {
+        $current_page = $request->input('page');
+        $current_page = $current_page <= 0 ? 1 :$current_page;
+    } else {
+        $current_page = 1;
+    }
+          $list=DB::select($sql);
           $subjects=Subject::all();
-        return view('admin.news.passed',compact('newslist','subjects','data'));
+        $perPage = 100;
+        $item = array_slice($list, ($current_page-1)*$perPage, $perPage); //注释1
+        $total = count($list);
+        $paginator =new LengthAwarePaginator($item, $total, $perPage, $current_page, [
+            'path' => Paginator::resolveCurrentPath(),  //注释2
+            'pageName' => 'page',
+        ]);
+        $newslist =$paginator->toArray()['data'];
+        return view('admin.news.passed',compact('newslist','paginator','subjects','data'));
 
 
     }
