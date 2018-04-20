@@ -33,11 +33,12 @@ class NewsController extends Controller
         $filed=['id','title','isedit','created_at','tag'];
         $admin_id=Auth::guard('admin')->id();
         $newslist=DB::table('useful_news')->where('admin_id',$admin_id)
+            ->select($filed)
             ->orderByDesc('created_at')
-            ->get($filed);
+            ->paginate(50);
         return view('admin.news.person',compact('newslist','subjects'));
     }
-    /*查看搜索新闻列表*/
+    /*查看搜索新闻内容*/
     public function see($id)
     {
         if ($id)
@@ -118,11 +119,11 @@ class NewsController extends Controller
             //获取提交到三报的所有新闻列表
         $filed=['useful_news.id','useful_news.abstract','useful_news.title','useful_news.author','useful_news.orientation','useful_news.created_at','useful_news.updated_at','useful_news.keywords','useful_news.reportform_id','admins.username'];
         $newslist=DB::table('useful_news')->leftJoin('admins', 'useful_news.admin_id', '=', 'admins.id')
+                ->select($filed)
                 ->where('tag','=','1')
-            ->where('reportform_id','!=','null')
+                ->where('reportform_id','!=','null')
                 ->orderByDesc('created_at')
-               ->limit(10000)
-                ->get($filed);
+                ->paginate(100);
             return view('admin.news.submit',compact('newslist','subjects'));
          }
     }
@@ -401,12 +402,21 @@ class NewsController extends Controller
     public function person_search(Request $request)
     {
         $req=$request->all();
+        if (!$request->has('page'))
+        {
         $data["time1"] =  $req['time1'];
         $data["time2"] =  $req['time2'];
         $data["title"] = $req['title'];
         $data["court"] =  $req['court'];
         $data["orientation"] = $req['orientation'];
         $data["subject_id"]=$req["subject"];
+            $request->session()->put('search', $data);
+        }
+        else
+        {
+            $sessions = $request->session()->all();
+            $data= $sessions["search"];
+        }
 
         if ($data["time1"]==null&&$data["time2"]==null&&$data["title"]==null&&$data["court"]==null&&$data["orientation"]==null&&$data["subject_id"]=="all")
             return redirect()->route('person.lists');
@@ -424,10 +434,24 @@ class NewsController extends Controller
             $sql=$sql."`starttime` between '".$data["time1"]."' and '".$data["time2"]."' and ";
         $id=Auth::guard('admin')->id();
         $sql=$sql."`admin_id` = '".$id."' order by `created_at` desc limit 5000";
-        $newslist=DB::select($sql);
         $subjects=Subject::all();
-        return view('admin.news.person',compact('newslist','subjects','data'));
+        if ($request->has('page')) {
+            $current_page = $request->input('page');
+            $current_page = $current_page <= 0 ? 1 :$current_page;
+        } else {
+            $current_page = 1;
+        }
+        $list=DB::select($sql);
+        $perPage = 50;
+        $item = array_slice($list, ($current_page-1)*$perPage, $perPage); //注释1
+        $total = count($list);
 
+        $paginator =new LengthAwarePaginator($item, $total, $perPage, $current_page, [
+            'path' => Paginator::resolveCurrentPath(),  //注释2
+            'pageName' => 'page',
+        ]);
+        $newslist =$paginator->toArray()['data'];
+        return view('admin.news.person',compact('newslist','paginator','subjects','data'));
     }
     /*news搜索新闻*/
     public  function search(Request $request)
@@ -435,7 +459,6 @@ class NewsController extends Controller
         $req = $request->all();
 
         if (empty($req)) return redirect()->route('news.lists');
-
         if (!$request->has('page'))
         {
         $data["title"] = $req['title'] == null ? "" : $req['title'];
@@ -497,6 +520,7 @@ class NewsController extends Controller
     public  function passed_search(Request $request)
     {
         $req=$request->all();
+        if (!$request->has('page')){
         $data["time1"] =  $req['time1'];
         $data["time2"] =  $req['time2'];
         $data["title"] = $req['title'];
@@ -504,7 +528,13 @@ class NewsController extends Controller
         $data["orientation"] = $req['orientation'];
         $data["subject_id"]=$req["subject"];
         $data["tag"]=$req["tag"];
-
+        $request->session()->put('search', $data);
+       }
+      else
+      {
+        $sessions = $request->session()->all();
+        $data= $sessions["search"];
+      }
         $sql="select `id`, `title`, `author`, `orientation`, `created_at`, `keywords`,`reportform_id` from `useful_news` WHERE ";
         if ($data["title"] !=null&&$data["title"] !='')
             $sql=$sql."title like '%".$data["title"] ."%' and ";
@@ -520,12 +550,13 @@ class NewsController extends Controller
         if ($data["tag"]!=null&&$data["tag"]!='')
             $sql=$sql."`tag` = '".$data["tag"]." and reportform_id is null' order by `created_at` desc limit 5000";
         else
-            $sql=$sql."`tag` = '1' order by `created_at` desc limit 5000";   if ($request->has('page')) {
+            $sql=$sql."`tag` = '1' order by `created_at` desc limit 5000";
+        if ($request->has('page')) {
         $current_page = $request->input('page');
         $current_page = $current_page <= 0 ? 1 :$current_page;
-    } else {
+       } else {
         $current_page = 1;
-    }
+       }
           $list=DB::select($sql);
           $subjects=Subject::all();
         $perPage = 100;
@@ -544,12 +575,20 @@ class NewsController extends Controller
     public  function submit_search(Request $request)
     {
         $req=$request->all();
+        if (!$request->has('page')){
         $data["time1"] =  $req['time1'];
         $data["time2"] =  $req['time2'];
         $data["title"] = $req['title'];
         $data["court"] =  $req['court'];
         $data["orientation"] = $req['orientation'];
         $data["subject_id"]=$req["subject"];
+        $request->session()->put('search', $data);
+        }
+      else
+         {
+        $sessions = $request->session()->all();
+        $data= $sessions["search"];
+        }
         $sql="select `useful_news`.`id`, `useful_news`.`title`,`useful_news`.`abstract`, `useful_news`.`author`, `useful_news`.`orientation`, `useful_news`.`created_at`, `useful_news`.`updated_at`, `useful_news`.`keywords`, `useful_news`.`reportform_id`, `admins`.`username` from `useful_news` left join `admins` on `useful_news`.`admin_id` = `admins`.`id` where ";
         if ($data["title"]!=null&&$data["title"]!='')
             $sql=$sql."title like '%".$data["title"]."%' and ";
@@ -562,11 +601,23 @@ class NewsController extends Controller
             $sql=$sql."subject_id='". $data["subject_id"]."' and ";
         if ($data["time1"] !=null&&$data["time2"] !=null)
             $sql=$sql."`starttime` between '".$data["time1"] ."' and '".$data["time2"] ."' and ";
-            $sql=$sql."`tag` = '1' order by `created_at` desc limit 5000";
-        $newslist=DB::select($sql);
+            $sql=$sql."`tag` = '1' and `reportform_id` is not null order by `created_at` desc limit 5000";
+        if ($request->has('page')) {
+            $current_page = $request->input('page');
+            $current_page = $current_page <= 0 ? 1 :$current_page;
+        } else {
+            $current_page = 1;
+        }
+        $list=DB::select($sql);
         $subjects=Subject::all();
-        return view('admin.news.submit',compact('newslist','subjects','data'));
-
-
+        $perPage = 100;
+        $item = array_slice($list, ($current_page-1)*$perPage, $perPage); //注释1
+        $total = count($list);
+        $paginator =new LengthAwarePaginator($item, $total, $perPage, $current_page, [
+            'path' => Paginator::resolveCurrentPath(),  //注释2
+            'pageName' => 'page',
+        ]);
+        $newslist =$paginator->toArray()['data'];
+        return view('admin.news.submit',compact('newslist','paginator','subjects','data'));
     }
 }

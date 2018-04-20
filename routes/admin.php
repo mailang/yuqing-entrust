@@ -27,10 +27,10 @@
      Route::get('news/see/{id}', ['uses'=>'NewsController@see','as'=>'news.see']);
 
      Route::any('newslist/search', ['uses'=>'NewsController@search','as'=>'news.search']);//搜索的新闻搜索
-     Route::post('passed/search', ['uses'=>'NewsController@passed_search','as'=>'passed.search']);//审核通过的新闻进行搜索
-     Route::post('person/search', ['uses'=>'NewsController@person_search','as'=>'person.search']);//我的新闻搜索
+     Route::any('passed/search', ['uses'=>'NewsController@passed_search','as'=>'passed.search']);//审核通过的新闻进行搜索
+     Route::any('person/search', ['uses'=>'NewsController@person_search','as'=>'person.search']);//我的新闻搜索
      Route::post('verify/search', ['uses'=>'NewsController@verify_search','as'=>'verify.search']);//审核新闻搜索
-     Route::post('submit/search', ['uses'=>'NewsController@submit_search','as'=>'submit.search']);//提交到早报的新闻搜索
+     Route::any('submit/search', ['uses'=>'NewsController@submit_search','as'=>'submit.search']);//提交到早报的新闻搜索
 
      Route::get('person/news/{id?}', ['uses'=>'NewsController@person','as'=>'person.lists']);
      Route::get('news/passed/{id?}', ['uses'=>'NewsController@passed','as'=>'passed.lists']);

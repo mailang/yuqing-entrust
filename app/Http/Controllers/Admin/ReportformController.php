@@ -18,7 +18,9 @@ class ReportformController extends Controller
      */
     public function index()
     {
-        $reports=Reportform::all()->sortByDesc('created_at');
+        //系统导入的所有提交的新闻默认报表均为56，因为涉及新闻多，报表设置为不显示
+        $reports=DB::table('reportform')->where('id','!=',56)
+            ->orderByDesc('created_at')->paginate(50);
         return view('admin.report.lists',compact('reports'));
     }
 

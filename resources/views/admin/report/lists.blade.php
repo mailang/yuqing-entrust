@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.newslist')
 @section('title')
     <h1>
         首页
@@ -38,7 +38,6 @@
                                 <td>
                                   <a href="{{route('report.edit',$report->id)}}" class="X-Small btn-xs text-success "> 编辑</a>
                                     <a style="margin:3px;" onclick="javascript:deletebtn(this);" href="#" attr="{{$report->id}}" class="delBtn X-Small btn-xs text-danger "><i class="fa fa-times-circle-o"></i> 删除</a>
-
                                     <a href="{{route('report.createzip',$report->id)}}" class="X-Small btn-xs text-success "> 生成三报</a>
                                     <a href="{{route('report.downloadzip',$report->id)}}" class="X-Small btn-xs text-success "> 下载三报</a>
                                     <a href="{{route('report.pushzip',$report->id)}}" class="X-Small btn-xs text-success "> 推送三报</a>
@@ -48,6 +47,9 @@
                         @endforeach
                         </tbody>
                     </table>
+                  <table width="100%"><tr><td>当前页{{$reports->currentPage()}}共计{{$reports->lastPage()}}页,总记录数{{$reports->total()}}条 </td>
+                      <td style="text-align: right"> {{$reports->links()}}</td>
+                      </tr></table>
                 </div>
             </div>
         </div>
