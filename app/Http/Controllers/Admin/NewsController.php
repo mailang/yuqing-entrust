@@ -410,14 +410,13 @@ class NewsController extends Controller
         $data["court"] =  $req['court'];
         $data["orientation"] = $req['orientation'];
         $data["subject_id"]=$req["subject"];
-            $request->session()->put('search', $data);
+            $request->session()->put('person', $data);
         }
         else
         {
             $sessions = $request->session()->all();
-            $data= $sessions["search"];
+            $data= $sessions["person"];
         }
-
         if ($data["time1"]==null&&$data["time2"]==null&&$data["title"]==null&&$data["court"]==null&&$data["orientation"]==null&&$data["subject_id"]=="all")
             return redirect()->route('person.lists');
         $sql="select `id`, `title`,`isedit`, `author`,`tag`, `orientation`, `created_at`, `keywords` from `useful_news` WHERE ";
@@ -474,7 +473,7 @@ class NewsController extends Controller
             $data= $sessions["search"];
         }
         if ($data["time1"]==""&&$data["time2"]==""&&$data["title"]==""&& $data["orientation"]==""&&$data["firstwebsite"]=="")
-        return redirect()->back();
+         return redirect()->route('news.lists');
         $sql="select `id`,`abstract`, `title`, `author`, `orientation`, `created_at`, `keywords`,`starttime` from `news` WHERE ";
         $str='';
         if ($data["orientation"]!='')
@@ -528,7 +527,7 @@ class NewsController extends Controller
         $data["orientation"] = $req['orientation'];
         $data["subject_id"]=$req["subject"];
         $data["tag"]=$req["tag"];
-        $request->session()->put('search', $data);
+        $request->session()->put('passed', $data);
        }
       else
       {
@@ -582,12 +581,12 @@ class NewsController extends Controller
         $data["court"] =  $req['court'];
         $data["orientation"] = $req['orientation'];
         $data["subject_id"]=$req["subject"];
-        $request->session()->put('search', $data);
+        $request->session()->put('submit', $data);
         }
       else
          {
         $sessions = $request->session()->all();
-        $data= $sessions["search"];
+        $data= $sessions["submit"];
         }
         $sql="select `useful_news`.`id`, `useful_news`.`title`,`useful_news`.`abstract`, `useful_news`.`author`, `useful_news`.`orientation`, `useful_news`.`created_at`, `useful_news`.`updated_at`, `useful_news`.`keywords`, `useful_news`.`reportform_id`, `admins`.`username` from `useful_news` left join `admins` on `useful_news`.`admin_id` = `admins`.`id` where ";
         if ($data["title"]!=null&&$data["title"]!='')
