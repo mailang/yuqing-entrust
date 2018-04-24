@@ -25,10 +25,10 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="title" class="col-md-3 control-label">起始时间</label> </span>
-                                            <input placeholder="开始时间" type="text" class="form-control" name="time1" id="time1" autocomplete="off" value="" autofocus>                    </div>
+                                            <input placeholder="开始时间" type="text" class="form-control" name="time1" id="time1" autocomplete="off" value="{{$search["time1"]}}" autofocus>                    </div>
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="title" class="col-md-3 control-label">结束时间</label> </span>
-                                            <input placeholder="结束时间" type="text" class="form-control" name="time2" id="time2" autocomplete="off" value="" autofocus>
+                                            <input placeholder="结束时间" type="text" class="form-control" name="time2" id="time2" autocomplete="off" value="{{$search["time2"]}}" autofocus>
                                         </div>
                                         <button class="btn btn-success btn-md">
                                             <i class="fa fa-search-plus"></i>搜索
@@ -41,16 +41,50 @@
                                 <table id="tags-table" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th data-sortable="false">&nbsp;</th>
-                                        <th>来源</th>
-                                        <th class="hidden-sm">全部</th>
-                                        <th class="hidden-md">正面</th>
-                                        <th class="hidden-md">负面</th>
-                                        <th class="hidden-md">中性</th>
-                                        <th data-sortable="false"></th>
+                                        <th data-sortable="false" data-show="false"></th>
+                                        <th data-sortable="false">来源</th>
+                                        <th>网媒</th>
+                                        <th class="hidden-sm">论坛</th>
+                                        <th class="hidden-md">微博</th>
+                                        <th class="hidden-md">微信</th>
+                                        <th class="hidden-md">博客</th>
+                                        <th class="hidden-sm">报刊</th>
+                                        <th class="hidden-md">视频</th>
+                                        <th class="hidden-md">APP</th>
+                                        <th class="hidden-md">搜索</th>
+                                        <th data-sortable="false">评论</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td>全部</td>
+                                        <td>{{$dblist->sum('wangmei')}}</td>
+                                        <td>{{$dblist->sum('bbs')}}</td>
+                                        <td>{{$dblist->sum('weibo')}}</td>
+                                        <td>{{$dblist->sum('weixin')}}</td>
+                                        <td>{{$dblist->sum('blog')}}</td>
+                                        <td>{{$dblist->sum('paper')}}</td>
+                                        <td>{{$dblist->sum('video')}}</td>
+                                        <td>{{$dblist->sum('app')}}</td>
+                                        <td>{{$dblist->sum('search')}}</td>
+                                        <td>{{$dblist->sum('comment')}}</td>
+                                    </tr>
+                                  @foreach($dblist as $news)
+                                      <tr><td></td>
+                                          <td>{{$news['orientation']}}</td>
+                                          <td>{{$news['wangmei']}}</td>
+                                          <td>{{$news['bbs']}}</td>
+                                          <td>{{$news['weibo']}}</td>
+                                          <td>{{$news['weixin']}}</td>
+                                          <td>{{$news['blog']}}</td>
+                                          <td>{{$news['paper']}}</td>
+                                          <td>{{$news['video']}}</td>
+                                          <td>{{$news['app']}}</td>
+                                          <td>{{$news['search']}}</td>
+                                          <td>{{$news['comment']}}</td>
+                                      </tr>
+                                  @endforeach
                                     </tbody>
                                 </table>
                             </div>

@@ -195,27 +195,48 @@ class StatisController extends Controller
     {
         $search['time1']=date('Y-m-d',strtotime('-7 day'));
         $search['time2']=date('Y-m-d');
-        $list=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
-            ->select(DB::raw('court.province,useful_news.orientation,count(1) as num'))
-            ->where('tag','1')
-            ->whereBetween('useful_news.starttime',$search)
-            ->groupBy(['court.province','useful_news.orientation'])
-            ->orderByDesc('num')
+        $list=DB::table('news')
+            ->select(DB::raw('media_type,orientation,count(1) as num'))
+            ->whereBetween('starttime',$search)
+            ->groupBy(['media_type','orientation'])
+            ->orderBy('media_type')
             ->get();
-        $newslist=$list->groupBy('province');
+        $newslist=$list->groupBy('orientation');
         $datalist=array();
-        foreach ($newslist as $key=>$news)
-        {
-            $data["province"]=$key;
-            $data["total"]=$news->sum('num');
-            $data["fumian"]=$news->where('orientation','负面')->first()==null?0:$news->where('orientation','负面')->first()->num;
-            $data["zhengmian"]=$news->where('orientation','正面')->first()==null?0:$news->where('orientation','正面')->first()->num;
-            $data["zhongxing"]=$news->where('orientation','中性')->first()==null?0:$news->where('orientation','中性')->first()->num;
-            array_push($datalist,$data);
-        }
-        $dblist= collect($datalist)->sortByDesc('total');
+        array_push($datalist,$this->getsourcedata($newslist['正面'],"正面"));
+        array_push($datalist,$this->getsourcedata($newslist['负面'],"负面"));
+        array_push($datalist,$this->getsourcedata($newslist['中性'],"中性"));
+        $dblist= collect($datalist);
         return view('admin.tongji.source',compact('dblist','search'));
     }
+     public function  getsourcedata($newslist,$orientation)
+     {
+         $data=array();
+         $data['orientation']=$orientation;
+         $data["wangmei"] =0;$data["bbs"] =0;
+         $data["weibo"] =0;$data["weibo"] =0;
+         $data["weixin"] =0;$data["blog"] =0;
+         $data["paper"] =0;$data["video"] =0;
+         $data["app"] =0;$data["search"]=0;
+         $data["comment"]=0;
+         foreach ($newslist as $news) {
+             switch ($news->media_type) {
+                 case 1:$data["wangmei"] =$news->num; break;
+                 case 2:$data["bbs"] =$news->num; break;
+                 case 4:$data["weibo"] =$news->num; break;
+                 case 8:$data["weibo"] =$news->num; break;
+                 case 6:$data["weixin"] =$news->num; break;
+                 case 3:$data["blog"] =$news->num; break;
+                 case 5:$data["paper"] =$news->num; break;
+                 case 7:$data["video"] =$news->num; break;
+                 case 9:$data["app"] =$news->num; break;
+                 case 99:$data["search"] =$news->num; break;
+                 case 10:$data["comment"] =$news->num; break;
+             }
+         }
+         return $data;
+
+     }
     /**
      * 新闻来源统计搜索
      *
@@ -223,9 +244,22 @@ class StatisController extends Controller
      */
     public function source_search(Request $request)
     {
-        $search['time1']=date('Y年m月d日',strtotime('-7 day'));
-        $search['time2']=date('Y年m月d日');
-        return view('admin.tongji.province',compact('search'));
+        $req=$request->all();
+        $search['time1']=date('Y-m-d H:i:s',strtotime($req['time1']));
+        $search['time2']=date('Y-m-d H:i:s',strtotime($req['time2']));
+        $list=DB::table('news')
+            ->select(DB::raw('media_type,orientation,count(1) as num'))
+            ->whereBetween('starttime',$search)
+            ->groupBy(['media_type','orientation'])
+            ->orderBy('media_type')
+            ->get();
+        $newslist=$list->groupBy('orientation');
+        $datalist=array();
+        array_push($datalist,$this->getsourcedata($newslist['正面'],"正面"));
+        array_push($datalist,$this->getsourcedata($newslist['负面'],"负面"));
+        array_push($datalist,$this->getsourcedata($newslist['中性'],"中性"));
+        $dblist= collect($datalist);
+        return view('admin.tongji.source',compact('dblist','search'));
     }
     /**
      * Store a newly created resource in storage.
