@@ -108,7 +108,8 @@
                                     @case(-1)  <span style="color:blue">未审核 </span>@break
                                     @case(0)未提交@break
                                     @case(1)<span style="color:#00a65a">合格</span>@break
-                                    @case(2)<span style="color:#00a65a">重复</span>@break
+                                    @case(2)<span style="color:#00a65a">合格重复</span>@break
+                                    @case(3)<span style="color:#00a65a">重复</span>@break
                                     @case(-2)<span style="color:red">不合格 </span>@break
                                 @endswitch</td>
                             <td>{{$news->created_at}}</td>

@@ -16,33 +16,36 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $filed=['Useful_news.id','Useful_news.title','Useful_news.firstwebsite','Useful_news.starttime','court.province'];
-        $newslist=  DB::table('Useful_news')->leftJoin('court','Useful_news.court','=','court.name')
-          ->where('tag',1)
+        $time['time1']=date('Y-m-d',strtotime('-2 day'));
+        $time['time2']=date('Y-m-d',time());
+        $filed=['useful_news.id','useful_news.title','useful_news.firstwebsite','useful_news.starttime','court.province'];
+        $newslist=  DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
+          ->whereBetween('updated_at',$time)
+            ->where('tag',1)
           ->whereNotNull('reportform_id')
           ->orderByDesc('updated_at')
           ->limit(5)
           ->get($filed);
          $week["date"]=array(date('m-d',strtotime('-6 day')),date('m-d',strtotime('-5 day')),date('m-d',strtotime('-4 day')),date('m-d',strtotime('-3 day')),date('m-d',strtotime('-2 day')),date('m-d',strtotime('-1 day')),date('m-d'));
-         $week["data"]=$this->week_trend();
-         $listmaps=$this->map();
-         $datamap=array();
-        foreach ($listmaps as $map)
-        {
-            $data["name"]=$map->province=="内蒙"?"内蒙古":$map->province;
-            $data["value"]=$map->total==null?"0":$map->total;
-            array_push($datamap,$data);
-        }
-        //dd($datamap);
-      return view('web.index',compact('newslist','week','listmaps','datamap'));
+        return view('web.index',compact('newslist','week'));
+         //$week["data"]=$this->week_trend();
+        // $listmaps=$this->map();
+       //  $datamap=array();
+        //foreach ($listmaps as $map)
+       //{
+          // $data["name"]=$map->province=="内蒙"?"内蒙古":$map->province;
+           // $data["value"]=$map->total==null?"0":$map->total;
+         //  array_push($datamap,$data);
+       // }
+      //return view('web.index',compact('newslist','week','datamap','listmaps'));
     }
     public function map()
     {
-        $sql="select  `a`.`province`,`d`.`total`,`d`.`fumian` from (select province from court group by court.province) a LEFT OUTER JOIN (select b.*,c.fumian from".
-            "(select `province`,count(1) as total from `Useful_news` left join `court` on `Useful_news`.`court` = `court`.`name` where `tag` = '1' and `reportform_id` is not null group by province) b join ("
-          ."select `province`,count(1) as fumian  from `Useful_news` left join `court` on `Useful_news`.`court` = `court`.`name` where `tag` = '1' and `reportform_id` is not null and `orientation`='负面' group by province) c) d on `a`.`province`=`d`.`province` order by total desc";
+         $sql="select b.*,c.fumian from".
+        "(select `province`,count(1) as total from `Useful_news` left join `court` on `Useful_news`.`court` = `court`.`name` where `tag` = '1' and `reportform_id` is not null group by province) b left join".
+        "(select `province`,count(1) as fumian  from `Useful_news` left join `court` on `Useful_news`.`court` = `court`.`name` where `tag` = '1' and `reportform_id` is not null and `orientation`='负面' group by province) c"
+         ." on `b`.`province`=`c`.`province` where b.`province` is not null order by b.total desc";
         $list=DB::select($sql);
-
         return $list;
     }
      /*一周走势*/

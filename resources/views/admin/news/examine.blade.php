@@ -72,6 +72,7 @@
                                     <select id="tag" name="tag" class="form-control">
                                         <option value="1">合格</option>
                                         <option value="2">合格重复</option>
+                                        <option value="3">重复</option>
                                         <option value="-2">不合格</option>
                                     </select>
                                 </div></div>

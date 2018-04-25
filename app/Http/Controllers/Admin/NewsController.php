@@ -103,8 +103,9 @@ class NewsController extends Controller
        }else{$p["nodes"]=null;array_push($data,$p);return $data;}
     }
    }
-    /* 获取已提交到早报的新闻列表
-    */
+    /* 获取已提交到三报的新闻列表
+     *修改审核通过的均显示
+     */
     public  function submit($id=null)
     {
         $subjects=Subject::all();
@@ -117,11 +118,10 @@ class NewsController extends Controller
         }
         else{
             //获取提交到三报的所有新闻列表
-        $filed=['useful_news.id','useful_news.abstract','useful_news.title','useful_news.author','useful_news.orientation','useful_news.created_at','useful_news.updated_at','useful_news.keywords','useful_news.reportform_id','admins.username'];
+        $filed=['useful_news.id','useful_news.abstract','useful_news.title','useful_news.author','useful_news.tag','useful_news.created_at','useful_news.updated_at','useful_news.keywords','useful_news.reportform_id','admins.username'];
         $newslist=DB::table('useful_news')->leftJoin('admins', 'useful_news.admin_id', '=', 'admins.id')
                 ->select($filed)
-                ->where('tag','=','1')
-                ->where('reportform_id','!=','null')
+                ->where('tag','>','0')
                 ->orderByDesc('created_at')
                 ->paginate(100);
             return view('admin.news.submit',compact('newslist','subjects'));
@@ -588,7 +588,7 @@ class NewsController extends Controller
         $sessions = $request->session()->all();
         $data= $sessions["submit"];
         }
-        $sql="select `useful_news`.`id`, `useful_news`.`title`,`useful_news`.`abstract`, `useful_news`.`author`, `useful_news`.`orientation`, `useful_news`.`created_at`, `useful_news`.`updated_at`, `useful_news`.`keywords`, `useful_news`.`reportform_id`, `admins`.`username` from `useful_news` left join `admins` on `useful_news`.`admin_id` = `admins`.`id` where ";
+        $sql="select `useful_news`.`id`, `useful_news`.`title`,`useful_news`.`abstract`, `useful_news`.`author`, `useful_news`.`tag`, `useful_news`.`created_at`, `useful_news`.`updated_at`, `useful_news`.`keywords`, `useful_news`.`reportform_id`, `admins`.`username` from `useful_news` left join `admins` on `useful_news`.`admin_id` = `admins`.`id` where ";
         if ($data["title"]!=null&&$data["title"]!='')
             $sql=$sql."title like '%".$data["title"]."%' and ";
         if ($data["court"]!=null&&$data["court"]!='')
@@ -600,7 +600,7 @@ class NewsController extends Controller
             $sql=$sql."subject_id='". $data["subject_id"]."' and ";
         if ($data["time1"] !=null&&$data["time2"] !=null)
             $sql=$sql."`starttime` between '".$data["time1"] ."' and '".$data["time2"] ."' and ";
-            $sql=$sql."`tag` = '1' and `reportform_id` is not null order by `created_at` desc limit 5000";
+            $sql=$sql."`tag` > '0' order by `created_at` desc limit 5000";
         if ($request->has('page')) {
             $current_page = $request->input('page');
             $current_page = $current_page <= 0 ? 1 :$current_page;

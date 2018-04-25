@@ -83,7 +83,7 @@
 
                             <th>文章标题</th>
                             <th>作者</th>
-                            <th>倾向性</th>
+                            <th>状态</th>
                             <th>添加时间</th>
                             <th data-sortable="false">上传者</th>
                             <th  data-sortable="false">操作</th>
@@ -96,7 +96,14 @@
                             <br>{{$news->abstract}}
                             </td>
                             <td>{{$news->author}}</td>
-                            <td>{{$news->orientation}}</td>
+                            <td>
+                                @switch($news->tag)
+                                @case(1)合格 @break;
+                                    @case (2)合格重复 @break;
+                                    @case (3)重复 @break;
+                                @endswitch
+
+                            </td>
                             <td>{{$news->created_at}}</td>
                             <td>{{$news->username}}</td>
                             <td>
