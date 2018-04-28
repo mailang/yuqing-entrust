@@ -72,7 +72,8 @@
                                 <option @if(isset($data['tag'])&&$data['tag']=="-2")selected @endif value="-2">不合格</option>
                                 <option @if(isset($data['tag'])&&$data['tag']=="-1")selected @endif value="-1">未审核</option>
                                 <option @if(isset($data['tag'])&&$data['tag']=="1")selected @endif value="1">合格未生成三报</option>
-                                <option @if(isset($data['tag'])&&$data['tag']=="2")selected @endif value="2">重复</option>
+                                <option @if(isset($data['tag'])&&$data['tag']=="2")selected @endif value="2">合格重复</option>
+                                <option @if(isset($data['tag'])&&$data['tag']=="3")selected @endif value="3">重复</option>
                             </select>
                         </div>
                         <div class="input-group">

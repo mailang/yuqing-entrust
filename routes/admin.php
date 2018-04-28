@@ -8,7 +8,6 @@
     Route::post('admins/update/{id}', ['uses'=>'AdminController@update','as'=>'admin.update']);
     Route::post('adminsdelete/{id}', ['uses'=>'AdminController@destroy','as'=>'admin.delete']);
     Route::get('admins/mine/{id?}', ['uses'=>'AdminController@modify','as'=>'admin.mine']);
-
     /*角色管理*/
     Route::get('rolelist', ['uses'=>'RolesController@index','as'=>'role.lists']);
     Route::get('role/add/{id?}', ['uses'=>'RolesController@create','as'=>'role.add']);
@@ -88,3 +87,8 @@
       Route::post('tongji/province', ['uses'=>'StatisController@province_search','as'=>'tongji.province_search']);
       Route::get('tongji/source', ['uses'=>'StatisController@source','as'=>'tongji.source']);
       Route::post('tongji/source', ['uses'=>'StatisController@source_search','as'=>'tongji.source_search']);
+      /*排班表*/
+      Route::get('schedule/info/{time?}', ['uses'=>'ScheduleController@schedule','as'=>'schedule']);
+      Route::post('schedule/update/{id}', ['uses'=>'ScheduleController@update','as'=>'schedule.update']);
+      Route::get('schedule/list', ['uses'=>'ScheduleController@list','as'=>'schedule.list']);
+      Route::get('schedule/edit/{id}', ['uses'=>'ScheduleController@create','as'=>'schedule.edit']);
