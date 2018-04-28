@@ -34,7 +34,13 @@
                                 <tbody>
                                 @foreach($list as $schedule)
                                 <tr>
-                                    <td rowspan="2"><a href="{{route('schedule.edit',$schedule->id)}}">{{$schedule->weekday}}</a></td>
+                                    <td rowspan="2">
+                                        @if($data['role']==1)
+                                        <a href="{{route('schedule.edit',$schedule->id)}}">{{$schedule->weekday}}</a>
+                                        @else
+                                            {{$schedule->weekday}}
+                                        @endif
+                                    </td>
                                     <td>
                                          8:00-9:00<br>
                                         10:-11:00<br>
