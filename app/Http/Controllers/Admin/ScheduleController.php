@@ -36,8 +36,7 @@ class ScheduleController extends Controller
     public function  generate()
     {
          $admins= DB::table('admins')->leftJoin('role_user','admins.id','=','role_user.user_id')
-             ->where('role_id','!=','1')
-            ->where('role_id','!=','3')
+             ->where('role_id','2')
              ->orderBy(\DB::raw('RAND()'))
              ->get(['id','realname']);//随机排列
          $count=$admins->count();
