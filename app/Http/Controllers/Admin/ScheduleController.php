@@ -23,7 +23,8 @@ class ScheduleController extends Controller
          $this->generate();
         }
         if($time)$list=DB::table('schedule')->where('starttime',Date('Y-m-d',$time))->orderBy('id')->get();
-        else $list=DB::table('schedule')->limit(7)->orderBy('id')->get();
+        else $list=DB::table('schedule')->limit(7)->orderByDesc('id')->get();
+         $list=$list->sortBy('id');
         $data["time1"]=$list->first()->starttime;
         $data["time2"]=date('Y-m-d',strtotime($data['time1'].'+6 day'));
         $data['role']=\Auth::guard('admin')->user()->roles->toArray()[0]["pivot"]["role_id"];
