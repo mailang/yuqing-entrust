@@ -68,10 +68,10 @@ class ScheduleController extends Controller
                     if ($count>2&&$count<8){
                         $a=$this->getrand($splice,$push1);$b=$this->getrand($splice1,$push2);
                         if (count($splice)>0&&count($splice)==count($push1['admins'])){array_splice($splice,0,count($splice)-1);array_splice($splice1,0,count($splice1)-1);}
-                        array_push($push2['admins'],array_splice($push1['admins'],$a,1)[0]);
-                        array_push($push1['admins'],array_splice($push2['admins'],$b,1)[0]);
                         array_push($splice,$push1['admins'][$a]);
                         array_push($splice1,$push2['admins'][$b]);
+                        array_push($push2['admins'],array_splice($push1['admins'],$a,1)[0]);
+                        array_push($push1['admins'],array_splice($push2['admins'],$b,1)[0]);
                     }
                     else if($count>6) {
                         $a=array_rand($push1['admins'],$count2/2);
