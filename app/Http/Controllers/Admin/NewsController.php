@@ -158,7 +158,7 @@ class NewsController extends Controller
             $subjects=Subject::all();
             $filed=['id','title','tag','author','court','orientation','created_at','keywords'];
             $newslist=DB::table('useful_news')
-                ->where('tag','<','0')
+                ->where('tag','-1')
                 ->orderByDesc('created_at')
                 ->get($filed);
             return view('admin.news.verify',compact('newslist','subjects','id'));

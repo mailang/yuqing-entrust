@@ -29,7 +29,7 @@
                             <table  width="800" align="center">
                                 <tr> <td style="text-align: center; width: 200px;">
                                         8:00-9:00<br>
-                                        10:-11:00
+                                        10:00-11:00<br>
                                         12:00-13:00<br>
                                         14:00-15:00<br>
                                         16:00-17:00
@@ -42,11 +42,11 @@
                                 </td>
                                 </tr>
                                 <tr> <td style="text-align: center;">
-                                        8:00-9:00<br>
-                                        10:-11:00<br>
-                                        12:00-13:00<br>
-                                        14:00-15:00<br>
-                                        16:00-17:00
+                                        9:00-10:00<br>
+                                        11:00-12:00<br>
+                                        13:00-14:00<br>
+                                        15:00-16:00<br>
+                                        17:00-17:30
                                     </td>
                                     <td  style="text-align: left;">
                                         <?php
