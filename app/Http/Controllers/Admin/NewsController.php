@@ -249,6 +249,7 @@ class NewsController extends Controller
         if (isset($news['areacode2'])&&$news['areacode2']!=null)
             $useful['areacode']=$news['areacode2'];
         if ($news['areacode2']==null&&$news['areacode1']!=null)  $useful['areacode']=$news['areacode1'];
+        $news["title"]=preg_replace('/"([^"]*)"/', '“${1}”', $news["title"]);
         $news["transmit"]= $news["transmit"]==null?"0":$news["transmit"];
         $news["visitnum"]= $news["visitnum"]==null?"0":$news["visitnum"];
         $news["replynum"]= $news["replynum"]==null?"0":$news["replynum"];
