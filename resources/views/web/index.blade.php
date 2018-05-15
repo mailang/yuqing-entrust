@@ -1,7 +1,9 @@
 @extends('web.layouts.master')
 @section('head')
     <link rel="stylesheet" href="{{asset('web/css/index.css')}}">
-
+    <style type="text/css">
+     #oldlist,#oldlist li{ text-indent:10px;list-style: none; font-size: 16px; font-family:"宋体",Arial,sans-serif}
+    </style>
 @stop
 @section('content')
 <!--main-->
@@ -311,7 +313,18 @@
             <div style="height: 40px;line-height: 40px;border-bottom: 1px solid #e5e5e5;position: relative;">
                 <p class="yuqingpushP">热词图</p>
             </div>
-            <div id="wordcloud" style="height:400px;"  ></div>
+            <div class="cont">
+            <div id="wordcloud" style="height:328px;width: 650px; float: left;"  ></div>
+                <div class="lists">
+                    <table  id="oldlist">
+                        <thead>
+                        <tr>
+                            <td>热词</td>
+                            <td>热词值</td>
+                        </tr>
+                        </thead>
+                      </table>
+            </div>  </div>
         </div>
 
 </div>
@@ -456,6 +469,15 @@
             async: false,
             success: function (data) {
                 re=data;
+                var wordlist=eval(data);
+                wordlist.sort(function(x,y){
+                    return y["value"] - x["value"];
+                });
+                for(var i=0;i<wordlist.length;i++)
+                {
+                    var  li= "<tr><td>"+wordlist[i]["name"]+"</td><td class=\"td1\">"+wordlist[i]["value"]+"</td> </tr>"
+                    $("#oldlist").append(li);
+                }
             }
         });
         return re;
