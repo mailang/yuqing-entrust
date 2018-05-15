@@ -2,7 +2,7 @@
 @section('head')
     <link rel="stylesheet" href="{{asset('web/css/index.css')}}">
     <style type="text/css">
-     #oldlist,#oldlist li{ text-indent:10px;list-style: none; font-size: 16px; font-family:"宋体",Arial,sans-serif}
+     #oldlist,#oldlist li{ width: 100%; text-indent:10px;list-style: none; font-size: 16px; font-family:"宋体",Arial,sans-serif}
     </style>
 @stop
 @section('content')
