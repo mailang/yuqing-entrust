@@ -255,11 +255,14 @@ class StatisController extends Controller
             ->groupBy(['media_type','orientation'])
             ->orderBy('media_type')
             ->get();
-        $newslist=$list->groupBy('orientation');
         $datalist=array();
+        if ($list->count()>0)
+        {
+        $newslist=$list->groupBy('orientation');
         array_push($datalist,$this->getsourcedata($newslist['正面'],"正面"));
         array_push($datalist,$this->getsourcedata($newslist['负面'],"负面"));
         array_push($datalist,$this->getsourcedata($newslist['中性'],"中性"));
+        }
         $dblist= collect($datalist);
         return view('admin.tongji.source',compact('dblist','search'));
     }
