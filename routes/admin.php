@@ -92,3 +92,7 @@
       Route::post('schedule/update/{id}', ['uses'=>'ScheduleController@update','as'=>'schedule.update']);
       Route::get('schedule/list', ['uses'=>'ScheduleController@list','as'=>'schedule.list']);
       Route::get('schedule/edit/{id}', ['uses'=>'ScheduleController@create','as'=>'schedule.edit']);
+      /*周报添加*/
+      Route::post('report/week/add', ['uses'=>'WeekformController@store','as'=>'weekform.store']);//周报添加
+      Route::get('report/week/list', ['uses'=>'WeekformController@index','as'=>'weekform.list']);//周报列表
+      Route::get('report/useful_news/list/{id}', ['uses'=>'WeekformController@newslist','as'=>'weekform.newslist']);//周报列表
