@@ -35,7 +35,7 @@
                             <td>{{$news->orientation}}</td>
                             <td>{{$news->created_at}}</td>
                             <td>
-                                <a href="{{route('passed.lists',$news->id)}}" class="text-success" target="_blank">查看</a>
+                                <a href="{{route('weekform.delete',$news->id)}}" class="text-success">删除</a>
                             </td>
                         </tr>@endforeach
                         </tbody>

@@ -96,3 +96,5 @@
       Route::post('report/week/add', ['uses'=>'WeekformController@store','as'=>'weekform.store']);//周报添加
       Route::get('report/week/list', ['uses'=>'WeekformController@index','as'=>'weekform.list']);//周报列表
       Route::get('report/useful_news/list/{id}', ['uses'=>'WeekformController@newslist','as'=>'weekform.newslist']);//周报列表
+      Route::get('week/delete/{id}', ['uses'=>'WeekformController@destroy','as'=>'weekform.destroy']);//删除
+      Route::get('week/delete/news/{id}', ['uses'=>'WeekformController@delete','as'=>'weekform.delete']);//从周报表中移除新闻

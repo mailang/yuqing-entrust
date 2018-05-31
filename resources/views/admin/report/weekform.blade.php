@@ -32,7 +32,7 @@
                                 <td>
                                     {{date('Y-m-d',strtotime($report->endtime))}}
                               </td>
-                                <td><a>删除</a></td>
+                                <td><a href="{{route('weekform.destroy',$report->id)}}">删除</a></td>
                             </tr>
                         @endforeach
                         </tbody>

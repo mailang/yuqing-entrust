@@ -79,9 +79,7 @@ class WeekformController extends Controller
      */
     public function edit($id)
     {
-        $report=Weekform::find($id);
-        $newslist=DB::table('useful_news')->where('reportform_id',$id)->get();
-       return view('admin.report.edit',compact('report','newslist'));
+
     }
 
     /**
@@ -106,13 +104,27 @@ class WeekformController extends Controller
     {
         if ($id)
         {
-            $report = Reportform::find($id);
+            $report = Weekform::find($id);
             $useful=DB::table('useful_news')
-                ->where('reportform_id',$report->id)
-                ->update(['reportform_id'=>null]);
+                ->where('weekform_id',$report->id)
+                ->update(['weekform_id'=>null]);
             $report->delete();
             flash("操作成功");
             return redirect()->back();
         }
     }
+    /**
+     *从周报表中移除新闻，设置成未添加到周报表的状态
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $useful=DB::table('useful_news')->where('id',$id)
+            ->update(['weekform_id'=>null]);
+        flash("操作成功");
+        return redirect()->back();
+    }
+
 }
