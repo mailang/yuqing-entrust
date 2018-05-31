@@ -9,6 +9,26 @@
     <script type="text/javascript">
         $(function () {
             // 时间设置
+            $('#starttime').datetimepicker({
+                timeFormat: "",
+                dateFormat: "yy-mm-dd",
+                beforeShow: function () {
+                    setTimeout(function () {
+                            $('#ui-datepicker-div').css("z-index", 1500);
+                        }, 100
+                    );
+                }
+            });
+            $('#endtime').datetimepicker({
+                timeFormat: "",
+                dateFormat: "yy-mm-dd",
+                beforeShow: function () {
+                    setTimeout(function () {
+                            $('#ui-datepicker-div').css("z-index", 1500);
+                        }, 100
+                    );
+                }
+            });
             $('#time1').datetimepicker({
                 timeFormat: "HH:mm:ss",
                 dateFormat: "yy-mm-dd",
@@ -89,25 +109,29 @@
                             <i class="fa fa-search-plus"></i>搜索
                         </button>
                     </form>
+                    <table> <tr><td colspan="6">
+                                <a href="#" onclick="javascript:reportbtn();" class="btn btn-success btn-md">添加到周报</a>
+                            </td></tr></table>
                     <table id="tags-table" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-
-                            <th>文章标题</th>
-                            <th>作者</th>
-                            <th>状态</th>
-                            <th>添加时间</th>
-                            <th data-sortable="false">上传者</th>
-                            <th  data-sortable="false">操作</th>
+                            <th  width="6%" data-sortable="false">
+                                <label for="all">全选</label><input id="all" type="checkbox" value="" onclick="javascript:allclick(this);"></th>
+                            <th width="52%">文章标题</th>
+                            <th width="10%">首发网站</th>
+                            <th width="8%">状态</th>
+                            <th width="8%">时间</th>
+                            <th width="5%" data-sortable="false">上传者</th>
+                            <th width="10%" data-sortable="false">操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($newslist as $news)<tr>
-
-                            <td> <a href="{{route('passed.lists',$news->id)}}" target="_blank" class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a>
+                            <td width="6%"> @if($news->weekform_id==null) <input type="checkbox" value="{{$news->id}}" name="news[]">@else<input type="hidden" value="{{$news->id}}">@endif</td>
+                            <td width="52%"> <a href="{{route('passed.lists',$news->id)}}" target="_blank" class="text-success ">{{strlen($news->title)>60?mb_substr($news->title,0,50).'...':$news->title}}</a>
                             <br>{{$news->abstract}}
                             </td>
-                            <td>{{$news->author}}</td>
+                            <td>{{$news->firstwebsite}}</td>
                             <td>
                                 @switch($news->tag)
                                 @case(1)合格 @break;
@@ -120,7 +144,9 @@
                             <td>{{$news->username}}</td>
                             <td>
                                 <a href="{{route('passed.lists',$news->id)}}" class="X-Small btn-xs text-success ">
-                                    查看</a>
+                                    查看</a> @if($news->weekform_id==null)|
+                                <a href="#" onclick="javascript:chkselect({{$news->id}});" class="X-Small btn-xs text-success ">
+                                    <i class="fa fa-plus-circle"></i>周报</a>@endif
                             </td>
                         </tr>@endforeach
 
@@ -129,5 +155,81 @@
                     <table width="100%"><tr><td>@if(isset($paginator)) 当前页{{$paginator->currentPage()}}共计{{$paginator->lastPage()}}页，总记录数{{$paginator->total()}}条 @else当前页{{$newslist->currentPage()}}共计{{$newslist->lastPage()}}页,总记录数{{$newslist->total()}}条  @endif </td><td style="text-align: right;">@if(isset($paginator))  {{ $paginator->render() }} @else{{$newslist->links()}} @endif</td></tr></table>
 
                 </div></div></div></div>
+    <div class="modal fade" id="modal-form" tabIndex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        ×
+                    </button>
+                    <h4 class="modal-title">选择周报的时间段</h4>
+                </div>
+                <form id="alertform" class="deleteForm" method="POST" action="">
+                    <div class="modal-body">
+                        <div class="input-group" style="width: 350px;margin:0 auto;">
+                            <span class="input-group-addon"><label for="starttime" class="col-md-3 control-label">起始时间</label> </span>
+                            <input placeholder="开始时间" type="text" class="form-control" name="starttime" id="starttime" autocomplete="off" value="@if(isset($data['time1'])){{$data['time1']}}@endif" autofocus>                    </div>
+                      <br>
+                        <div class="input-group" style="width: 350px;margin:0 auto;">
+                            <span class="input-group-addon"><label for="title" class="col-md-3 control-label">结束时间</label> </span>
+                            <input placeholder="结束时间" type="text" class="form-control" name="endtime" id="endtime" autocomplete="off" value="@if(isset($data['time2'])){{$data['time2']}}@endif" autofocus>
+                        </div>  <br>
+                        <div class="modal-footer"  style="width: 350px;margin:0 auto;">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" id="newsid" name="newsid" value="">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa fa-times-circle"></i>提交
+                            </button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+    <div class="modal fade" id="modal-alert" tabIndex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        ×
+                    </button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <form id="alertform" class="deleteForm" method="POST" action="">
+                    <div class="modal-body">
+                        <p class="lead">
+                            <i class="fa fa-question-circle fa-lg"></i>请选择新闻
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function chkselect(id) {
+            $("#newsid").val(id);
+            $('.deleteForm').attr('action', '/admin/report/week/add');
+            $("#modal-form").modal();
+        }
+        function  allclick(obj) {
+            if($(obj).is(":checked"))$("input[name='news[]']").prop("checked",true);
+            else $("input[name='news[]']").prop("checked",false);
+        }
+        function reportbtn() {
+            var array=$("input[name='news[]']");
+            var s='';
+            $("input[name='news[]']:checkbox:checked").each(
+                function(){
+                    s+=$(this).val()+',';
+                });
+            if(s!=''){
+                s+="0";
+                $("#newsid").val(s);
+                $('.deleteForm').attr('action', '/admin/report/week/add');
+                $("#modal-form").modal();
+            }
+            else             $("#modal-alert").modal();
+        }
+    </script>
+
 @endsection

@@ -54,8 +54,9 @@ class UsefulNews extends Migration
             $table->unsignedInteger('subject_id')->nullable();//专题id
             $table->unsignedInteger('reportform_id')->nullable();//早报id
             $table->unsignedInteger('casetype_id')->nullable();//案件类型id
+            $table->unsignedInteger('weekform_id')->nullable();//周报表
 
-            $table->foreign('news_id')->references('id')->on('news')
+          $table->foreign('news_id')->references('id')->on('news')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('admin_id')->references('id')->on('admins')
                 ->onUpdate('cascade')->onDelete('cascade');
@@ -66,6 +67,8 @@ class UsefulNews extends Migration
             $table->foreign('reportform_id')->references('id')->on('reportform')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('casetype_id')->references('id')->on('casetype')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('weekform_id')->references('id')->on('weekform')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
