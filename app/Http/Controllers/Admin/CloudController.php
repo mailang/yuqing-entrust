@@ -15,6 +15,36 @@ class CloudController extends Controller
           return view('admin.cloud.index');
     }
 
+   public  function  upload()
+  {
+    return view('admin.cloud.upload');
+  }
+
+     public  function  store(Request $request)
+    {
+
+        $pic=$request->file('picture');
+        if ($request->hasFile('picture')) {
+            $images = $request->file('picture');
+            $imgdir = storage_path("cloud/");
+            $extension =strtolower($images->getClientOriginalExtension());// $images->getClientOriginalName(); //4、获取上传图片的后缀名
+            $exs=array('png','jpeg','jpg');
+            if(in_array($extension,$exs)) {
+                $newImagesName = date('Ymd') . "." . $extension;//5、重新命名上传文件名字
+                $images->move($imgdir, $newImagesName);
+                $ftppath = env("FTP_DIR", "");
+                if ($ftppath !== "") {
+                    if (file_exists($ftppath)) {
+                        copy($imgdir.$newImagesName.'.$extension',$ftppath.$newImagesName.'.$extension');
+                    }
+                    flash("操作成功");
+                }
+            }
+            else flash("格式不正确");
+            return redirect()->back();
+        }
+    }
+
     /**
      * 返回热词的json格式
      */
