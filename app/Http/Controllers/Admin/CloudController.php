@@ -35,7 +35,7 @@ class CloudController extends Controller
                 $ftppath = env("FTP_DIR", "");
                 if ($ftppath !== "") {
                     if (file_exists($ftppath)) {
-                        copy($imgdir.$newImagesName.'.$extension',$ftppath.$newImagesName.'.$extension');
+                        copy($imgdir.$newImagesName,$ftppath.$newImagesName);
                     }
                     flash("操作成功");
                 }
