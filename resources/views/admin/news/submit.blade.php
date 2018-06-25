@@ -120,7 +120,7 @@
                             <th width="52%">文章标题</th>
                             <th width="10%">首发网站</th>
                             <th width="8%">状态</th>
-                            <th width="8%">时间</th>
+                            <th width="8%">首发时间</th>
                             <th width="5%" data-sortable="false">上传者</th>
                             <th width="10%" data-sortable="false">操作</th>
                         </tr>
@@ -140,7 +140,7 @@
                                 @endswitch
 
                             </td>
-                            <td>{{$news->created_at}}</td>
+                            <td>{{$news->starttime}}</td>
                             <td>{{$news->username}}</td>
                             <td>
                                 <a href="{{route('passed.lists',$news->id)}}" class="X-Small btn-xs text-success ">
