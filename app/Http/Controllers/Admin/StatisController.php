@@ -134,7 +134,7 @@ class StatisController extends Controller
         $search['time2']=date('Y-m-d');
         $list=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
             ->select(DB::raw('court.province,useful_news.orientation,count(1) as num'))
-            ->whereBetween('useful_news.starttime',$search)
+            ->whereBetween('useful_news.created_at',$search)
             ->where('tag','1')
             ->whereNotNull('reportform_id')
             ->groupBy(['court.province','useful_news.orientation'])
@@ -166,7 +166,7 @@ class StatisController extends Controller
         $search['time2']=date('Y-m-d H:i:s',strtotime($req['time2']));
         $list=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
             ->select(DB::raw('court.province,useful_news.orientation,count(1) as num'))
-            ->whereBetween('useful_news.starttime',$search)
+            ->whereBetween('useful_news.created_at',$search)
             ->where('tag','1')
             ->whereNotNull('reportform_id')
             ->groupBy(['court.province','useful_news.orientation'])
