@@ -37,6 +37,7 @@
                                     <span><font style="color: red">转发数：</font>{{$news->transmit}}</span>
                                     <span><font style="color: red">访问数：</font>{{$news->visitnum}}</span>
                                     <span><font style="color: red">回复数：</font>{{$news->replynum}}</span>
+                                    <span><font style="color: red">预警等级：</font>{{$news->yuqinginfo}}</span>
                                 </div>
                                 <div style="text-align: left;color: blue;font-size: 14px;font-style: normal;">  <span>原链接：{{$news->link}}</span></div>
                                 <div style="font-size: 15px;"><strong>摘要：</strong>{!!html_entity_decode($news->abstract)!!}</div>
@@ -51,9 +52,14 @@
                                         <div class="input-group">
                                             <span class="input-group-addon"><label for="title" class="col-md-3 control-label">文章标题</label> </span>
                                             <input type="text" class="form-control" name="title" required="required" id="title" autocomplete="off" value="{{$news->title}}" autofocus>
-                                        </div></div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
+                            <div class="form-group"> <div class="row"><div class="col-xs-6">
+                                        <div class="input-group">&nbsp;&nbsp;&nbsp;&nbsp;<font style="color: red">预警等级：</font>{{$news->yuqinginfo}}</div>
+                                    </div></div></div>
                             <div class="form-group">
                                 <label for="abstract" class="col-md-3 control-label"></label>
                                 <div class="col-md-10">
