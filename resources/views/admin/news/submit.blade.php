@@ -117,12 +117,13 @@
                         <tr>
                             <th  width="6%" data-sortable="false">
                                 <label for="all">全选</label><input id="all" type="checkbox" value="" onclick="javascript:allclick(this);"></th>
-                            <th width="52%">文章标题</th>
-                            <th width="10%">首发网站</th>
-                            <th width="8%">状态</th>
+                            <th width="46%">文章标题</th>
+                            <th width="9%">首发网站</th>
+                            <th width="7%">状态</th>
                             <th width="8%">时间</th>
+                            <th width="7%">倾向性 </th>
                             <th width="5%" data-sortable="false">上传者</th>
-                            <th width="10%" data-sortable="false">操作</th>
+                            <th width="12%" data-sortable="false">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -141,10 +142,11 @@
 
                             </td>
                             <td>{{$news->created_at}}</td>
+                            <td>{{$news->orientation}}</td>
                             <td>{{$news->username}}</td>
                             <td>
-                                <a href="{{route('passed.lists',$news->id)}}" class="X-Small btn-xs text-success ">
-                                    查看</a> @if($news->weekform_id==null)|
+                               <!-- <a href="{{route('passed.lists',$news->id)}}" class="X-Small btn-xs text-success ">
+                                    查看</a>--> @if($news->weekform_id==null)
                                 <a href="#" onclick="javascript:chkselect({{$news->id}});" class="X-Small btn-xs text-success ">
                                     <i class="fa fa-plus-circle"></i>周报</a>@endif
                             </td>

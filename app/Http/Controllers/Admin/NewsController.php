@@ -118,7 +118,7 @@ class NewsController extends Controller
         }
         else{
             //获取提交到三报的所有新闻列表
-        $filed=['useful_news.id','useful_news.abstract','useful_news.title','useful_news.firstwebsite','useful_news.weekform_id','useful_news.tag','useful_news.created_at','useful_news.updated_at','useful_news.keywords','useful_news.reportform_id','admins.username'];
+        $filed=['useful_news.id','useful_news.abstract','useful_news.title','useful_news.firstwebsite','useful_news.orientation','useful_news.weekform_id','useful_news.tag','useful_news.created_at','useful_news.updated_at','useful_news.keywords','useful_news.reportform_id','admins.username'];
         $newslist=DB::table('useful_news')->leftJoin('admins', 'useful_news.admin_id', '=', 'admins.id')
                 ->select($filed)
                 ->where('tag','1')
@@ -589,7 +589,7 @@ class NewsController extends Controller
         $sessions = $request->session()->all();
         $data= $sessions["submit"];
         }
-        $sql="select `useful_news`.`id`, `useful_news`.`title`,`useful_news`.`abstract`, `useful_news`.`firstwebsite`,`useful_news`.`weekform_id`, `useful_news`.`tag`, `useful_news`.`created_at`, `useful_news`.`updated_at`, `useful_news`.`keywords`, `useful_news`.`reportform_id`, `admins`.`username` from `useful_news` left join `admins` on `useful_news`.`admin_id` = `admins`.`id` where ";
+        $sql="select `useful_news`.`id`, `useful_news`.`title`,`useful_news`.`abstract`, `useful_news`.`firstwebsite`,`useful_news`.`orientation`,`useful_news`.`weekform_id`, `useful_news`.`tag`, `useful_news`.`created_at`, `useful_news`.`updated_at`, `useful_news`.`keywords`, `useful_news`.`reportform_id`, `admins`.`username` from `useful_news` left join `admins` on `useful_news`.`admin_id` = `admins`.`id` where ";
         if ($data["title"]!=null&&$data["title"]!='')
             $sql=$sql."title like '%".$data["title"]."%' and ";
         if ($data["court"]!=null&&$data["court"]!='')
