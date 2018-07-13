@@ -49,6 +49,7 @@ class ReportformController extends Controller
           //dd($request,$report["title"]);
           $report["type"]=$req['type'];
           $report["admin_id"]=\Auth::guard('admin')->id();
+          $report["ispush"]=0;
           $rpt= Reportform::create($report);
           if (!$rpt->isEmpty)
           {
@@ -150,6 +151,7 @@ class ReportformController extends Controller
         if ($c->push($id)){
             flash("推送成功");
         }
+        else  flash("报表已推送一次!不可重复推送");
         return redirect()->back();
     }
 

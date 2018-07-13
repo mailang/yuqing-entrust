@@ -11,6 +11,7 @@ class Reportform extends Model
         'admin_id',
         'title',
         'description',
-        'type'
+        'type',
+        'ispush'
     ];
 }
