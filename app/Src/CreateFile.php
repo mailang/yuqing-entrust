@@ -79,13 +79,13 @@ class CreateFile{
         $zippath = storage_path("zip/");
         $r = Reportform::find($id);
         if ($r["ispush"]==0) {
-            /*$zipname = $r["title"];
+            $zipname = $r["title"];
             $zippath = ($zippath . $zipname . '.zip');
             if ($ftppath !== "") {
                 if (file_exists($ftppath)) {
                     copy($zippath, $ftppath . $zipname . '.zip');
                 }
-            }*/
+            }
             $r["ispush"]=1;
               $r->save();
             return true;
