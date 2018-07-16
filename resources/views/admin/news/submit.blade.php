@@ -68,7 +68,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-body">
-                    <form class="form-inline" role="form" action="{{route('submit.search')}}" method="post">
+                    <form id="search_form" class="form-inline" role="form" action="{{route('submit.search')}}" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
                             <div class="input-group">
@@ -166,7 +166,7 @@
                     </button>
                     <h4 class="modal-title">选择周报的时间段</h4>
                 </div>
-                <form id="alertform" class="deleteForm" method="POST" action="">
+                <form id="weekform" class="deleteForm" method="POST" action="">
                     <div class="modal-body">
                         <div class="input-group" style="width: 350px;margin:0 auto;">
                             <span class="input-group-addon"><label for="starttime" class="col-md-3 control-label">起始时间</label> </span>
@@ -180,7 +180,7 @@
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" id="newsid" name="newsid" value="">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="submit" class="btn btn-danger">
+                            <button class="btn btn-danger">
                                 <i class="fa fa-times-circle"></i>提交
                             </button></div>
                     </div>
@@ -210,7 +210,7 @@
     <script type="text/javascript">
         function chkselect(id) {
             $("#newsid").val(id);
-            $('.deleteForm').attr('action', '/admin/report/week/add');
+            $('#weekform').attr('action', '/admin/report/week/add');
             $("#modal-form").modal();
         }
         function  allclick(obj) {
@@ -227,7 +227,7 @@
             if(s!=''){
                 s+="0";
                 $("#newsid").val(s);
-                $('.deleteForm').attr('action', '/admin/report/week/add');
+                $('#weekform').attr('action', '/admin/report/week/add');
                 $("#modal-form").modal();
             }
             else             $("#modal-alert").modal();

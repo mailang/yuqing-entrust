@@ -47,7 +47,8 @@ class WeekformController extends Controller
     public function store(Request $request)
     {
         $req=$request->all();
-
+          if (is_null($req['starttime'])&&is_null($req['endtime']))
+          {  flash('时间不能为空');return redirect()->back();}
         $report["starttime"]=$req['starttime'];
         $report["endtime"]=$req['endtime'];
         $report["title"]=date('Ymd',strtotime($req['starttime']))."-".date('Ymd',strtotime($req['endtime']));
