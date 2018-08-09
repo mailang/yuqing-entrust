@@ -189,17 +189,20 @@ class StatisController extends Controller
     /**
      * 新闻来源统计
      *统计过去七天的抓取新闻
+     * 现已修改成统计生成三报的新闻来源统计
      * @return \Illuminate\Http\Response
      */
     public function source()
     {
         $search['time1']=date('Y-m-d',strtotime('-7 day'));
         $search['time2']=date('Y-m-d');
-        $list=DB::table('news')
-            ->select(DB::raw('media_type,orientation,count(1) as num'))
+        $list=DB::table('useful_news')
+            ->select(DB::raw('sitetype,orientation,count(1) as num'))
             ->whereBetween('starttime',$search)
-            ->groupBy(['media_type','orientation'])
-            ->orderBy('media_type')
+            ->where('tag','1')
+            ->whereNotNull('reportform_id')
+            ->groupBy(['sitetype','orientation'])
+            ->orderBy('sitetype')
             ->get();
         $datalist=array();
         if ($list->count()>0){
@@ -221,19 +224,24 @@ class StatisController extends Controller
          $data["paper"] =0;$data["video"] =0;
          $data["app"] =0;$data["search"]=0;
          $data["comment"]=0;
+         $data["other"]=0;
          foreach ($newslist as $news) {
-             switch ($news->media_type) {
-                 case 1:$data["wangmei"] =$news->num; break;
-                 case 2:$data["bbs"] =$news->num; break;
-                 case 4:$data["weibo"] =$news->num; break;
-                 case 8:$data["weibo"] =$news->num; break;
-                 case 6:$data["weixin"] =$news->num; break;
-                 case 3:$data["blog"] =$news->num; break;
-                 case 5:$data["paper"] =$news->num; break;
-                 case 7:$data["video"] =$news->num; break;
-                 case 9:$data["app"] =$news->num; break;
-                 case 99:$data["search"] =$news->num; break;
-                 case 10:$data["comment"] =$news->num; break;
+             switch ($news->sitetype) {
+                 case "网媒" :$data["wangmei"] +=$news->num; break;
+                 case "政府" :$data["wangmei"] +=$news->num; break;
+                 case "新闻" :$data["wangmei"] +=$news->num; break;
+                 case "平媒" :$data["wangmei"] +=$news->num; break;
+                 case "纸媒" :$data["wangmei"] +=$news->num; break;
+                 case "论坛":$data["bbs"] =$news->num; break;
+                 case "微博":$data["weibo"] =$news->num; break;
+                 case "微信":$data["weixin"] =$news->num; break;
+                 case "博客":$data["blog"] =$news->num; break;
+                 case "报刊":$data["paper"] =$news->num; break;
+                 case "视频":$data["video"] =$news->num; break;
+                 case "APP":$data["app"] =$news->num; break;
+                 case "搜索":$data["search"] =$news->num; break;
+                 case "评论":$data["comment"] =$news->num; break;
+                 case "其他":$data["other"] =$news->num; break;
              }
          }
          return $data;

@@ -93,7 +93,7 @@ class AdminController extends Controller
     {
         $req=$request->all();
         $new=$req['new'];
-        $exist= Admins::where('username',$new['username'])->first();;
+        $exist= Admins::where('username',$new['username'])->first();
         if ($exist){flash('该用户已经存在');return redirect()->back();}
         if ($new['password']==$new['password_confirmation']) {
             $new['password']=bcrypt($new['password']);
