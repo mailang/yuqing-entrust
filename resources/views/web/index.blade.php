@@ -4,6 +4,159 @@
     <style type="text/css">
      #oldlist,#oldlist li{ width: 100%; text-indent:10px;list-style: none; font-size: 16px; font-family:"宋体",Arial,sans-serif}
     </style>
+    <script src="{{asset('web/js/echarts.js')}}"></script>
+    <script type="text/javascript">
+        // Step:3 为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
+        require.config({
+            paths: {
+                echarts: '/web/js'
+            }
+        });
+        // Step:4 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar',
+                'echarts/chart/line',
+                'echarts/chart/map',
+                'echarts/chart/wordCloud'
+            ],
+            function (ec) {
+                //--- 折柱 ---
+                var myChart = ec.init(document.getElementById('main'),'macarons');
+                myChart.setOption({
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['全部','正面','中性','负面','推送舆情']
+                    },
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            dataView : {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data :{!!json_encode($week["date"]) !!}
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value',
+                            splitArea : {show : true}
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'全部',
+                            type:'bar',
+                            data:[18812, 19533, 19014, 15955, 10076, 8142, 1527]
+                        },
+                        {
+                            name:'正面',
+                            type:'bar',
+                            data:[8520, 8765, 1572, 645, 201, 254, 60]
+                        },
+                        {
+                            name:'中性',
+                            type:'bar',
+                            data:[3612, 4660, 13525, 11228, 7095, 6008, 1053]
+                        },
+                        {
+                            name:'负面',
+                            type:'bar',
+                            data:[6680, 6108, 4289, 4363, 2860, 1954, 441]
+                        },
+                        {
+                            name:'推送舆情',
+                            type:'bar',
+                            data:[52, 57, 58, 63, 30, 25, 4]
+                        }
+                    ]
+                });
+
+                // --- 地图 ---
+                var myChart2 = ec.init(document.getElementById('mainmap'), 'macarons');
+                myChart2.setOption({
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: '{b} : {c}'
+                    },
+                    dataRange: {
+                        min: 0,
+                        max: 275509,
+                        x: 'left',
+                        y: 'bottom',
+                        text:['高','低'],           // 文本，默认为数值文本
+                        calculable : true
+                    },
+                    series : [
+                        {
+                            name: '中国',
+                            type: 'map',
+                            mapType: 'china',
+                            itemStyle:{
+                                normal:{label:{show:true}},
+                                emphasis:{label:{show:true}}
+                            },
+                            data:[
+                                {'name':'陕西','value':78881},{'name':'湖南','value':91791},{'name':'北京','value':275509},{'name':'河北','value':98655},{'name':'江西','value':64420},{'name':'浙江','value':164326},{'name':'湖北','value':90826},{'name':'安徽','value':82161},{'name':'香港','value':57784},{'name':'广西','value':48659},{'name':'台湾','value':50352},{'name':'江苏','value':192673},{'name':'福建','value':85326},{'name':'辽宁','value':70188},{'name':'山西','value':56427},{'name':'河南','value':122892},{'name':'天津','value':45422},{'name':'重庆','value':51369},{'name':'山东','value':171526},{'name':'黑龙江','value':42380},{'name':'上海','value':158924},{'name':'贵州','value':39875},{'name':'云南','value':72102},{'name':'海南','value':34189},{'name':'四川','value':142267},{'name':'甘肃','value':36159},{'name':'吉林','value':36170},{'name':'澳门','value':7834},{'name':'广东','value':251262},{'name':'青海','value':27553},{'name':'新疆','value':37263},{'name':'内蒙古','value':42214},{'name':'西藏','value':20444},{'name':'宁夏','value':37531},
+                            ]
+                        }
+                    ]
+                });
+                //--热词图--
+                var myChart3 = ec.init(document.getElementById('wordcloud'));
+                myChart3.setOption({
+                    tooltip: {
+                        show: false
+                    },
+                    series: [{
+                        name: '热词图',
+                        type: 'wordCloud',
+                        size: ['80%', '80%'],
+                        textRotation: [0, 0],
+                        textPadding: 0,
+                        autoSize: {
+                            enable: true,
+                            minSize: 14
+                        },
+                        data:JSON.parse(getdata())
+                    }]
+                })
+
+            }
+        );
+        function getdata() {
+            var re;
+            $.ajax({
+                url: '/cloud/words',
+                type: 'get',
+                datatype: 'json',
+                async: false,
+                success: function (data) {
+                    re=data;
+                    var wordlist=eval(data);
+                    wordlist.sort(function(x,y){
+                        return y["value"] - x["value"];
+                    });
+                    for(var i=0;i<wordlist.length;i++)
+                    {
+                        var  li= "<tr><td>"+wordlist[i]["name"]+"</td><td class=\"td1\">"+wordlist[i]["value"]+"</td> </tr>"
+                        $("#oldlist").append(li);
+                    }
+                }
+            });
+            return re;
+        }
+    </script>
 @stop
 @section('content')
 <!--main-->
@@ -330,156 +483,3 @@
 </div>
 </div>
     @stop
-<script src="{{asset('web/js/echarts.js')}}"></script>
-<script type="text/javascript">
-    // Step:3 为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
-    require.config({
-        paths: {
-            echarts: '/web/js'
-        }
-    });
-    // Step:4 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
-    require(
-        [
-            'echarts',
-            'echarts/chart/bar',
-            'echarts/chart/line',
-            'echarts/chart/map',
-            'echarts/chart/wordCloud'
-        ],
-        function (ec) {
-            //--- 折柱 ---
-            var myChart = ec.init(document.getElementById('main'),'macarons');
-            myChart.setOption({
-                tooltip : {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data:['全部','正面','中性','负面','推送舆情']
-                },
-                toolbox: {
-                    show : true,
-                    feature : {
-                        dataView : {show: true, readOnly: false},
-                        magicType : {show: true, type: ['line', 'bar']},
-                        restore : {show: true},
-                        saveAsImage : {show: true}
-                    }
-                },
-                calculable : true,
-                xAxis : [
-                    {
-                        type : 'category',
-                        data :{!!json_encode($week["date"]) !!}
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : 'value',
-                    splitArea : {show : true}
-                   }
-                ],
-          series : [
-                {
-                    name:'全部',
-                    type:'bar',
-                    data:[18812, 19533, 19014, 15955, 10076, 8142, 1527]
-                },
-                {
-                    name:'正面',
-                    type:'bar',
-                    data:[8520, 8765, 1572, 645, 201, 254, 60]
-                },
-                {
-                    name:'中性',
-                    type:'bar',
-                    data:[3612, 4660, 13525, 11228, 7095, 6008, 1053]
-                },
-                {
-                    name:'负面',
-                    type:'bar',
-                    data:[6680, 6108, 4289, 4363, 2860, 1954, 441]
-                },
-                {
-                    name:'推送舆情',
-                    type:'bar',
-                    data:[52, 57, 58, 63, 30, 25, 4]
-                }
-            ]
-            });
-
-            // --- 地图 ---
-            var myChart2 = ec.init(document.getElementById('mainmap'), 'macarons');
-            myChart2.setOption({
-                tooltip : {
-                    trigger: 'item',
-                    formatter: '{b} : {c}'
-                },
-                dataRange: {
-                    min: 0,
-                    max: 275509,
-                    x: 'left',
-                    y: 'bottom',
-                    text:['高','低'],           // 文本，默认为数值文本
-                    calculable : true
-                },
-                series : [
-                    {
-                        name: '中国',
-                        type: 'map',
-                        mapType: 'china',
-                        itemStyle:{
-                            normal:{label:{show:true}},
-                            emphasis:{label:{show:true}}
-                        },
-                        data:[
-                            {'name':'陕西','value':78881},{'name':'湖南','value':91791},{'name':'北京','value':275509},{'name':'河北','value':98655},{'name':'江西','value':64420},{'name':'浙江','value':164326},{'name':'湖北','value':90826},{'name':'安徽','value':82161},{'name':'香港','value':57784},{'name':'广西','value':48659},{'name':'台湾','value':50352},{'name':'江苏','value':192673},{'name':'福建','value':85326},{'name':'辽宁','value':70188},{'name':'山西','value':56427},{'name':'河南','value':122892},{'name':'天津','value':45422},{'name':'重庆','value':51369},{'name':'山东','value':171526},{'name':'黑龙江','value':42380},{'name':'上海','value':158924},{'name':'贵州','value':39875},{'name':'云南','value':72102},{'name':'海南','value':34189},{'name':'四川','value':142267},{'name':'甘肃','value':36159},{'name':'吉林','value':36170},{'name':'澳门','value':7834},{'name':'广东','value':251262},{'name':'青海','value':27553},{'name':'新疆','value':37263},{'name':'内蒙古','value':42214},{'name':'西藏','value':20444},{'name':'宁夏','value':37531},
-                        ]
-                    }
-                ]
-            });
-             //--热词图--
-            var myChart3 = ec.init(document.getElementById('wordcloud'));
-            myChart3.setOption({
-                tooltip: {
-                    show: false
-                },
-                series: [{
-                    name: '热词图',
-                    type: 'wordCloud',
-                    size: ['80%', '80%'],
-                    textRotation: [0, 0],
-                    textPadding: 0,
-                    autoSize: {
-                        enable: true,
-                        minSize: 14
-                    },
-                    data:JSON.parse(getdata())
-                }]
-            })
-
-        }
-    );
-    function getdata() {
-        var re;
-        $.ajax({
-            url: '/cloud/words',
-            type: 'get',
-            datatype: 'json',
-            async: false,
-            success: function (data) {
-                re=data;
-                var wordlist=eval(data);
-                wordlist.sort(function(x,y){
-                    return y["value"] - x["value"];
-                });
-                for(var i=0;i<wordlist.length;i++)
-                {
-                    var  li= "<tr><td>"+wordlist[i]["name"]+"</td><td class=\"td1\">"+wordlist[i]["value"]+"</td> </tr>"
-                    $("#oldlist").append(li);
-                }
-            }
-        });
-        return re;
-    }
-</script>
