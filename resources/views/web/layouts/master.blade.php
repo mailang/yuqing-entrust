@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>人民法院执行舆情管理系统</title>
     <link rel="stylesheet" href="{{asset('web/css/base.css')}}">
     <script src="{{asset('web/js/jquery-1.11.1.js')}}"></script>
