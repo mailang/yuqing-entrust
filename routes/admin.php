@@ -101,15 +101,3 @@
       Route::get('report/useful_news/list/{id}', ['uses'=>'WeekformController@newslist','as'=>'weekform.newslist']);//周报列表
       Route::get('week/delete/{id}', ['uses'=>'WeekformController@destroy','as'=>'weekform.destroy']);//删除
       Route::get('week/delete/news/{id}', ['uses'=>'WeekformController@delete','as'=>'weekform.delete']);//从周报表中移除新闻
-
-       /*涉执舆情*/
-       Route::get('news/handle/list',['uses'=>'NewscourtController@index','as'=>'handle.list']);
-       Route::get('news/handle/import',['uses'=>'NewscourtController@import','as'=>'handle.import']);//舆情导入
-       Route::post('news/handle/import',['uses'=>'NewscourtController@store','as'=>'handle.store']);//舆情导入
-       Route::post('news/handle',['uses'=>'NewscourtController@upload','as'=>'handle.upload']);
-       Route::get('news/handle/see/{id}',['uses'=>'NewscourtController@see','as'=>'handle.see']);
-       Route::get('news/old/see/{id}',['uses'=>'NewscourtController@old_news','as'=>'old_news.see']);
-
-       /*微博公众号关注数量*/
-       Route::get('reading/add/{id}',['uses'=>'ReadingController@index','as'=>'reading.index']);
-       Route::post('reading/store',['uses'=>'ReadingController@store','as'=>'reading.store']);
