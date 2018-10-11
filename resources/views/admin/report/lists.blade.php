@@ -21,6 +21,7 @@
                             <th>名称</th>
                             <th>类型</th>
                             <th class="hidden-md">创建时间</th>
+                            <th>微博微信关注</th>
                             <th data-sortable="false">操作</th>
                         </tr>
                         </thead>
@@ -35,6 +36,9 @@
                                 @endswitch
                                 </td>
                                 <td>{{$report->created_at}}</td>
+                                <td>
+                                 <a href="{{route('reading.index',$report->id)}}" data-toggle="modal"  data-target="#modal-alert" class="X-Small btn-xs text-success "> 编辑</a>
+                                </td>
                                 <td>
                                   <a href="{{route('report.edit',$report->id)}}" class="X-Small btn-xs text-success "> 编辑</a>
                                     <a style="margin:3px;" onclick="javascript:deletebtn(this);" href="#" attr="{{$report->id}}" class="delBtn X-Small btn-xs text-danger "><i class="fa fa-times-circle-o"></i> 删除</a>
@@ -54,14 +58,27 @@
             </div>
         </div>
     </div>
-<script type="text/javascript">
+    <div class="modal fade" id="modal-alert" tabIndex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div></div></div>
 
+<script type="text/javascript">
+$(function () {
+   /* $("#modal-alert").on("hidden", function() {
+        $(this).removeData("modal");
+    });
+    */
+    $("#modal-alert").on("hidden.bs.modal", function() {
+        $(this).removeData("bs.modal");
+    });
+
+})
     function deletebtn(obj) {
         var id = $(obj).attr('attr');
         $('.deleteForm').attr('action', '/admin/report/delete/' + id);
         $("#modal-delete").modal();
     }
-
 </script>
     <div class="modal fade" id="modal-delete" tabIndex="-1">
         <div class="modal-dialog">
