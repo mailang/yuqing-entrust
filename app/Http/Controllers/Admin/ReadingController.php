@@ -20,39 +20,58 @@ class ReadingController extends Controller
         $read=array();
         $read['blog_id']="";
         $read['wx_id']="";
-        if($reading->count()<1)
+        if($reading->count()>0)
+        {
+            $wx=$reading->where('type','1')->first();
+            $blog=$reading->where('type','0')->first();
+            if ($blog){
+                $read['blog_id']=$blog->id;
+                $read['blog_concern']=$blog->concern_num;
+                $read['blog_article']=$blog->article_num;
+                $read['blog_reader']=$blog->reader_num;
+            }
+            if ($wx){
+                $read['wx_id']=$wx->id;
+                $read['wx_concern']=$wx->concern_num;
+                $read['wx_article']=$wx->article_num;
+                $read['wx_reader']=$wx->reader_num;
+            }
+
+        }
+        else
         {
             //取出最新记录为默认值
             $reading=DB::table('reading')
                 ->limit(2)
                 ->orderByDesc('id')
                 ->get();
-        }
-        $wx=$reading->where('type','1')->first();
-        $blog=$reading->where('type','0')->first();
-        if(!$wx->reportform_id!=$blog->reportform_id)
-        {
-            $reportid=$reading->first()->reportform_id;
-            //取出最新记录为默认值
-            $reading=DB::table('reading')->where('reportform_id',$reportid)
-                ->limit(2)
-                ->orderByDesc('id')
-                ->get();
             $wx=$reading->where('type','1')->first();
             $blog=$reading->where('type','0')->first();
+            if(!$wx->reportform_id!=$blog->reportform_id)
+            {
+                $reportid=$reading->first()->reportform_id;
+                //取出最新记录为默认值
+                $reading=DB::table('reading')->where('reportform_id',$reportid)
+                    ->limit(2)
+                    ->orderByDesc('id')
+                    ->get();
+            }
+            $wx=$reading->where('type','1')->first();
+            $blog=$reading->where('type','0')->first();
+            if ($blog){
+                $read['blog_concern']=$blog->concern_num;
+                $read['blog_article']=$blog->article_num;
+                $read['blog_reader']=$blog->reader_num;
+            }
+            if ($wx){
+                $read['wx_concern']=$wx->concern_num;
+                $read['wx_article']=$wx->article_num;
+                $read['wx_reader']=$wx->reader_num;
+            }
+
         }
-        if ($blog){
-            $read['blog_id']=$blog->id;
-            $read['blog_concern']=$blog->concern_num;
-            $read['blog_article']=$blog->article_num;
-            $read['blog_reader']=$blog->reader_num;
-        }
-        if ($wx){
-            $read['wx_id']=$wx->id;
-            $read['wx_concern']=$wx->concern_num;
-            $read['wx_article']=$wx->article_num;
-            $read['wx_reader']=$wx->reader_num;
-        }
+
+
         $read['reportform_id']=$id;
         return view('admin.reading.add',compact('read'));
     }
