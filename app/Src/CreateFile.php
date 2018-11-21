@@ -263,7 +263,7 @@ class CreateFile{
         foreach ($readings as $reading)
         {
 
-            if ($reading->type==0)
+            if ($reading->type==1)
             {
                 $worksheet2->setCellValue("B2",$reading->concern_num);
                 $worksheet2->setCellValue("B3",$reading->article_num);
