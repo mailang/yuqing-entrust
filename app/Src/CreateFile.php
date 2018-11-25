@@ -55,7 +55,7 @@ class CreateFile{
             ->orderBy('starttime','desc')
             ->get($fields);
         $this->createwordc($tmppath,$path,$resualt);
-        $this->createexcel($tmppath,$path,$nameexcel,$resualt);
+        $this->createzipexcel($tmppath,$path,$nameexcel,$resualt,$id);
         //$this->createwordall($tmppath,$path,$namewordall,$zipname,$r["type"],$resualt);
         $zippath = ($zippath.$zipname.'.zip');
         $zip = new \ZipArchive();
@@ -193,7 +193,94 @@ class CreateFile{
 
         return $templateProcessor->save();
     }
+    function createzipexcel($tmppath,$path,$name,$news,$id){
+        $inputFileName = $tmppath.iconv('UTF-8', 'GBK//IGNORE','temp' ).'.xlsx';
+        //$inputFileName = $tmppath.iconv('UTF-8', 'GBK//IGNORE','26template' ).'.xlsx';
+        //dd($inputFileName);
+        //dd($tmppath,$path,$name,$news);
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
+        //dd($spreadsheet);
+        $worksheet0 = $spreadsheet->getSheet(0);
 
+        $i = 1;
+        foreach ($news as $new)
+        {
+            $i++;
+            $worksheet0->setCellValue("A".$i,$new->title);
+            $worksheet0->setCellValue("B".$i,$new->abstract);
+            $worksheet0->setCellValue("C".$i,$new->starttime);
+
+
+            //dd($dq);
+            $worksheet0->setCellValue("D".$i,$new->province);
+
+            $worksheet0->setCellValue("E".$i,$new->firstwebsite);
+            $worksheet0->setCellValue("F".$i,$new->sitetype);
+            $worksheet0->setCellValue("G".$i,$new->author);
+            $worksheet0->setCellValue("H".$i,$new->visitnum);
+            $worksheet0->setCellValue("I".$i,$new->replynum);
+            $worksheet0->setCellValue("J".$i,$new->orientation);
+            $worksheet0->setCellValue("K".$i,$new->link);
+            $worksheet0->getCell("K".$i)->getHyperlink()->setUrl($new->link);
+
+            $styleArray = [
+                'font'=> [
+                    'underline' => \PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE,
+                    'color' => [
+                        'rgb' => "0000FF"
+                    ]
+                ]
+
+            ];
+            $worksheet0->getCell("K".$i)->getStyle()->applyFromArray($styleArray);
+
+            $worksheet0->setCellValue("L".$i,$new->ispush == 1?"是":"否");
+            $worksheet0->setCellValue("M".$i,$new->court);
+            $worksheet0->setCellValue("N".$i,$new->yuqinginfo);
+            $worksheet0->getRowDimension($i)->setRowHeight(60);
+        }
+        //***********************画出单元格边框*****************************
+        $styleArray = array(
+            'borders' => array(
+                'allBorders' => array(
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,//细边框
+                ),
+            ),
+        );
+        $worksheet0->getStyle('A2:N'.$i)->applyFromArray($styleArray);//这里就是画出从单元格A5到N5的边框，看单元格最右边在哪哪个格就把这个N改为那个字母替代
+//***********************画出单元格边框结束*****************************
+        $worksheet1 = $spreadsheet->getSheet(1);
+        $i = 1;
+        foreach ($news as $new)
+        {
+            $i++;
+            $worksheet1->setCellValue("A".$i,$new->title.".docx");
+            $worksheet1->getRowDimension($i)->setRowHeight(60);
+        }
+        $worksheet1->getStyle('A2:B'.$i)->applyFromArray($styleArray);//这里就是画出从单元格A5到N5的边框，看单元格最右边在哪哪个格就把这个N改为那个字母替代
+        $worksheet2 = $spreadsheet->getSheet(2);
+        $readings=DB::table('reading')->where('reportform_id',$id)->get();
+        foreach ($readings as $reading)
+        {
+
+            if ($reading->type==1)
+            {
+                $worksheet2->setCellValue("B2",$reading->concern_num);
+                $worksheet2->setCellValue("B3",$reading->article_num);
+                $worksheet2->setCellValue("B4",$reading->reader_num);
+            }
+            else
+            {
+                $worksheet2->setCellValue("C2",$reading->concern_num);
+                $worksheet2->setCellValue("C3",$reading->article_num);
+                $worksheet2->setCellValue("C4",$reading->reader_num);
+            }
+        }
+        $spreadsheet->setActiveSheetIndex(0);
+        $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet,'Xlsx');
+        //dd($path.$name);
+        $objWriter->save($path.$name.".xlsx");
+    }
     function createexcel($tmppath,$path,$name,$news){
         $inputFileName = $tmppath.iconv('UTF-8', 'GBK//IGNORE','temp' ).'.xlsx';
         //$inputFileName = $tmppath.iconv('UTF-8', 'GBK//IGNORE','26template' ).'.xlsx';

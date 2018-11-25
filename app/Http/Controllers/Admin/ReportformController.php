@@ -138,10 +138,16 @@ class ReportformController extends Controller
 
     public function createzip($id)
     {
-        $c = new Src\CreateFile();
-        if ($c->createzip($id)){
-            flash("生成成功");
+        $reading=DB::table('reading')->where('reportform_id',$id)->get();
+        if ($reading->count()>0)
+        {
+            $c = new Src\CreateFile();
+            if ($c->createzip($id)){
+                flash("生成成功");
+            }
         }
+        else
+            flash("微博微信数据未填写");
         return redirect()->back();
     }
 
