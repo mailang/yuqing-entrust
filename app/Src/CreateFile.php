@@ -513,20 +513,23 @@ class CreateFile{
         $worksheet0 = $spreadsheet->getSheet(0);
 
         $zheng=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
-            ->where('orientation','正面')
+            ->where('reportform_id','>',($id-30))
             ->where('reportform_id','<=',$id)
+            ->where('orientation','正面')
             ->orderByDesc('useful_news.id')
             ->limit(3)
             ->get(['title','starttime','firstwebsite','visitnum','orientation','province']);
         $zhong=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
-            ->where('orientation','中性')
+            ->where('reportform_id','>',($id-30))
             ->where('reportform_id','<=',$id)
+            ->where('orientation','中性')
             ->orderByDesc('useful_news.id')
             ->limit(3)
             ->get(['title','starttime','firstwebsite','visitnum','orientation','province']);
         $fumian=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
-            ->where('orientation','负面')
+            ->where('reportform_id','>',($id-30))
             ->where('reportform_id','<=',$id)
+            ->where('orientation','负面')
             ->orderByDesc('useful_news.id')
             ->limit(3)
             ->get(['title','starttime','firstwebsite','visitnum','orientation','province']);
@@ -550,6 +553,8 @@ class CreateFile{
                 $worksheet1->setCellValue("C4",$reading->reader_num);
             }
         }
+        $worksheet2= $spreadsheet->getSheet(2);
+        for ($i=1;$i<15;$i++){   $worksheet2->getRowDimension($i)->setRowHeight(40);}
         $spreadsheet->setActiveSheetIndex(0);
         $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet,'Xlsx');
         $objWriter->save($path.'paping'.date("Ymd").".xlsx");
@@ -564,7 +569,7 @@ class CreateFile{
                $worksheet0->setCellValue("D".($i+$key),$item->province);
                $worksheet0->setCellValue("E".($i+$key),$item->firstwebsite);
                $worksheet0->setCellValue("F".($i+$key),$item->visitnum);
-               $worksheet0->setCellValue("F".($i+$key),$item->orientation);
+               $worksheet0->setCellValue("G".($i+$key),$item->orientation);
                $worksheet0->getRowDimension($i+$key)->setRowHeight(30);
 
            }
