@@ -501,4 +501,72 @@ class CreateFile{
         }
         //return true;
     }
+    function  daping($id)
+    {
+        $tmppath = resource_path("template/");
+        $path = storage_path("report/");
+        if (!file_exists($path)){
+            mkdir ($path,0777,true);
+        }
+        $inputFileName=$tmppath.'tempping.xlsx';
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
+        $worksheet0 = $spreadsheet->getSheet(0);
+
+        $zheng=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
+            ->where('orientation','正面')
+            ->where('reportform_id','<=',$id)
+            ->orderByDesc('useful_news.id')
+            ->limit(3)
+            ->get(['title','starttime','firstwebsite','visitnum','orientation','province']);
+        $zhong=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
+            ->where('orientation','中性')
+            ->where('reportform_id','<=',$id)
+            ->orderByDesc('useful_news.id')
+            ->limit(3)
+            ->get(['title','starttime','firstwebsite','visitnum','orientation','province']);
+        $fumian=DB::table('useful_news')->leftJoin('court','useful_news.court','=','court.name')
+            ->where('orientation','负面')
+            ->where('reportform_id','<=',$id)
+            ->orderByDesc('useful_news.id')
+            ->limit(3)
+            ->get(['title','starttime','firstwebsite','visitnum','orientation','province']);
+        $this->writedaping($zheng,2,$worksheet0);
+        $this->writedaping($zhong,5,$worksheet0);
+        $this->writedaping($fumian,8,$worksheet0);
+        $worksheet1 = $spreadsheet->getSheet(1);
+        $readings=DB::table('reading')->where('reportform_id',$id)->get();
+        foreach ($readings as $reading)
+        {
+            if ($reading->type==0)
+            {
+                $worksheet1->setCellValue("B2",$reading->concern_num);
+                $worksheet1->setCellValue("B3",$reading->article_num);
+                $worksheet1->setCellValue("B4",$reading->reader_num);
+            }
+            else
+            {
+                $worksheet1->setCellValue("C2",$reading->concern_num);
+                $worksheet1->setCellValue("C3",$reading->article_num);
+                $worksheet1->setCellValue("C4",$reading->reader_num);
+            }
+        }
+        $spreadsheet->setActiveSheetIndex(0);
+        $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet,'Xlsx');
+        $objWriter->save($path.'paping'.date("Ymd").".xlsx");
+        return response()->download($path.'paping'.date("Ymd").".xlsx")->deleteFileAfterSend(true);
+    }
+    function  writedaping($data,$i,$worksheet0)
+    {
+           foreach ($data as $key=>$item)
+           {
+               $worksheet0->setCellValue("B".($i+$key),$item->title);
+               $worksheet0->setCellValue("C".($i+$key),$item->starttime);
+               $worksheet0->setCellValue("D".($i+$key),$item->province);
+               $worksheet0->setCellValue("E".($i+$key),$item->firstwebsite);
+               $worksheet0->setCellValue("F".($i+$key),$item->visitnum);
+               $worksheet0->setCellValue("F".($i+$key),$item->orientation);
+               $worksheet0->getRowDimension($i+$key)->setRowHeight(30);
+
+           }
+    }
 }

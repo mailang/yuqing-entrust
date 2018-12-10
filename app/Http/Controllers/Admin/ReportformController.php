@@ -180,6 +180,19 @@ class ReportformController extends Controller
         $newsid=explode(',',$_GET['id']);
         $c = new Src\CreateFile();
         return $c->person_createzip($newsid);
+    }
+
+    public  function  daping($id)
+    {
+        $reading=DB::table('reading')->where('reportform_id',$id)->get();
+        if ($reading->count()>0)
+        {
+            $c = new Src\CreateFile();
+            return $c->daping($id);
+        }
+        else
+            flash("微博微信数据未填写");
+        return redirect()->back();
 
     }
 }

@@ -79,6 +79,8 @@
     Route::get('report/downloaddocx/{id}', ['uses'=>'ReportformController@downloaddocx','as'=>'report.downloaddocx']);//
     Route::get('report/pushzip/{id}', ['uses'=>'ReportformController@pushzip','as'=>'report.pushzip']);//
     Route::get('report/person/createzip', ['uses'=>'ReportformController@createpersonzip','as'=>'report.person.createzip']);//
+    Route::get('report/daping/{id}', ['uses'=>'ReportformController@daping','as'=>'report.daping']);//
+
       /*云词图*/
       Route::get('cloud/index', ['uses'=>'CloudController@index','as'=>'cloud.word']);
       Route::post('cloud/add', ['uses'=>'CloudController@add','as'=>'cloud.add']);
