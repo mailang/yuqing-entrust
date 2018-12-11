@@ -3,6 +3,7 @@
 namespace App\Src;
 
 use App\Http\Controllers\Controller;
+use App\Models\casetype;
 use Illuminate\Support\Facades\File;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -557,8 +558,17 @@ class CreateFile{
         for ($i=1;$i<15;$i++){   $worksheet2->getRowDimension($i)->setRowHeight(40);}
         $spreadsheet->setActiveSheetIndex(0);
         $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet,'Xlsx');
-        $objWriter->save($path.'paping'.date("Ymd").".xlsx");
-        return response()->download($path.'paping'.date("Ymd").".xlsx")->deleteFileAfterSend(true);
+        $report=DB::table('reportform')->find($id);
+        $type="";
+        switch ($report->type)
+        {
+            case 0:$type="早报";break;
+            case 1:$type="午报";break;
+            case 2:$type="晚报";break;
+            default:$type="";break;
+        }
+        $objWriter->save($path.date("Ymd",strtotime($report->created_at)).$type.".xlsx");
+        return response()->download($path.date("Ymd",strtotime($report->created_at)).$type.".xlsx")->deleteFileAfterSend(true);
     }
     function  writedaping($data,$i,$worksheet0)
     {
