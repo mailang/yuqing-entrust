@@ -310,6 +310,8 @@ class CreateFile{
             $worksheet0->setCellValue("I".$i,$new->replynum);
             $worksheet0->setCellValue("J".$i,$new->orientation);
             $worksheet0->setCellValue("K".$i,$new->link);
+            //取消超链接
+            /*
             $worksheet0->getCell("K".$i)->getHyperlink()->setUrl($new->link);
 
             $styleArray = [
@@ -322,7 +324,7 @@ class CreateFile{
 
             ];
             $worksheet0->getCell("K".$i)->getStyle()->applyFromArray($styleArray);
-
+            */
             $worksheet0->setCellValue("L".$i,$new->ispush == 1?"是":"否");
             $worksheet0->setCellValue("M".$i,$new->court);
             $worksheet0->setCellValue("N".$i,$new->yuqinginfo);
