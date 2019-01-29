@@ -31,7 +31,7 @@ class Controller extends BaseController
         //执行命令
         $out = curl_exec($curl);
         //关闭URL请求
-        curl_close($out);
+        curl_close($curl);
         //显示获得的数据
         print_r($out);
     }
