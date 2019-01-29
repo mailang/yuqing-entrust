@@ -47,3 +47,4 @@ Route::group(['prefix' => 'Web', 'namespace' => 'Web'], function () {
 });
 
 Route::get('/json', ['uses'=>'Controller@push']);
+Route::get('/json', ['uses'=>'Controller@getjson']);
