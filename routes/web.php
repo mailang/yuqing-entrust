@@ -46,4 +46,4 @@ Route::group(['prefix' => 'Web', 'namespace' => 'Web'], function () {
     Route::any('news/page',['uses'=>'NewsController@page','as'=>'web.news.page']);
 });
 
-Route::get('/json', ['uses'=>'Controller@getjson']);
+Route::get('/json', ['uses'=>'Controller@push']);
