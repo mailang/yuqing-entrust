@@ -166,7 +166,7 @@ class CreateFile{
         $i = 1;
         foreach ($news3 as $new){
             $templateProcessor->setValue("tid#$i", $i);
-            $templateProcessor->setValue("ttitle#$i", htmlentities($new->title));
+            $templateProcessor->setValue("ttitle#$i", $this->htmlentities($new->title));
 
             $templateProcessor->setValue("tarea#$i", $new->province);
             $templateProcessor->setValue("tcourt#$i", $new->court);
@@ -175,7 +175,7 @@ class CreateFile{
 
             $templateProcessor->setValue('cid', $i,1);
             $templateProcessor->setValue('ctitle', $new->title,1);
-            $templateProcessor->setValue('clink', $new->link,2);
+            $templateProcessor->setValue('clink', $this->htmlentities($new->link),2);
             $templateProcessor->setValue('cabstract', $new->abstract,1);
             $i++;
         }
