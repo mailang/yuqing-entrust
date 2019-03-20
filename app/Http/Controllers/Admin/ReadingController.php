@@ -43,19 +43,8 @@ class ReadingController extends Controller
             //取出最新记录为默认值
             $reading=DB::table('reading')
                 ->limit(2)
-                ->orderByDesc('id')
+                ->orderByDesc('reportform_id')
                 ->get();
-            $wx=$reading->where('type','1')->first();
-            $blog=$reading->where('type','0')->first();
-            if(!$wx->reportform_id!=$blog->reportform_id)
-            {
-                $reportid=$reading->first()->reportform_id;
-                //取出最新记录为默认值
-                $reading=DB::table('reading')->where('reportform_id',$reportid)
-                    ->limit(2)
-                    ->orderByDesc('id')
-                    ->get();
-            }
             $wx=$reading->where('type','1')->first();
             $blog=$reading->where('type','0')->first();
             if ($blog){
@@ -68,10 +57,7 @@ class ReadingController extends Controller
                 $read['wx_article']=$wx->article_num;
                 $read['wx_reader']=$wx->reader_num;
             }
-
         }
-
-
         $read['reportform_id']=$id;
         return view('admin.reading.add',compact('read'));
     }
@@ -90,23 +76,26 @@ class ReadingController extends Controller
         $wx['reportform_id']=$req["reportform_id"];
         $blog["type"]=0;
         $wx["type"]=1;
-        if (isset($blog["blog_id"]))
+        $reading=Reading::where('reportform_id',$req["reportform_id"])
+            ->get();
+        if (count($reading)>0)
         {
-            $read1=Reading::find($blog["blog_id"]);
+            $read1=$reading->where('type','0')->first();
             $read1["concern_num"]=$blog["concern_num"];
             $read1["article_num"]=$blog["article_num"];
             $read1["reader_num"]=$blog["reader_num"];
             $read1->save();
-        }
-        else Reading::create($blog);
-        if (isset($wx["wx_id"]))
-        {
-            $read2=Reading::find($wx["wx_id"]);
+            $read2=$reading->where('type','1')->first();
             $read2["concern_num"]=$wx["concern_num"];
             $read2["article_num"]=$wx["article_num"];
             $read2["reader_num"]=$wx["reader_num"];
             $read2->save();
-        } else Reading::create($wx);
+        }
+        else
+        {
+            Reading::create($blog);
+            Reading::create($wx);
+        }
         flash("操作成功");return redirect()->back();
     }
 }
