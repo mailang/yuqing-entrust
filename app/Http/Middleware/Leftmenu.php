@@ -7,7 +7,7 @@ use App\Models\Permissions;
 use App\Models\Roles;
 use Illuminate\Support\Facades\Auth;
 
-class leftmenu
+class Leftmenu
 {
     /**
      * Handle an incoming request.
