@@ -16,7 +16,7 @@ class ReportformController extends Controller
         $report=Reportform::orderBy('id','desc')->first();
         $news=Useful_news::where('reportform_id',$report->id)->get(['title','content','author','firstwebsite','sitetype','link','keywords','court','transmit','visitnum','replynum','starttime','orientation','yuqinginfo','abstract']);
         $result_report=Array();
-        $result_report["id"]=$report->id;
+        $result_report["id"]=$report->title;
         $result_report["num"]=count($news);
         $result_report["data"]=$news;
       return \response()->json($result_report);
