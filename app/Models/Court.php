@@ -8,8 +8,9 @@ class Court extends Model
 {
     protected  $table="court";
     protected  $fillable=[
-        'name',
-        'nick',
+        'courtid',
+        'pid',
+        'courtname',
         'province'
     ];
 }

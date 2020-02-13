@@ -183,8 +183,8 @@ class CreateFile{
         //表格
         //$allprovince = ["000" => "最高","100" => "北京","200" => "天津","300" => "河北","400" => "山西","500" => "内蒙","600" => "辽宁","700" => ""];
         $fieldscp = ["code","province"];
-        $courtp = Court::where("code","like","%00")
-                ->orWhere("code","=","VI0")->get($fieldscp);
+        $courtp = Court::where("courtid","=","0")
+                ->orWhere("pid","=","0")->get($fieldscp);
         foreach ($courtp as $p){
             $pc1 = $news1->where("province","=",$p->province)->count();
             $pc2 = $news2->where("province","=",$p->province)->count();
