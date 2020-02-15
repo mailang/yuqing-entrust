@@ -14,11 +14,12 @@ class ReportformController extends Controller
     function  list()
     {
         $report=Reportform::orderBy('id','desc')->first();
-        $news=Useful_news::where('reportform_id',$report->id)->get(['title','content','author','firstwebsite','sitetype','link','keywords','court','transmit','visitnum','replynum','starttime','orientation','yuqinginfo','abstract']);
+        $news=Useful_news::where('reportform_id',$report->id)->get(['title','content','author','firstwebsite','sitetype','link','keywords','court','transmit','visitnum','replynum','starttime','orientation','yuqinginfo','abstract as abs']);
         $result_report=Array();
         $result_report["id"]=$report->title;
         $result_report["num"]=count($news);
         $result_report["data"]=$news;
+        $result_report["descountid"] = 0;
       return \response()->json($result_report);
     }
 }
