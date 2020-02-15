@@ -18,8 +18,8 @@ class ReportformController extends Controller
         $result_report=Array();
         $result_report["id"]=$report->title;
         $result_report["num"]=count($news);
-        $result_report["data"]=$news;
         $result_report["descountid"] = "0";
+        $result_report["data"]=$news;
       return \response()->json($result_report);
     }
 }
