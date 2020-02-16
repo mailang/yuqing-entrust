@@ -14,6 +14,7 @@ class ReportformController extends Controller
     function  list()
     {
         $report=Reportform::orderBy('id','desc')->first();
+
         $news=Useful_news::where('reportform_id',$report->id)->get(['title','content','author','firstwebsite','sitetype','link','keywords','court','transmit','visitnum','replynum','starttime','orientation','yuqinginfo','abstract as abs']);
         $result_report=Array();
         $result_report["id"]=$report->title;
@@ -21,5 +22,18 @@ class ReportformController extends Controller
         $result_report["descountid"] = "0";
         $result_report["data"]=$news;
       return \response()->json($result_report);
+    }
+
+    function listtest()
+    {
+        $report=Reportform::orderBy('id','desc')->first();
+        $sql = "select 'title','content','author','firstwebsite','sitetype','link','keywords','court','transmit','visitnum','replynum','starttime','orientation','yuqinginfo','abstract as abs',c.province from useful_news left join (SELECT MAX(courtid),NAME,province FROM court GROUP BY NAME,province)as c on useful_news.court=c.name where useful_news.reportform_id='$report->id'";
+        $news = DB::select("$sql");
+        $result_report=Array();
+        $result_report["id"]=$report->title;
+        $result_report["num"]=count($news);
+        $result_report["descountid"] = "0";
+        $result_report["data"]=$news;
+        return \response()->json($result_report);
     }
 }
