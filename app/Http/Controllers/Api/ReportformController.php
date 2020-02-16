@@ -27,7 +27,7 @@ class ReportformController extends Controller
     function listtest()
     {
         $report=Reportform::orderBy('id','desc')->first();
-        $sql = "select `title`,`content`,`author`,`firstwebsite`,`sitetype`,`link`,`keywords`,`court`,`transmit`,`visitnum`,`replynum`,`starttime`,`orientation`,`yuqinginfo`,`abstract as abs`,c.province from useful_news left join (SELECT MAX(courtid),NAME,province FROM court GROUP BY NAME,province)as c on useful_news.court=c.name where useful_news.reportform_id='$report->id'";
+        $sql = "select `title`,`content`,`author`,`firstwebsite`,`sitetype`,`link`,`keywords`,`court`,`transmit`,`visitnum`,`replynum`,`starttime`,`orientation`,`yuqinginfo`,`abstract` as abs,c.province from useful_news left join (SELECT MAX(courtid),NAME,province FROM court GROUP BY NAME,province)as c on useful_news.court=c.name where useful_news.reportform_id='$report->id'";
         $news = DB::select("$sql");
         $result_report=Array();
         $result_report["id"]=$report->title;
