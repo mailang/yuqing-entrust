@@ -50,7 +50,8 @@ class ReportformController extends Controller
                 $result_report["num"]=count($news);
                 $result_report["descountid"] = "0";
                 $result_report["data"]=$news;
-                array_push($res,$result_report);
+                //array_push($res,$result_report);
+                dd($result_report);
             }
         });
         return \response()->json($res);
