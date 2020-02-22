@@ -28,7 +28,9 @@ class ReportformController extends Controller
     {
         if($id){
             $report=Reportform::where('title',$id)->first();
-
+            if (!$report){
+                return;
+            }
         }else{
             $report=Reportform::orderBy('id','desc')->first();
         }
