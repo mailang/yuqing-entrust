@@ -39,7 +39,7 @@ class ReportformController extends Controller
 
     function listtest()
     {
-        $res = Array();
+        $res = array();
         $reports = Reportform::orderBy('id','desc')->chunk(15,function ($reports){
             foreach ($reports as $report){
                 $report=Reportform::orderBy('id','desc')->first();
