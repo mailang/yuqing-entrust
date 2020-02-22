@@ -24,7 +24,7 @@ class ReportformController extends Controller
 //      return \response()->json($result_report);
 //    }
 
-    function list($id)
+    function list($id = null)
     {
         if($id){
             $report=Reportform::where('title',$id)->get();
