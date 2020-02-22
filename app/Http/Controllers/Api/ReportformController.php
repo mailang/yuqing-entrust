@@ -41,8 +41,9 @@ class ReportformController extends Controller
     {
         $res = array();
         $reports = Reportform::orderBy('id','desc')->where('title','>=','2020021701')->get();
+        dd($res);
         foreach ($reports as $report){
-            $report=Reportform::orderBy('id','desc')->first();
+            
             $sql = "select `title`,`content`,`author`,`firstwebsite`,`sitetype`,`link`,`keywords`,`court`,`transmit`,`visitnum`,`replynum`,`starttime`,`orientation`,`yuqinginfo`,`abstract` as abs,c.province from useful_news left join (SELECT MAX(courtid),NAME,province FROM court GROUP BY NAME,province)as c on useful_news.court=c.name where useful_news.reportform_id='$report->id'";
             $news = DB::select("$sql");
             $result_report=Array();
