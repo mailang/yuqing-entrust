@@ -142,6 +142,8 @@ class CreateFile{
                 $time = date("Y-m-d 12:00:00",strtotime($datethis))." - ".date("Y-m-d 18:00:00",strtotime($datethis));
                 break;
         }
+        $count = $news->count();
+        $templateProcessor->setValue('count', $count);
         $templateProcessor->setValue('time', $time);
         $news1 = $news->where("orientation","正面");
         $count1 = $news1->count();
@@ -153,24 +155,34 @@ class CreateFile{
         $templateProcessor->setValue('count2', $count2);
         $templateProcessor->setValue('count3', $count3);
 
-        if($count3 == 0){
-            $templateProcessor->deleteBlock("hasfumian");
-            $templateProcessor->cloneBlock("nonefumian");
+
+        $news13 = $news->where("orientation","<>","中性");
+        $count13 = $news13->count();
+
+        if($count == 0){
+            $templateProcessor->deleteBlock("hasyuqing");
+            $templateProcessor->cloneBlock("noneyqing");
         }else{
-            $templateProcessor->deleteBlock("nonefumian");
-            $templateProcessor->cloneBlock("hasfumian");
-            $templateProcessor->cloneRow("tid",$count3);
-            $templateProcessor->cloneBlock("repeat",$count3);
+            $templateProcessor->deleteBlock("noneyuqing");
+            $templateProcessor->cloneBlock("hasyuqing");
+            $templateProcessor->cloneRow("tid",$count13);
+            $templateProcessor->cloneBlock("repeat",$count13);
         }
 
         $i = 1;
-        foreach ($news3 as $new){
+
+        foreach ($news13 as $new){
             $templateProcessor->setValue("tid#$i", $i);
             $templateProcessor->setValue("ttitle#$i", $this->htmlentities($new->title));
 
             $templateProcessor->setValue("tarea#$i", $new->province);
             $templateProcessor->setValue("tcourt#$i", $new->court);
-            $templateProcessor->setValue("tyuqinginfo#$i", $new->yuqinginfo);
+            $templateProcessor->setValue("torientation#$i", $new->orientation);
+            if ($new->orientation == "负面"){
+                $templateProcessor->setValue("tyuqinginfo#$i", $new->yuqinginfo);
+            }else{
+                $templateProcessor->setValue("tyuqinginfo#$i", "");
+            }
             $templateProcessor->setValue("tstarttime#$i", $new->starttime);
 
             $templateProcessor->setValue('cid', $i,1);
@@ -188,8 +200,12 @@ class CreateFile{
         foreach ($courtp as $p){
             $pc1 = $news1->where("province","=",$p->province)->count();
             $pc2 = $news2->where("province","=",$p->province)->count();
+            $pc3 = $news3->where("province","=",$p->province)->count();
+
             $templateProcessor->setValueAndColor("c1_".$p->code,$pc1);
             $templateProcessor->setValueAndColor("c2_".$p->code,$pc2);
+            $templateProcessor->setValueAndColor("c3_".$p->code,$pc3);
+
         }
 
         return $templateProcessor->save();
@@ -459,7 +475,7 @@ class CreateFile{
             $resualt = DB::table("useful_news")->leftJoin("court","useful_news.court","=","court.name")
                 ->where("useful_news.reportform_id","=",$id)
                 ->where("useful_news.tag","=",1)
-                ->orderBy('starttime','desc')
+                ->orderBy('starttime','asc')
                 ->get($fields);
 
             $name = $this->createwordall($tmppath,$path,$namewordall,$zipname,$r["type"],$resualt);
