@@ -159,7 +159,7 @@ class CreateFile{
         $news13 = $news->where("orientation","<>","中性");
         $count13 = $news13->count();
 
-        if($count == 0){
+        if($count2 == $count){
             $templateProcessor->deleteBlock("hasyuqing");
             $templateProcessor->cloneBlock("noneyqing");
         }else{
