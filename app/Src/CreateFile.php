@@ -161,7 +161,7 @@ class CreateFile{
 
         if($count2 == $count){
             $templateProcessor->deleteBlock("hasyuqing");
-            $templateProcessor->cloneBlock("noneyqing");
+            $templateProcessor->cloneBlock("noneyuqing");
         }else{
             $templateProcessor->deleteBlock("noneyuqing");
             $templateProcessor->cloneBlock("hasyuqing");
