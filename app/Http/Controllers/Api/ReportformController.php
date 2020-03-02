@@ -48,7 +48,7 @@ class ReportformController extends Controller
     {
         $res = array();
         $report=Reportform::orderBy('id','desc')->first();
-        $reports = Reportform::where('created_at','>','2020-01-01')->andWhere('id','<>',$report['id'])->orderBy('id','asc')->get();
+        $reports = Reportform::where('created_at','>','2020-01-01')->where('id','<>',$report['id'])->orderBy('id','asc')->get();
         dd($reports);
         foreach ($reports as $report){
 
