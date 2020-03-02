@@ -47,7 +47,9 @@ class ReportformController extends Controller
     function listtest()
     {
         $res = array();
-        $reports = Reportform::orderBy('id','desc')->take(15)->get();
+        $report=Reportform::orderBy('id','desc')->first();
+        $reports = Reportform::where('created_at','>','2020-01-01')->andWhere('id','<>',$report['id'])->orderBy('id','asc')->get();
+        dd($reports);
         foreach ($reports as $report){
 
             $sql = "select `title`,`content`,`author`,`firstwebsite`,`sitetype`,`link`,`keywords`,`court`,`transmit`,`visitnum`,`replynum`,`starttime`,`orientation`,`yuqinginfo`,`abstract` as abs,c.province from useful_news left join (SELECT MAX(courtid),NAME,province FROM court GROUP BY NAME,province)as c on useful_news.court=c.name where useful_news.reportform_id='$report->id'";
