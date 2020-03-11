@@ -20,4 +20,5 @@ use Illuminate\Http\Request;
 Route::group([ 'namespace' => 'Api'], function () {
     Route::get('reportform/list/{id?}',['uses'=>'ReportformController@list','as'=>'api.reportform']);
     Route::get('reportform/listtest',['uses'=>'ReportformController@listtest','as'=>'api.reportformtest']);
+    Route::get('reportform/listdate',['uses'=>'ReportformController@listdate','as'=>'api.reportformlistdate']);
 });
