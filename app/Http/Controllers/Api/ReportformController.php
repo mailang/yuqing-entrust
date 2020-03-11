@@ -67,18 +67,21 @@ class ReportformController extends Controller
 
     function listdate()
     {
-        $starttime = $_GET["starttime"];
-        $endtime = $_GET["endtime"];
-        $reports = Reportform::all();
+        $starttime = isset($_GET["starttime"])?$_GET["starttime"]:"";
+        $endtime = isset($_GET["endtime"])?$_GET["endtime"]:"";
+        $reports = Reportform::where('ispush','1');
+
         $res = array();
 
-        if (!strtotime($starttime) || !strtotime($endtime))
+
+
+        if (($starttime && !strtotime($starttime)) || ($endtime && !strtotime($endtime)))
             return \response()->json($res);
 
-        if (!$starttime)
-            $reports = $reports->where('created_at','>',$starttime);
-        if (!$endtime)
-            $reports = $reports->where('created_at','<',$endtime);
+        if ($starttime)
+            $reports = $reports->where('created_at','>',"$starttime");
+        if ($endtime)
+            $reports = $reports->where('created_at','<=',"$endtime");
 
 
 
