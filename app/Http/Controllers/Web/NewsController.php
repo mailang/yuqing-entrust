@@ -363,18 +363,18 @@ class NewsController extends Controller
 //
 //    }
 
-        public  function test(){
-            $list = DB::select("select * from useful_news where content like '%<img%'");
-            //dd($list);
-            foreach ($list as $new){
-                $id = $new->id;
-                $content = $new->content;
-                $content= preg_replace('/<\s*img[^>]*?\s*>/i', '', $content);
-                //dd($content,$new->content);
-                DB::update("update useful_news set content = '$content' where id = '$id'");
-            }
-
-        }
+//        public  function test(){
+//            $list = DB::select("select * from useful_news where content like '%<img%'");
+//            //dd($list);
+//            foreach ($list as $new){
+//                $id = $new->id;
+//                $content = $new->content;
+//                $content= preg_replace('/<\s*img[^>]*?\s*>/i', '', $content);
+//                //dd($content,$new->content);
+//                DB::update("update useful_news set content = '$content' where id = '$id'");
+//            }
+//
+//        }
 
 
 }

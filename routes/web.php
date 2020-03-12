@@ -44,7 +44,7 @@ Route::group(['prefix' => 'Web', 'namespace' => 'Web'], function () {
    Route::get('news/content/{id}',['uses'=>'NewsController@show','as'=>'web.news.content']);
    Route::any('news/search',['uses'=>'NewsController@search','as'=>'web.news.search']);
     Route::any('news/page',['uses'=>'NewsController@page','as'=>'web.news.page']);
-    Route::any('test',['uses'=>'NewsController@test','as'=>'web.test']);
+    //Route::any('test',['uses'=>'NewsController@test','as'=>'web.test']);
 
 });
 
