@@ -264,4 +264,117 @@ class NewsController extends Controller
     {
         //
     }
+
+//    public function test()
+//    {
+//        $sql = "select * from court where pid = '0'";
+//        $courts = DB::select($sql);
+//        foreach ($courts as $c){
+//            //DB::update("update tmpcourt set province = $ where courtid = $c->courtid");
+//            $this->updatep($c->courtid,$c->province);
+//        }
+//        dd($courts);
+//    }
+//
+//    public function updatep($pid,$province){
+//        $sql = "select * from court where pid = '$pid'";
+//        $courts = DB::select($sql);
+//        if ($courts){
+//            foreach ($courts as $c){
+//                DB::update("update court set province = '$province' where courtid = '$c->courtid'");
+//                $this->updatep($c->courtid,$province);
+//            }
+//        }
+//
+//    }
+
+//    public function test(){
+//        $i=0;
+//        //dd($_SERVER['DOCUMENT_ROOT']);
+//        $handle = fopen("fayuan.json",'r');
+//        $contents = fread($handle, filesize ("fayuan.json"));
+//        $allp = json_decode($contents);
+//    }
+
+//    public function test(){
+//
+//        $i=0;
+//        //dd($_SERVER['DOCUMENT_ROOT']);
+//        $handle = fopen("getAllCompanyUser",'r');
+//        $handle1 = fopen("person.sql",'w');
+//        $contents = fread($handle, filesize ("getAllCompanyUser"));
+//        fclose($handle);
+//        $allpj = json_decode($contents);
+//        $allpd = $allpj->data;
+//        //dd($allpd);
+//        foreach ($allpd as $person) {
+//            $str = "insert into person (companyId,companyName,companyParentId,officeId,officeName,userName,userId,userLoginName,userType) VALUES ('$person->companyId','$person->companyName','$person->companyParentId','$person->officeId','$person->officeName','$person->userName','$person->userId','$person->userLoginName','$person->userType');";
+//            fwrite($handle1,$str."\n");
+//            $i++;
+//            //ob_flush();
+//            flush();
+//            echo $i."</ br>";
+//
+//        }
+//        fclose($handle1);
+//    }
+
+//    public function test(){
+//
+//        $courts = [];
+//        //dd($_SERVER['DOCUMENT_ROOT']);
+//        $handle = fopen("getAllCompanyUser",'r');
+//        $contents = fread($handle, filesize ("getAllCompanyUser"));
+//        fclose($handle);
+//        $allpj = json_decode($contents);
+//        $allpd = $allpj->data;
+//        //dd($allpd);
+//        foreach ($allpd as $person) {
+//            $court = array("courtid"=>"$person->companyId","pid"=>"$person->companyParentId","name"=>"$person->companyName");
+//            if (!in_array($court,$courts)){
+//                array_push($courts,$court);
+////                $str = "insert into courtnew (courtid,pid,name) values ('$court[courtid]','$court[pid]','$court[name]')";
+////                DB::insert($str);
+//            }
+//        }
+//        dd($courts);
+//
+//    }
+
+//    public function test(){
+//
+//        $courts = [];
+//        //dd($_SERVER['DOCUMENT_ROOT']);
+//        $handle = fopen("sss",'r');
+//        $contents = fread($handle, filesize ("sss"));
+//        fclose($handle);
+//        $allpj = json_decode($contents);
+//        $allpd = $allpj->data;
+//        //dd($allpd);
+//        foreach ($allpd as $person) {
+//            $court = array("courtid"=>"$person->companyId","pid"=>"$person->companyParentId","name"=>"$person->companyName");
+//            if (!in_array($court,$courts)){
+//                array_push($courts,$court);
+////                $str = "insert into courtnew (courtid,pid,name) values ('$court[courtid]','$court[pid]','$court[name]')";
+////                DB::insert($str);
+//            }
+//        }
+//        dd($courts);
+//
+//    }
+
+        public  function test(){
+            $list = DB::select("select * from useful_news where content like '%<img%'");
+            //dd($list);
+            foreach ($list as $new){
+                $id = $new->id;
+                $content = $new->content;
+                $content= preg_replace('/<\s*img[^>]*?\s*>/i', '', $content);
+                //dd($content,$new->content);
+                DB::update("update useful_news set content = '$content' where id = '$id'");
+            }
+
+        }
+
+
 }
