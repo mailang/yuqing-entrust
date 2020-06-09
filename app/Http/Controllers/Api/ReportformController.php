@@ -27,12 +27,12 @@ class ReportformController extends Controller
     function list($id = null)
     {
         if($id){
-            $report=Reportform::where('title',$id)->first();
+            $report=Reportform::where('title',$id)->where('ispush','1')->first();
             if (!$report){
                 return;
             }
         }else{
-            $report=Reportform::orderBy('id','desc')->first();
+            $report=Reportform::orderBy('id','desc')->where('ispush','1')->first();
         }
         $sql = "select `title`,`content`,`author`,`firstwebsite`,`sitetype`,`link`,`keywords`,`court`,`transmit`,`visitnum`,`replynum`,`starttime`,`orientation`,`yuqinginfo`,`abstract` as abs,c.province from useful_news left join (SELECT MAX(courtid),NAME,province FROM court GROUP BY NAME,province)as c on useful_news.court=c.name where useful_news.reportform_id='$report->id'";
         $news = DB::select("$sql");
@@ -48,7 +48,7 @@ class ReportformController extends Controller
     {
         $res = array();
         $report=Reportform::orderBy('id','desc')->first();
-        $reports = Reportform::where('created_at','>','2020-01-01')->where('id','<>',$report['id'])->orderBy('id','asc')->get();
+        $reports = Reportform::where('created_at','>','2020-01-01')->where('id','<>',$report['id'])->where('ispush','1')->orderBy('id','asc')->get();
         //dd($reports);
         foreach ($reports as $report){
 
