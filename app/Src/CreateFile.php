@@ -475,6 +475,7 @@ class CreateFile{
             $resualt = DB::table("useful_news")->leftJoin("court","useful_news.court","=","court.name")
                 ->where("useful_news.reportform_id","=",$id)
                 ->where("useful_news.tag","=",1)
+                ->orderBy('orientation','desc')
                 ->orderBy('starttime','asc')
                 ->get($fields);
 
