@@ -84,7 +84,7 @@ class CreateFile{
             $zippath = ($zippath . $zipname . '.zip');
             if ($ftppath !== "") {
                 if (file_exists($ftppath)) {
-                    copy($zippath, $ftppath . $zipname . '.zip');
+                    //copy($zippath, $ftppath . $zipname . '.zip');
                 }
             }
             $r["ispush"]=1;
