@@ -48,7 +48,7 @@
                                         <th class="hidden-md">负面占比</th>
                                         <th class="hidden-md">正面条数</th>
                                         <th class="hidden-md">正面占比</th>
-                                        <th data-sortable="false">中性条数</th>
+                                        <th class="hidden-md">中性条数</th>
                                         <th class="hidden-md">中性占比</th>
                                     </tr>
                                     </thead>
@@ -90,7 +90,7 @@
     <link type="text/css" href="{{asset('css/jquery-ui-timepicker-addon.css')}}"/>
     <script type="text/javascript" src="{{asset('js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/jquery-ui-timepicker-addon.js')}}"></script>
-    <script src="{{asset('js/jquery.ui.datepicker-zh-CN.js.js')}}" charset="gb2312"></script>
+    <script src="{{asset('js/jquery.ui.datepicker-zh-CN.js')}}"></script>
     <script src="{{asset('js/jquery-ui-timepicker-zh-CN.js')}}"></script>
     <script type="text/javascript">
         $(function() {
