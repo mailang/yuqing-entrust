@@ -44,13 +44,24 @@
                 </div>
             @endif
             <div class="form-group has-feedback">
-                <input type="username" name="username" class="form-control" placeholder="用户名">
+                <input type="username" name="username" class="form-control" value="{{ old('username')  }}" placeholder="用户名">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" name="password" class="form-control" placeholder="密码">
+                <input type="password" name="password" class="form-control"  placeholder="密码">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
+
+            <div class="form-group has-feedback">
+                <input  id="captcha"  class="form-control" type="captcha" name="captcha" value="{{ old('captcha')  }}" placeholder="验证码">
+                <span class="glyphicon form-control-feedback"></span>
+
+                <div >
+                    <img src="{{captcha_src('math')}}" style="cursor: pointer" onclick="this.src='{{captcha_src('math')}}'+Math.random()">
+                </div>
+            </div>
+  </div>
+
             <div class="row">
                 <!-- /.col -->
                 <div class="col-xs-12 has-feedback">
@@ -58,6 +69,7 @@
                 </div>
                 <!-- /.col -->
             </div>
+            
         </form>
 
 

@@ -24,10 +24,10 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 */
 /*guard为web暂时不使用，域名跳转到后台登录*/
-Route::get('/', function () {
-    //return redirect()->route('admin.login');
-    return redirect()->route('web.index');
-});
+// Route::get('/', function () {
+//     //return redirect()->route('admin.login');
+//     return redirect()->route('web.index');
+// });
 
 Route::get('/admin', ['uses'=>'Admin\LoginController@showLoginForm']);
 Route::get('/admin/login', ['uses'=>'Admin\LoginController@showLoginForm','as'=>'admin.login']);
@@ -38,15 +38,15 @@ Route::get('cloud/words', ['uses'=>'Admin\CloudController@getjson','as'=>'cloud.
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware'=>['admin:admin','menu']], function () {
      include base_path('routes/admin.php');
 });
-Route::group(['prefix' => 'Web', 'namespace' => 'Web'], function () {
-   Route::get('index',['uses'=>'NewsController@index','as'=>'web.index']);
-   Route::get('news/list',['uses'=>'NewsController@list','as'=>'web.news.list']);
-   Route::get('news/content/{id}',['uses'=>'NewsController@show','as'=>'web.news.content']);
-   Route::any('news/search',['uses'=>'NewsController@search','as'=>'web.news.search']);
-    Route::any('news/page',['uses'=>'NewsController@page','as'=>'web.news.page']);
-    //Route::any('test',['uses'=>'NewsController@test','as'=>'web.test']);
+// Route::group(['prefix' => 'Web', 'namespace' => 'Web'], function () {
+//    Route::get('index',['uses'=>'NewsController@index','as'=>'web.index']);
+//    Route::get('news/list',['uses'=>'NewsController@list','as'=>'web.news.list']);
+//    Route::get('news/content/{id}',['uses'=>'NewsController@show','as'=>'web.news.content']);
+//    Route::any('news/search',['uses'=>'NewsController@search','as'=>'web.news.search']);
+//     Route::any('news/page',['uses'=>'NewsController@page','as'=>'web.news.page']);
+//     //Route::any('test',['uses'=>'NewsController@test','as'=>'web.test']);
 
-});
+// });
 
-Route::get('/jsonpush', ['uses'=>'Controller@push']);
-Route::get('/json', ['uses'=>'Controller@getjson']);
+// Route::get('/jsonpush', ['uses'=>'Controller@push']);
+// Route::get('/json', ['uses'=>'Controller@getjson']);

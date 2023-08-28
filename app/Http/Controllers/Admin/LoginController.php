@@ -7,6 +7,9 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Hashing\BcryptHasher as Hasher;
+
 class LoginController extends Controller
 {
     /*
@@ -74,6 +77,30 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         return redirect('admin/');
+    }
+
+     /**
+     * DESC: 重写 AuthenticatesUsers 登录验证方法，并自定义提示信息;
+     * 原验证方法 Illuminate\Foundation\Auth\AuthenticatesUsers
+     * @param Request $request
+     */ 
+    protected function validateLogin(Request $request){
+        
+        //$value = $request
+
+        // $key = $request->session()->get('captcha.key');
+        // $key = Crypt::decrypt($key);
+
+
+        // dd($key);
+        $this->validate($request, [
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+            'captcha' => 'required|captcha',
+        ],[
+            'captcha.required' => '请填写验证码',
+            'captcha.captcha' => '验证码错误',
+        ]);
     }
 
 }
